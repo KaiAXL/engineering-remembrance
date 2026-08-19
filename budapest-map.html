@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helen and Tibi Family Sites</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  html,body{margin:0;height:100%;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  #map{height:100%;width:100%}
+  .pin{width:26px;height:26px;border-radius:50%;color:#fff;font:700 13px Georgia,serif;
+       display:flex;align-items:center;justify-content:center;border:2px solid #fff;
+       box-shadow:0 1px 5px rgba(0,0,0,.45)}
+  .leaflet-popup-content{font:14px/1.4 -apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:11px 13px}
+  .leaflet-popup-content b{font-size:14.5px}
+  .leaflet-popup-content a{color:#1a73e8;text-decoration:none;font-weight:600}
+  .legend{background:#fff;padding:9px 11px;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.3);
+          font:12.5px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#333}
+  .legend b{display:block;margin-bottom:4px;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:#666}
+  .legend i{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:-1px}
+  .banner{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,.94);
+          padding:6px 16px;border-radius:20px;box-shadow:0 1px 6px rgba(0,0,0,.25);font:13px/1.3 -apple-system,Segoe UI,Arial,sans-serif;color:#333;text-align:center}
+  .banner b{font-size:14px}
+  .dmlabel,.crlabel{display:none}
+  .crlabel{background:rgba(255,255,255,.85);border:none;box-shadow:none;font-size:10.5px;color:#555;font-weight:600;padding:0 3px}
+  .pjlabel{background:rgba(255,255,255,.92);border:1px solid rgba(0,0,0,.12);border-radius:3px;font-size:10px;color:#333;font-weight:700;padding:0 3px}
+  .idx{max-height:54vh;overflow:auto;min-width:180px}
+  .idx a{display:block;color:#1a56b0;text-decoration:none;padding:1px 2px;cursor:pointer;font-size:12px;line-height:1.45}
+  .idx a:hover{text-decoration:underline;background:#f0f4ff}
+  .idx .gh{font-weight:700;color:#8a5a00;margin:7px 0 2px;text-transform:uppercase;font-size:10px;letter-spacing:.04em}
+  .idx .gh:first-child{margin-top:2px}
+</style>
+</head>
+<body>
+<div class="banner"><b>Helen &amp; Tibi Family Sites</b><br><span style="font-size:11px;color:#666">tap a pin for the story and a Google Maps link</span></div>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  var G="#2f8b57", A="#dd9b2b", R="#c14b42", P="#8e44ad", D="#3f3f3f", J="#2a9d8f", H="#3d7ea6", E="#7a2f52";
+  var topPriority=[1,2,3,9,10,11,15,16,21,25,27];  // key spots render purple
+  var starHouses=[6,9,10,27];              // confirmed yellow-star houses get a yellow Star-of-David badge
+  // [num, lat, lng, color, name, why, address-for-google]
+  var sites = [
+    [1,47.5075,19.0560,G,"Bajcsy-Zsilinszky út 51 &#9733;","Tibi's flat (ground floor) + Rosie's nanny job (5th floor), the Lévai building","Bajcsy-Zsilinszky út 51, Budapest"],
+    [2,47.5073,19.0552,A,"Tibor's bakery &#9733;","Across from No. 51; where Tibi ran bread and slept on the flour sacks","Bajcsy-Zsilinszky út 50, Budapest"],
+    [3,47.5270,19.0470,G,"Margitsziget (Margaret Island)","Tibi's hiding island; the daytime air raid","Margitsziget, Budapest"],
+    [4,47.5030,19.0580,G,"Zichy Jenő utca 29","Rosie & Ibi's first Budapest address","Zichy Jenő utca 29, Budapest"],
+    [5,47.4940,19.0732,G,"Népszínház utca 33 (tailors' union shop)","Rosie's second job: seamstress at Mr. Gutman's tailors' union shop, run by Klemencsics (chief tailor); where she got her false papers; near Keleti","Népszínház utca 33, Budapest"],
+    [30,47.4943,19.0726,G,"Népszínház utca 29 (Krausz's shop)","The family's first shop on this street: Rosie and Ibi started here, and Tibi apprenticed as an upholsterer (1943); a few doors from the tailor shop at 33","Népszínház utca 29, Budapest"],
+    [6,47.4912,19.0782,G,"Népszínház utca 69","Fani (Ibi)'s yellow-star house (she and Rosie first moved in here together)","Népszínház utca 69, Budapest"],
+    [7,47.5030,19.0300,G,"Hattyú utca 7","Rosie's maid job (Buda)","Hattyú utca 7, Budapest"],
+    [8,47.4925,19.0735,A,"Nagyfuvaros utca (Red Cross orphanage)","The Red Cross children's home full of the dead; Rosie's night at a stranger's house (via Józsi)","Nagyfuvaros utca 4, Budapest"],
+    [9,47.4980,19.0567,G,"Király utca 6 &#9733;","Helen's wartime home + the Sperber glove-works","Király utca 6, Budapest"],
+    [10,47.4985,19.0576,G,"Király utca 12","Ibi & the circle's star house","Király utca 12, Budapest"],
+    [11,47.4888,19.0836,G,"Teleki tér 22-23 &#9733;","Henrik Sperber's home + the surviving Orthodox shul (Teleki téri zsinagóga)","Teleki tér 22, Budapest"],
+    [12,47.4900,19.0790,G,"Kun utca 12","Dr. Nándor Sperber (the lawyer brother)","Kun utca 12, Budapest"],
+    [13,47.4920,19.0762,G,"Népszínház utca 59","The Sperber widow (matriarch)","Népszínház utca 59, Budapest"],
+    [14,47.4922,19.0742,G,"Nagyfuvaros utca 16","Cecilie Dikker & Moses Müller, Szerene's parents; Helen's Dikker link","Nagyfuvaros utca 16, Budapest"],
+    [15,47.4835,19.0375,G,"Swedish Legation, Gyopár utca 8 &#9733;","Where Rosie saw Raoul Wallenberg and got the Swedish passes","Gyopár utca 8, Budapest"],
+    [16,47.4805,19.0410,A,"Bérc utca 16 &#9733;","Helen's safe house (candidate); the Haggenmacher villa, now the Saudi embassy","Bérc utca 16, Budapest"],
+    [17,47.4830,19.0480,A,"Kelenhegyi út 7-9","Helen's safe house (candidate); villa behind a high wall","Kelenhegyi út 7, Budapest"],
+    [18,47.4970,19.0660,G,"Kisdiófa utca 10/15","Postwar Red Cross home where Alfréd (and likely Helen) registered","Kisdiófa utca 10, Budapest"],
+    [19,47.5015,19.0335,A,"Úri utca 19 (plausible safe house)","Plausible: a Jó Pásztor (Good Shepherd) children's home stood here, by the Hadik statue that Gábor remembered near the wartime safe house. Worth visiting, though not confirmed as Helen's exact building","Úri utca 19, Budapest"],
+    [20,47.4972,19.0637,G,"Klauzál tér 1","Rosie into the sealed Pest ghetto; the ghetto's central square","Klauzál tér 1, Budapest"],
+    [21,47.5003,19.0836,G,"Keleti station &#9733;","Where Helen last saw her mother Roza (1943); deportations west","Keleti pályaudvar, Budapest"],
+    [22,47.5106,19.0577,G,"Nyugati station","Near the Lévai son's forced-labor warehouse","Nyugati pályaudvar, Budapest"],
+    [23,47.4995,19.0880,G,"Tattersall (Kerepesi út 7)","Where Ibi was held three days in the rain","Kerepesi út 7, Budapest"],
+    [24,47.5019,19.0446,G,"Shoes on the Danube","The Danube shootings Rosie witnessed from the Arrow Cross HQ","Shoes on the Danube Bank, Budapest"],
+    [25,47.4090,19.0080,A,"Budatétény &#9733;","Rosie's liberation (Christmas Eve 1944); the Arrow Cross HQ area (exact building unknown)","Budatétény, Budapest"],
+    [26,47.5170,18.9850,A,"Zugliget","The Lévai family's one-room cellar hideout","Zugliget, Budapest"],
+    [31,47.5130,18.9950,G,"Budakeszi út 48 (Gaudiopolis)","The postwar Sztehlo children's town (1945-50), where Gábor Sperber lived after the war; NOT Helen's wartime home","Budakeszi út 48, Budapest"],
+    [27,47.5120,19.0500,G,"Katona József utca 20","Margit & little Eva's star house","Katona József utca 20, Budapest"],
+    [28,47.4975,19.0525,G,"Erzsébet tér","The big central square by Deák, near 6 Király, that Rosie walked through","Erzsébet tér, Budapest"],
+    [29,47.5033,19.0325,G,"Sztehlo Gábor memorial, Bécsi Kapu tér","Plaque to the pastor who ran the children's homes that saved ~2,000 children, likely Helen's","Bécsi Kapu tér, Budapest"],
+    [54,47.4989,19.0588,G,"The last ghetto wall (Király utca 15)","A memorial section of the Budapest ghetto wall, rebuilt in 2010 in the courtyard where the last piece of the original 1944–45 wall stood until 2006. The sealed Pest ghetto, about 70,000 people, ran from late November 1944 until Soviet liberation on 17–18 January 1945. A place to visit, on the same street as Helen's wartime home at number 6","Király utca 15, Budapest"]
+  ];
+  // Wider family journey (village, ghettos, camps, DP + emigration). D=deportation/camps, J=DP/emigration
+  var journey = [
+    [32,47.9820,24.1470,H,"Tiszabogdán / Bohdan (home)","The family village and Helen's birthplace (Helman + Lando). Roza and the children were rounded up here on 16 April 1944","Bohdan, Zakarpattia, Ukraine"],
+    [33,47.9580,22.3280,D,"Mátészalka ghetto","Where the whole Rakhiv district, Roza and the children, were held before Auschwitz","Mátészalka, Hungary"],
+    [34,47.7920,22.8780,H,"Szatmár (Satu Mare): the Katz home","The origin and home town of the Katz family, Tibi's family (4 Kossuth Lajos utca), as Bogdan was for the Helmans. In 1944 the town's Jews were held in the Satu Mare ghetto and deported to Auschwitz in May and June 1944","Satu Mare, Romania"],
+    [35,50.0350,19.1780,D,"Auschwitz-Birkenau","Where Roza and five children (Photo 133) and the Satu Mare relatives were murdered on arrival, 26 May 1944","Auschwitz-Birkenau Memorial, Oświęcim, Poland"],
+    [50,48.7160,21.2610,D,"Kassa / Košice (the counting)","On 22 May 1944 the sealed transport from the Mátészalka ghetto was counted through Kassa on its way to Auschwitz, 3,298 people on board. The date and the number survive because the Kassa railway station logged every deportation train that passed through","Košice, Slovakia"],
+    [51,51.0220,11.2480,D,"Buchenwald","Where Zacharias, Michal, and Lajos were registered after Auschwitz, on 2 June 1944, and held in the tent camp (the Zeltlager, block Z-4) before the men were sent on to the labour subcamps","Buchenwald Memorial, Weimar, Germany"],
+    [36,52.1830,11.6830,D,"Magdeburg-Rothensee (subcamp)","Zacharias's slave-labour subcamp; sent back to Auschwitz and killed October 1944","Magdeburg-Rothensee, Germany"],
+    [37,51.0500,12.1300,D,"Rehmsdorf / Tröglitz (subcamp)","Michal Helman's subcamp (the 'Wille' fuel plant) before Theresienstadt","Rehmsdorf, Tröglitz, Germany"],
+    [38,51.0300,17.3200,D,"Fünfteichen (subcamp)","Jenő Helman and his son Mordekhai; Jenő died here about January 1945","Fünfteichen, Jelcz-Laskowice, Poland"],
+    [39,50.5130,14.1500,D,"Terezín / Theresienstadt","Where Michal and Lajos Helman were liberated, 8 May 1945","Terezín, Czech Republic"],
+    [40,48.2690,11.4430,D,"Dachau","Szerene Sperber (Helen's cousin, née Müller) imprisoned here; she survived","Dachau Concentration Camp Memorial, Germany"],
+    [41,52.7570,9.9070,D,"Bergen-Belsen","Where little Eva was deported after the death march; as a small child she shared a bunk with a corpse, and survived","Bergen-Belsen Memorial, Germany"],
+    [42,53.0130,18.5980,J,"Thorn / Toruń","Where Tibi was held about a month AFTER the war, in a camp then holding German POWs, for border-crossing","Toruń, Poland"],
+    [43,47.8120,12.9430,J,"Ainring (DP camp)","Tibi's displaced-persons camp, December 1945 to February 1947, before he crossed to Palestine","Ainring, Germany"],
+    [44,48.3520,11.3820,J,"Kloster Indersdorf","The children's centre on Helen's postwar path out of Europe","Kloster Indersdorf, Germany"],
+    [45,47.8550,12.3450,J,"Prien am Chiemsee","The children's programme Helen's DP card was falsified two years younger to join","Prien am Chiemsee, Germany"],
+    [46,53.5400,8.5800,J,"Bremerhaven","Where Helen sailed for America on the SS Marine Marlin, May 1947","Bremerhaven, Germany"],
+    [47,48.6150,22.2980,H,"Uzhhorod (Ungvár), Minajská 27","Where four of Miksa and Hani's children (Bumi, Jakab, Herman/Tzvi, Sara) settled for city work in 1936-37, all at this one address; the Czechoslovak state registered them as Polish 'foreigners' because nationality passed from their grandfather Iczik of Delatyn, even for the children born in Bogdan","Minaiska Street 27, Uzhhorod, Ukraine"],
+    [48,46.7712,23.6236,H,"Kolozsvár (Cluj): Eva's birthplace","Where Eva (Sándor Katz and Margit Roth's daughter) was born in 1938, as listed on her postwar DP card. Bookmarked here until the exact street address is confirmed from Rosie's memoir","Cluj-Napoca, Romania (exact address pending)"],
+    [49,48.5205,24.6255,H,"Delatyn (Delyatyn)","The family's paternal origin, in Galicia (now Ukraine). Iczik Helman and Feige Dikker both came from here; the family's Polish nationality passed down from Delatyn, even to the children born in Bogdan","Delyatyn, Ivano-Frankivsk Oblast, Ukraine"],
+    [52,48.7080,44.5133,E,"Stalingrad (the eastern front)","David Helman, Zacharias's brother, fled east into the Soviet Union in 1939, joined the Red Army, and fell at Stalingrad, on the Soviet side of the front, about 1943","Volgograd, Russia"],
+    [53,50.6000,40.0000,E,"The River Don (the eastern front)","Where the Hungarian Second Army and its unarmed Jewish forced-labour companies (the munkaszolgálat) were destroyed in the winter of 1942 to 1943. Yosef and Moshe Helman, Miksa's sons, were forced labourers here, not armed soldiers, on the Axis side against the Soviets, and died on the Don","Ostrogozhsk, Don front, Russia"]
+  ];
+  // Timeline order: drives BOTH the displayed pin numbers and the index. Group headers are arrays.
+  var idxOrder=[
+    ['Family homes & origins'],32,34,49,
+    ['Budapest, 1943–1944'],21,9,10,11,12,13,14,1,2,3,30,5,6,4,7,8,15,16,17,19,20,54,22,23,26,28,29,
+    ['Deportation, April–May 1944'],33,50,35,
+    ['The camps, 1944–1945'],51,36,37,38,'bomb',39,40,
+    ['The eastern front, 1943'],52,53,
+    ['The Budapest death march, Nov 1944'],27,'margit','tibi',24,
+    ['Liberation & after, winter 1944–45'],25,18,31,
+    ['DP camps & emigration, 1945–1947'],42,43,44,45,46,41,
+    ['After the war'],47,48
+  ];
+  // display number = chronological position (so the home village is 1)
+  var dispNum={};(function(){var n=0;idxOrder.forEach(function(e){if(typeof e==='number'){n++;dispNum[e]=n;}});})();
+  var map = L.map('map').setView([47.4979,19.0450],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {attribution:'&copy; OpenStreetMap contributors', maxZoom:19}).addTo(map);
+  var bounds=[];
+  var markerById={}, coordById={};
+  sites.forEach(function(s){
+    var num=s[0],lat=s[1],lng=s[2],color=s[3],name=s[4],why=s[5],addr=s[6];
+    if(topPriority.indexOf(num)>=0) color=P;
+    bounds.push([lat,lng]);
+    var icon=L.divIcon({className:'',html:'<div class="pin" style="background:'+color+'">'+dispNum[num]+'</div>',
+      iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-13]});
+    var g='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
+    markerById[num]=L.marker([lat,lng],{icon:icon}).addTo(map)
+      .bindPopup('<b>'+dispNum[num]+'. '+name+'</b><br>'+why+'<br><a href="'+g+'" target="_blank" rel="noopener">Open in Google Maps &#8599;</a>');
+    coordById[num]=[lat,lng];
+    if(starHouses.indexOf(num)>=0){
+      L.marker([lat,lng],{icon:L.divIcon({className:'',html:'<div style="color:#f5c518;font-size:18px;line-height:1;text-shadow:0 0 2px #6b4e00,0 1px 2px rgba(0,0,0,.65)">&#10017;</div>',iconSize:[18,18],iconAnchor:[-3,25]}),interactive:false,zIndexOffset:900}).addTo(map);
+    }
+  });
+  journey.forEach(function(s){
+    var num=s[0],lat=s[1],lng=s[2],color=s[3],name=s[4],why=s[5],addr=s[6];
+    var icon=L.divIcon({className:'',html:'<div class="pin" style="background:'+color+'">'+dispNum[num]+'</div>',
+      iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-13]});
+    var g='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
+    markerById[num]=L.marker([lat,lng],{icon:icon}).addTo(map)
+      .bindPopup('<b>'+dispNum[num]+'. '+name+'</b><br>'+why+'<br><a href="'+g+'" target="_blank" rel="noopener">Open in Google Maps &#8599;</a>');
+    coordById[num]=[lat,lng];
+  });
+  // --- Deportation and camp routes (dotted lines; dated labels collapsible) ---
+  var C={bohdan:[47.9820,24.1470],mates:[47.9580,22.3280],satu:[47.7920,22.8780],
+    kassa:[48.7160,21.2610],ausch:[50.0350,19.1780],buchen:[51.0220,11.2480],
+    magd:[52.1830,11.6830],trog:[51.0500,12.1300],funf:[51.0300,17.3200],terez:[50.5130,14.1500]};
+  function croute(a,b,color,label,detail){
+    var ln=L.polyline([a,b],{color:color,weight:2.5,opacity:.8,dashArray:'2,6'}).addTo(map);
+    ln.bindTooltip(label,{permanent:true,direction:'center',className:'crlabel'});
+    ln.bindPopup('<b>'+label+'</b>'+(detail?'<br>'+detail:''));
+    return ln;}
+  var DEP='#a62c2c', CMP='#5a5a5a';
+  // the deportation to death (red)
+  croute(C.bohdan,C.mates,DEP,'deported, April 1944','The whole Rakhiv district, Roza and the children among them, was rounded up on 16 April 1944 and taken to the Mátészalka ghetto.');
+  croute(C.mates,C.kassa,DEP,'toward Auschwitz, via Kassa','');
+  croute(C.kassa,C.ausch,DEP,'22 May 1944: 3,298 counted at Kassa','The transport was counted through Kassa on 22 May 1944, 3,298 people on board, and reached Auschwitz-Birkenau on 24 to 26 May 1944, where Roza and five of the children were murdered on arrival.');
+  croute(C.satu,C.ausch,DEP,'the Satu Mare relatives, May–June 1944','The Katz family of Satu Mare were deported to Auschwitz on the same days.');
+  // camp transfers (grey)
+  croute(C.ausch,C.buchen,CMP,'the three Helman men, 2 June 1944','Zacharias, Michal, and Lajos were sent from Auschwitz to Buchenwald on 2 June 1944.');
+  croute(C.buchen,C.magd,CMP,'Zacharias, 23 July 1944','Zacharias was sent from Buchenwald to the Magdeburg-Rothensee subcamp on 23 July 1944.');
+  croute(C.buchen,C.trog,CMP,'Michal & Lajos, to the fuel plant','The brothers were sent from Buchenwald to the Rehmsdorf / Tröglitz subcamp, the "Wille" synthetic-fuel plant.');
+  croute(C.ausch,C.funf,CMP,'Jenő & Mordekhai, to Fünfteichen','Zacharias\'s brother Jenő and his son Mordekhai were taken to the Fünfteichen subcamp; Jenő died there about January 1945.');
+  // April 1945: the Rehmsdorf/Tröglitz evacuation train climbed south into the Ore Mountains (Flöha–Reitzenhain line),
+  // was strafed at Reitzenhain on the border, and survivors were force-marched on foot down to Terezín.
+  var trainLeg=[C.trog,[50.856,13.075],[50.706,13.207],[50.667,13.150],[50.561,13.219]];
+  L.polyline(trainLeg,{color:CMP,weight:2.5,opacity:.8,dashArray:'2,6'}).addTo(map)
+    .bindTooltip('evacuation train, April 1945',{permanent:true,direction:'center',className:'crlabel'})
+    .bindPopup('<b>The Rehmsdorf evacuation train, April 1945</b><br>As the front closed in, the Rehmsdorf / Tröglitz subcamp (about 4,000 prisoners) was evacuated in open coal wagons up into the Ore Mountains toward Theresienstadt. It reached Reitzenhain, on the Saxon–Bohemian border.');
+  var footLeg=[[50.561,13.219],[50.460,13.418],[50.428,13.462],[50.359,13.703],[50.515,14.051],[50.534,14.131],C.terez];
+  L.polyline(footLeg,{color:'#6b2f2f',weight:2.6,opacity:.85,dashArray:'7,5'}).addTo(map)
+    .bindTooltip('then on foot to Terezín (death march)',{permanent:true,direction:'center',className:'crlabel'})
+    .bindPopup('<b>On foot to Terezín, April 1945</b><br>At Reitzenhain the train was strafed by Allied aircraft; the survivors were driven on foot down through Chomutov and the Ohře valley to Theresienstadt, about 80 km. Of some 4,000 who left Rehmsdorf, only a few hundred reached Terezín. Michal and Lajos Helman were among the survivors, liberated there on 8 May 1945.');
+  // the eastern front, 1943 (maroon): David to Stalingrad, Yosef & Moshe to the Don
+  croute(C.bohdan,[48.7080,44.5133],E,'David: fled east 1939, fell at Stalingrad','David Helman, Zacharias\'s brother, fled into the Soviet Union in 1939, joined the Red Army as an armed soldier, and fell at Stalingrad in 1942 to 1943, on the SOVIET side of the front, while his nephews Yosef and Moshe were unarmed forced labourers on the Axis side of the same front.');
+  croute(C.bohdan,[50.6000,40.0000],E,'Yosef & Moshe: forced labour on the Don','Yosef and Moshe, sons of Miksa, were conscripted into the Hungarian army\'s unarmed Jewish labour service (the munkaszolgálat) and sent to the Don front, on the Axis side against the Soviets. They carried no weapons; the labour servicemen dug, hauled, and cleared mines under brutal conditions and died in vast numbers when the Soviet breakthrough shattered the front in the winter of 1942 to 1943.');
+  // the bombed evacuation train (approximate point on the Tröglitz to Terezín route)
+  var trainBomb=[50.5560,13.2050]; coordById.bomb=trainBomb;
+  markerById.bomb=L.marker(trainBomb,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#5a5a5a;width:24px;height:24px;font-size:13px">&#10041;</div>',iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-12]})}).addTo(map)
+    .bindTooltip('Reitzenhain: the train was attacked',{permanent:true,direction:'top',className:'crlabel'})
+    .bindPopup('<b>Reitzenhain: where the train was attacked</b><br>At Reitzenhain station, on the Saxon–Bohemian border, Allied fighter-bombers strafed the evacuation train in mid-April 1945. In the panic that followed, about 380 prisoners were hunted down and shot near the town; a memorial by the tracks holds the reburied victims. The survivors, Michal and Lajos among them, were then marched on foot to Terezín.');
+  // --- The death march to Hegyeshalom (November 1944): the documented route west, with two family stops ---
+  // Waypoints follow the recorded march route along the Danube: Budapest, Piliscsaba, Dorog, Nyergesujfalu,
+  // Sutto, Dunaalmas, Komarom, Acs, Gonyu, Gyor, Ottevny, Mosonmagyarovar, Hegyeshalom (the Austrian border).
+  var route=[[47.5350,19.0400],[47.6350,18.8300],[47.7220,18.7280],[47.7600,18.5550],
+    [47.7480,18.4430],[47.7220,18.2830],[47.7430,18.1200],[47.7150,18.0100],
+    [47.7300,17.8200],[47.6870,17.6350],[47.7200,17.5000],[47.8700,17.2670],[47.9130,17.1590]];
+  var marchLine=L.polyline(route,{color:'#a62c2c',weight:4,opacity:.8}).addTo(map);
+  marchLine.bindTooltip('Eva: the whole march west to Hegyeshalom',{permanent:true,direction:'top',className:'dmlabel'});
+  route.forEach(function(p){bounds.push(p);});
+  // Eva's deportation continued from Hegyeshalom to Bergen-Belsen (the same red subfamily journey)
+  L.polyline([route[route.length-1],[52.7570,9.9070]],{color:'#a62c2c',weight:2.5,opacity:.45,dashArray:'8,8'}).addTo(map)
+    .bindTooltip('then the train to Bergen-Belsen',{permanent:true,direction:'top',className:'dmlabel'});
+  // Margit shot (approximate point on the route)
+  var margitShot=[47.5850,18.9350]; coordById.margit=margitShot;
+  markerById.margit=L.marker(margitShot,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#fff;border:3px solid #8e2020;width:30px;height:30px;font-size:16px">👠</div>',iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-15]})}).addTo(map)
+    .bindTooltip('Margit: shot here, early',{permanent:true,direction:'top',className:'dmlabel'})
+    .bindPopup('<b>Approximate: where Margit was shot</b><br>On what should have been Eva\'s first day of school, both of them dressed for it, the Arrow Cross seized Margit and little Eva as they left home. They were carrying forged Christian papers, but the person who had sold them those papers informed on them. Forced onto the death march west through rain and mud, Margit could not walk in her heels. She was told that if walking was too hard a wagon would come for her, so she stood waiting for the wagon, and was shot where she stood. Eva, beside her, heard the shot but did not see it, and understood only afterward. Eva was deported on to Bergen-Belsen, where she survived. This point is an approximation on the documented route; the exact spot is unknown.');
+  // Tibi feigned death and escaped (approximate point on the route)
+  var ditch=[47.7530,18.4880]; coordById.tibi=ditch;
+  markerById.tibi=L.marker(ditch,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#fff;border:3px solid #2a9d8f;width:30px;height:30px;font-size:16px">🐻</div>',iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-15]})}).addTo(map)
+    .bindTooltip('Tibi: feigned death and escaped here',{permanent:true,direction:'bottom',className:'dmlabel'})
+    .bindPopup('<b>Approximate: where Tibi feigned death and escaped</b><br>On the second night of the death march he feigned death, rolled into a roadside ditch among the bodies, lay in the mud until the column passed, then walked back toward Budapest. He made it to the end of the second day, roughly 55 to 65 km northwest of the city along this route; this point is an approximation, the exact spot is unknown.');
+  map.fitBounds(bounds,{padding:[40,40]});
+  var legend=L.control({position:'bottomright'});
+  legend.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    d.innerHTML='<b id="legHdr" style="cursor:pointer;user-select:none">Legend &#9662;</b>'+
+      '<div id="legBody" style="margin-top:3px">'+
+      '<i style="background:#8e44ad"></i>Top priority<br>'+
+      '<i style="background:#2f8b57"></i>Confirmed<br>'+
+      '<i style="background:#dd9b2b"></i>Candidate / uncertain<br>'+
+      '<span style="color:#f5c518;font-size:15px;margin-right:3px;vertical-align:-1px">&#10017;</span>Confirmed yellow-star house<br>'+
+      '<i style="background:#3d7ea6"></i>Family home &amp; origin<br>'+
+      '<i style="background:#3f3f3f"></i>Deportation + camps<br>'+
+      '<i style="background:#2a9d8f"></i>DP + emigration journey<br>'+
+      '<i style="background:#a62c2c"></i>Deportation to Auschwitz (dotted)<br>'+
+      '<i style="background:#5a5a5a"></i>Camp transfers (dotted)<br>'+
+      '<i style="background:#7a2f52"></i>The eastern front, 1943 (dotted)<br>'+
+      '<i style="background:#a62c2c"></i>Margit &amp; Eva: death march &rarr; Bergen-Belsen<br>'+
+      '<i style="background:#2a9d8f"></i>Where Tibi feigned death &amp; escaped (approx.)';
+    d.innerHTML+='</div>';
+    L.DomEvent.disableClickPropagation(d);
+    return d;};
+  legend.addTo(map);
+  (function(){var h=document.getElementById('legHdr');h.onclick=function(){var b=document.getElementById('legBody');var open=b.style.display!=='none';b.style.display=open?'none':'';h.innerHTML='Legend '+(open?'&#9656;':'&#9662;');};})();
+  // --- collapsible death-march labels (hidden by default so the map stays clean) ---
+  var dmCtl=L.control({position:'bottomright'});
+  dmCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    d.innerHTML='<b id="dmHdr" style="cursor:pointer;user-select:none">Route labels &amp; dates &#9656;</b>';
+    L.DomEvent.disableClickPropagation(d);return d;};
+  dmCtl.addTo(map);
+  (function(){var shown=false;var h=document.getElementById('dmHdr');
+    h.onclick=function(){shown=!shown;
+      document.querySelectorAll('.leaflet-tooltip.dmlabel,.leaflet-tooltip.crlabel').forEach(function(el){el.style.display=shown?'block':'none';});
+      h.innerHTML='Route labels &amp; dates '+(shown?'&#9662;':'&#9656;');};})();
+  var allBounds = bounds.concat(journey.map(function(s){return [s[1],s[2]];}));
+  var viewCtl = L.control({position:'topleft'});
+  viewCtl.onAdd=function(){
+    var d=L.DomUtil.create('div','legend');
+    d.innerHTML='<b>View</b><button id="vBp" style="display:block;width:100%;margin:2px 0;cursor:pointer">Budapest</button><button id="vAll" style="display:block;width:100%;margin:2px 0;cursor:pointer">Whole journey</button>';
+    L.DomEvent.disableClickPropagation(d);
+    return d;};
+  viewCtl.addTo(map);
+  document.getElementById('vBp').onclick=function(){map.fitBounds(bounds,{padding:[40,40]});};
+  document.getElementById('vAll').onclick=function(){map.fitBounds(allBounds,{padding:[30,30]});};
+  // --- Clickable timeline index (grouped by phase; click flies to the pin) ---
+  var nameById={};
+  sites.concat(journey).forEach(function(s){nameById[s[0]]=s[4];});
+  nameById.margit='Margit shot on the death march (approx.)';
+  nameById.tibi='Tibi feigned death &amp; escaped (approx.)';
+  nameById.bomb='Reitzenhain: the train attacked';
+  function stripName(s){return s.replace(/\s*&#9733;/g,'');}
+  var idxCtl=L.control({position:'topright'});
+  idxCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    var html='<b id="idxHdr" style="cursor:pointer;user-select:none">Timeline index &#9662;</b><div id="idxBody" class="idx">';
+    idxOrder.forEach(function(e){
+      if(Array.isArray(e)){html+='<div class="gh">'+e[0]+'</div>';}
+      else{var lbl=(typeof e==='number'?dispNum[e]+'. ':'')+stripName(nameById[e]||('#'+e));
+        html+='<a data-id="'+e+'">'+lbl+'</a>';}
+    });
+    html+='</div>';d.innerHTML=html;
+    L.DomEvent.disableClickPropagation(d);L.DomEvent.disableScrollPropagation(d);
+    return d;};
+  idxCtl.addTo(map);
+  (function(){
+    var h=document.getElementById('idxHdr');var b=document.getElementById('idxBody');
+    h.onclick=function(){var open=b.style.display!=='none';b.style.display=open?'none':'';h.innerHTML='Timeline index '+(open?'&#9656;':'&#9662;');};
+    b.querySelectorAll('a[data-id]').forEach(function(a){
+      a.onclick=function(){var id=a.getAttribute('data-id');if(!isNaN(id))id=+id;
+        var c=coordById[id];if(!c)return;
+        var z=(id==='bomb')?8:((typeof id==='string')?11:(id<=31?15:7));
+        map.flyTo(c,z,{duration:.8});
+        var m=markerById[id];if(m)setTimeout(function(){m.openPopup();},850);};
+    });
+  })();
+  // --- Per-person journey layers (toggle; off by default so the map stays clean) ---
+  var BPc=[47.4979,19.0450];
+  var journeys={
+    'Helen':['#e08a1e',[[47.982,24.147],BPc,[48.352,11.382],[47.855,12.345],[53.54,8.58],[40.71,-74.01,'New York'],[41.88,-87.63,'Chicago'],[34.05,-118.24,'Los Angeles']]],
+    'Tibi':['#2a9d8f',[[47.792,22.878],BPc,[53.013,18.598],[47.812,12.943],[32.08,34.78,'Israel'],[34.05,-118.24,'Los Angeles']]],
+    'Michal & Lajos':['#3d7ea6',[[47.982,24.147],[47.958,22.328],[50.035,19.178],[51.022,11.248],[51.05,12.13],[50.513,14.15],BPc,[47.982,24.147],[48.615,22.298]]],
+    'Roza':['#b5487a',[[47.982,24.147],BPc,[47.982,24.147],[47.958,22.328],[48.716,21.261],[50.035,19.178]]],
+    'Eva':['#a62c2c',[[46.771,23.624],BPc,[53.19,13.17,'Ravensbrück'],[52.757,9.907],[34.05,-118.24,'Los Angeles']]]
+  };
+  var journeyLayers={};
+  Object.keys(journeys).forEach(function(who){
+    var color=journeys[who][0], pts=journeys[who][1], line=[], fg=L.featureGroup();
+    pts.forEach(function(p){line.push([p[0],p[1]]);});
+    L.polyline(line,{color:color,weight:3.5,opacity:.9,dashArray:'1,8',lineCap:'round'}).addTo(fg);
+    pts.forEach(function(p){
+      var cm=L.circleMarker([p[0],p[1]],{radius:3.6,color:'#fff',weight:1.2,fillColor:color,fillOpacity:1}).addTo(fg);
+      if(p[2]) cm.bindTooltip(p[2],{permanent:true,direction:'top',className:'pjlabel'});
+    });
+    journeyLayers[who]=fg;
+  });
+  var pjCtl=L.control({position:'bottomleft'});
+  pjCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    var html='<b id="pjHdr" style="cursor:pointer;user-select:none">A person\'s path &#9662;</b><div id="pjBody" style="margin-top:3px">';
+    Object.keys(journeys).forEach(function(who){
+      html+='<label style="display:block;cursor:pointer;white-space:nowrap"><input type="checkbox" data-who="'+who+'" style="vertical-align:-1px;margin-right:5px"><span style="border-bottom:2.5px dotted '+journeys[who][0]+'">'+who+'</span></label>';
+    });
+    html+='</div>'; d.innerHTML=html;
+    L.DomEvent.disableClickPropagation(d); return d;};
+  pjCtl.addTo(map);
+  (function(){
+    var h=document.getElementById('pjHdr'),b=document.getElementById('pjBody');
+    h.onclick=function(){var open=b.style.display!=='none';b.style.display=open?'none':'';h.innerHTML='A person\'s path '+(open?'&#9656;':'&#9662;');};
+    document.querySelectorAll('input[data-who]').forEach(function(cb){
+      cb.onchange=function(){var who=cb.getAttribute('data-who'),fg=journeyLayers[who];
+        if(cb.checked){fg.addTo(map);try{map.fitBounds(fg.getBounds(),{padding:[45,45]});}catch(e){}}
+        else{map.removeLayer(fg);}};
+    });
+  })();
+</script>
+</body>
+</html>
