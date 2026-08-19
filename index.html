@@ -83,36 +83,36 @@
 <main class="main">
 <div class="wrap">
 
+
+  <p class="eyebrow">Tiszabogd&aacute;ny &middot; Subcarpathia</p>
+
+  <h1>The paperwork built to erase them is what returns their names.</h1>
+
+  <p class="lede">A repeatable method for recovering Holocaust family histories: AI used to trace one person across a dozen fragmented, multilingual archives, and every link then checked by hand against the original document. This is the family it was built on.</p>
+
   <figure class="hero">
-    <img src="images/hero-three-men.png" alt="Buchenwald intake photographs of Lajos, Michal and Zacharias Helman, 2 June 1944, boards 322, 323 and 324" loading="eager" decoding="async">
+    <div class="faces">
+      <img src="images/hero-three-men.jpg" alt="Buchenwald intake photographs of Lajos, Michal and Zacharias Helman, 2 June 1944, boards 322, 323 and 324" loading="eager" decoding="async">
+      <button class="face" type="button" data-man="lajos"     aria-label="Lajos Helman, board 322"></button>
+      <button class="face" type="button" data-man="michal"    aria-label="Michal Helman, board 323"></button>
+      <button class="face" type="button" data-man="zacharias" aria-label="Zacharias Helman, board 324"></button>
+    </div>
+    <p class="facehint">Tap a face for his record</p>
+    <div class="facecard" id="facecard" hidden>
+      <button class="fcclose" type="button" aria-label="Close">&times;</button>
+      <p class="fcname"></p>
+      <p class="fcwho"></p>
+      <p class="fcnum"></p>
+      <div class="fcbody"></div>
+      <p class="fcfate"></p>
+    </div>
     <figcaption>
-      Buchenwald intake, 2 June 1944. The placards read A 2 6 44, then the board number. Two brothers and their uncle, from one village, in one trade, photographed one behind the other about a week after Auschwitz.
+      Buchenwald intake, 2 June 1944. The placards read A 2 6 44, then the board number. Two brothers and their uncle. All three born and raised in Tiszabogd&aacute;ny, all three arrested there, all three carters by trade, photographed one behind the other about a week after Auschwitz and housed together in the tent camp at Z-4. Their cards were then filed apart for more than eighty years. Here they are side by side again.
       <span class="cite">Arolsen Archives &middot; prisoner cards 56906, 57103, 57101</span>
     </figcaption>
   </figure>
 
-  <p class="eyebrow">Tiszabogd&aacute;ny &middot; Subcarpathia</p>
-  <h1>The paperwork built to erase them is what returns their names.</h1>
-  <p class="lede">A repeatable method for recovering Holocaust family histories from fragmented, multilingual archives, and the family it was built on.</p>
-
-  <div class="pull">
-    <p>&ldquo;We all have stories to tell. You know, all of us have some kind of story to tell.&rdquo;</p>
-    <cite>Helen Land&oacute; Helman &middot; recorded testimony</cite>
-  </div>
-
   <p class="opening">Three photographs, from three separate cards but one family, are a rare survival. Auschwitz had stopped photographing prisoners the year before, so a face exists at all only for a man pulled out for labour and sent on to a camp that still kept an identification service. These were the first images the family had ever seen of anyone on that side.</p>
-
-
-  <div class="strip">
-    <span class="lbl">Helen &middot; 1929 to 2013</span>
-    <div class="frames">
-      <figure><img src="images/helen-1946.jpg" alt="Helen at Kloster Indersdorf, 1946, with her friend Ibi Winterman" loading="lazy" decoding="async"><figcaption><span class="yr">1946</span><span class="cap">Indersdorf, with her best friend Ibi Winterman (middle)</span></figcaption></figure>
-      <figure><img src="images/helen-1948.jpg" alt="Helen in Chicago, 1948" loading="lazy" decoding="async"><figcaption><span class="yr">1948</span><span class="cap">Chicago</span></figcaption></figure>
-      <figure><img src="images/helen-1950s.jpg" alt="Helen, studio portrait, 1950s" loading="lazy" decoding="async"><figcaption><span class="yr">1950s</span><span class="cap">Studio portrait</span></figcaption></figure>
-      <figure><img src="images/helen-2000.jpg" alt="Helen with her granddaughter Sam, 2000" loading="lazy" decoding="async"><figcaption><span class="yr">2000</span><span class="cap">With her granddaughter Sam</span></figcaption></figure>
-      <figure><img src="images/helen-2010.jpg" alt="Helen with her granddaughter Sam at her high school graduation, 2010" loading="lazy" decoding="async"><figcaption><span class="yr">2010</span><span class="cap">With Sam, Huntington Beach High School graduation</span></figcaption></figure>
-    </div>
-  </div>
 
   <hr class="stitch">
 
@@ -120,11 +120,27 @@
   <p>In 2019 the family had one prisoner card and assumed that was the end of it. By 2026 it was a dossier of more than three hundred records: a village on the Tisza, a roundup, a ghetto nobody in the family had ever named, a transport, two camps, a subcamp, a death, two survivals, and a branch of the family in Israel that had been lost for eighty years.</p>
   <p>None of it required travel. All of it required knowing where the paperwork had to put a person, and being willing to read a list nobody had a reason to finish.</p>
 
-  <hr class="stitch">
-
   <div class="panel">
     <span class="lbl">The standard</span>
     <p>An identification is admitted only where independent record types corroborate one another without contradiction, and every linkage is verified against the primary document. Where the evidence supports a probable conclusion rather than a proven one, it is stated as probable.</p>
+  </div>
+
+  <hr class="stitch">
+
+  <div class="strip">
+    <span class="lbl">Helen &middot; 1929 to 2013</span>
+    <div class="frames">
+      <figure><img src="images/helen-1946.jpg" alt="Helen at Kloster Indersdorf, 1946, with her friend Ibi Winterman" loading="lazy" decoding="async"><figcaption><span class="yr">1946</span><span class="cap">Indersdorf, Germany, with her best friend Ibi Winterman (middle)</span></figcaption></figure>
+      <figure><img src="images/helen-1948.jpg" alt="Helen in Chicago, 1948" loading="lazy" decoding="async"><figcaption><span class="yr">1948</span><span class="cap">Chicago, USA</span></figcaption></figure>
+      <figure><img src="images/helen-1950s.jpg" alt="Helen, studio portrait, 1950s" loading="lazy" decoding="async"><figcaption><span class="yr">1950s</span><span class="cap">Studio portrait</span></figcaption></figure>
+      <figure><img src="images/helen-2000.jpg" alt="Helen with her granddaughter Sam, 2000" loading="lazy" decoding="async"><figcaption><span class="yr">2000</span><span class="cap">With her granddaughter Sam</span></figcaption></figure>
+      <figure><img src="images/helen-2010.jpg" alt="Helen with her granddaughter Sam at her high school graduation, 2010" loading="lazy" decoding="async"><figcaption><span class="yr">2010</span><span class="cap">With Sam, Huntington Beach High School graduation</span></figcaption></figure>
+    </div>
+  </div>
+
+  <div class="pull">
+    <p>&ldquo;We all have stories to tell. You know, all of us have some kind of story to tell.&rdquo;</p>
+    <cite>Helen Land&oacute; Helman &middot; recorded testimony</cite>
   </div>
 
   <p><a href="/case.html">Read the case</a> &nbsp;&middot;&nbsp; <a href="/method.html">See the method</a></p>
@@ -134,8 +150,10 @@
     <figcaption>Zacharias Helman &middot; Bohdan, 1929</figcaption>
   </figure>
 
+  
   <footer class="page">
     <p>Ongoing research. Documents cited on request.</p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
   </footer>
 
 </div>
