@@ -791,7 +791,7 @@ figure.clip figcaption{
 /* ============ transcript ============ */
 .script{
   margin:1.1rem 0 .2rem; padding:1.2rem 1.4rem;
-  background:var(--panel); border-left:2px solid var(--accent-deep); border-radius:2px;
+  background:rgba(194,96,63,.10); border-left:2px solid var(--warm-dim); border-radius:2px;
   max-width:44rem;
 }
 .script p{ margin:0 0 .7rem; max-width:none; font-size:1rem; line-height:1.6; }
@@ -801,3 +801,4 @@ figure.clip figcaption{
   font-family:var(--mono); font-size:.58rem; font-weight:500;
   letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
 }
+[data-theme="light"] .script{ background:rgba(168,65,42,.075); }
