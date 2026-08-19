@@ -204,8 +204,8 @@
   map.fitBounds(bounds,{padding:[40,40]});
   var legend=L.control({position:'bottomright'});
   legend.onAdd=function(){var d=L.DomUtil.create('div','legend');
-    d.innerHTML='<b id="legHdr" style="cursor:pointer;user-select:none">Legend &#9662;</b>'+
-      '<div id="legBody" style="margin-top:3px">'+
+    d.innerHTML='<b id="legHdr" style="cursor:pointer;user-select:none">Legend &#9656;</b>'+
+      '<div id="legBody" style="margin-top:3px;display:none">'+
       '<i style="background:#8e44ad"></i>Top priority<br>'+
       '<i style="background:#2f8b57"></i>Confirmed<br>'+
       '<i style="background:#dd9b2b"></i>Candidate / uncertain<br>'+
@@ -252,7 +252,7 @@
   function stripName(s){return s.replace(/\s*&#9733;/g,'');}
   var idxCtl=L.control({position:'topright'});
   idxCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
-    var html='<b id="idxHdr" style="cursor:pointer;user-select:none">Timeline index &#9662;</b><div id="idxBody" class="idx">';
+    var html='<b id="idxHdr" style="cursor:pointer;user-select:none">Timeline index &#9656;</b><div id="idxBody" class="idx" style="display:none">';
     idxOrder.forEach(function(e){
       if(Array.isArray(e)){html+='<div class="gh">'+e[0]+'</div>';}
       else{var lbl=(typeof e==='number'?dispNum[e]+'. ':'')+stripName(nameById[e]||('#'+e));
@@ -295,7 +295,7 @@
   });
   var pjCtl=L.control({position:'bottomleft'});
   pjCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
-    var html='<b id="pjHdr" style="cursor:pointer;user-select:none">A person\'s path &#9662;</b><div id="pjBody" style="margin-top:3px">';
+    var html='<b id="pjHdr" style="cursor:pointer;user-select:none">A person\'s path &#9656;</b><div id="pjBody" style="margin-top:3px;display:none">';
     Object.keys(journeys).forEach(function(who){
       html+='<label style="display:block;cursor:pointer;white-space:nowrap"><input type="checkbox" data-who="'+who+'" style="vertical-align:-1px;margin-right:5px"><span style="border-bottom:2.5px dotted '+journeys[who][0]+'">'+who+'</span></label>';
     });
