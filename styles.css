@@ -778,3 +778,26 @@ footer.page .place{
   margin:.55rem 0 0; text-align:right; color:var(--accent);
 }
 .hero figcaption{ margin-top:.55rem; }
+
+/* ============ an audio clip sitting in the page ============ */
+figure.clip{ margin:1.6rem 0 1.8rem; }
+figure.clip audio{ width:100%; max-width:34rem; display:block; }
+figure.clip figcaption{
+  margin-top:.6rem; color:var(--muted);
+  font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.13em; text-transform:uppercase;
+}
+
+/* ============ transcript ============ */
+.script{
+  margin:1.1rem 0 .2rem; padding:1.2rem 1.4rem;
+  background:var(--panel); border-left:2px solid var(--accent-deep); border-radius:2px;
+  max-width:44rem;
+}
+.script p{ margin:0 0 .7rem; max-width:none; font-size:1rem; line-height:1.6; }
+.script p:last-child{ margin-bottom:0; }
+.script .sp{
+  display:block; margin-bottom:.15rem;
+  font-family:var(--mono); font-size:.58rem; font-weight:500;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
+}
