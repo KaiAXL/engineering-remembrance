@@ -201,7 +201,10 @@
   markerById.tibi=L.marker(ditch,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#fff;border:3px solid #2a9d8f;width:30px;height:30px;font-size:16px">🐻</div>',iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-15]})}).addTo(map)
     .bindTooltip('Tibi: feigned death and escaped here',{permanent:true,direction:'bottom',className:'dmlabel'})
     .bindPopup('<b>Approximate: where Tibi feigned death and escaped</b><br>On the second night of the death march he feigned death, rolled into a roadside ditch among the bodies, lay in the mud until the column passed, then walked back toward Budapest. He made it to the end of the second day, roughly 55 to 65 km northwest of the city along this route; this point is an approximation, the exact spot is unknown.');
-  map.fitBounds(bounds,{padding:[40,40]});
+  // Budapest-only extent: everything inside the city box, so the Budapest view really is Budapest
+  var bpBounds = bounds.filter(function(p){ return p[0]>47.30 && p[0]<47.66 && p[1]>18.80 && p[1]<19.40; });
+  if(!bpBounds.length) bpBounds = bounds;
+  map.fitBounds(bpBounds,{padding:[40,40]});
   var legend=L.control({position:'bottomright'});
   legend.onAdd=function(){var d=L.DomUtil.create('div','legend');
     d.innerHTML='<b id="legHdr" style="cursor:pointer;user-select:none">Legend &#9656;</b>'+
@@ -234,6 +237,10 @@
       document.querySelectorAll('.leaflet-tooltip.dmlabel,.leaflet-tooltip.crlabel').forEach(function(el){el.style.display=shown?'block':'none';});
       h.innerHTML='Route labels &amp; dates '+(shown?'&#9662;':'&#9656;');};})();
   var allBounds = bounds.concat(journey.map(function(s){return [s[1],s[2]];}));
+  // the default wide view is Europe: the eastern-front points (Stalingrad) would
+  // otherwise pull the fit out to the Caspian and shrink everything else
+  var euBounds = allBounds.filter(function(p){ return p[1] < 30; });
+  if(!euBounds.length) euBounds = allBounds;
   var viewCtl = L.control({position:'topleft'});
   viewCtl.onAdd=function(){
     var d=L.DomUtil.create('div','legend');
@@ -241,8 +248,8 @@
     L.DomEvent.disableClickPropagation(d);
     return d;};
   viewCtl.addTo(map);
-  document.getElementById('vBp').onclick=function(){map.fitBounds(bounds,{padding:[40,40]});};
-  document.getElementById('vAll').onclick=function(){map.fitBounds(allBounds,{padding:[30,30]});};
+  document.getElementById('vBp').onclick=function(){map.fitBounds(bpBounds,{padding:[40,40]});};
+  document.getElementById('vAll').onclick=function(){map.fitBounds(euBounds,{padding:[30,30]});};
   // --- Clickable timeline index (grouped by phase; click flies to the pin) ---
   var nameById={};
   sites.concat(journey).forEach(function(s){nameById[s[0]]=s[4];});

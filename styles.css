@@ -659,3 +659,20 @@ body::before{
   .themetoggle{ padding:.4rem .6rem; font-size:.58rem; letter-spacing:.1em; }
   .brandwrap, .tagline{ padding-right:6.5rem; }
 }
+
+/* ============ life-strip captions: year, then the detail ============ */
+.strip .frames{ align-items:start; }
+.strip figcaption{ text-transform:none; letter-spacing:0; }
+.strip figcaption .yr{
+  display:block;
+  font-family:var(--mono); font-size:.6rem; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
+}
+.strip figcaption .cap{
+  display:block; margin-top:.28rem;
+  font-family:var(--serif); font-size:.8rem; line-height:1.35;
+  color:var(--muted); text-wrap:balance;
+}
+@media (max-width:34rem){
+  .strip figcaption .cap{ font-size:.75rem; }
+}
