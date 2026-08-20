@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260820015229">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -62,13 +62,14 @@
     <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
   <p class="tagline">Recovering families from the records that were meant to erase them.</p>
 <button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
-  <nav>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
     <a href="/"><span class="k">01</span> Home</a>
-    <a href="/start.html"><span class="k">02</span> Start Here</a>
-    <a href="/case.html"><span class="k">03</span> The Case</a>
-    <a href="/records.html"><span class="k">04</span> The Records</a>
-    <a href="/map.html"><span class="k">05</span> The Map</a>
-    <a href="/method.html" aria-current="page"><span class="k">06</span> The Method</a>
+    <a href="/case.html"><span class="k">02</span> The Case</a>
+    <a href="/records.html"><span class="k">03</span> The Records</a>
+    <a href="/map.html"><span class="k">04</span> The Map</a>
+    <a href="/method.html" aria-current="page"><span class="k">05</span> The Method</a>
+    <a href="/databases.html"><span class="k">06</span> Databases</a>
     <a href="/brief.html"><span class="k">07</span> Research Brief</a>
     <a href="/about.html"><span class="k">08</span> About</a>
   </nav>
@@ -84,53 +85,98 @@
 <div class="wrap">
 
   <p class="eyebrow">The Method</p>
-  <h1>Four steps, and one standard of proof</h1>
-  <p class="lede">Work of this kind has traditionally required a trained specialist proceeding record by record. This is an attempt to write it down as a protocol anyone can follow.</p>
+  <h1>How to do this yourself</h1>
+  <p class="lede">Seven steps, in order. No training, no subscription, and no trip to an archive. Everything here can be done from a kitchen table, for free.</p>
 
   <div class="step">
     <span class="no">01</span>
     <div>
-      <h4>Normalize the name</h4>
-      <p>Treat spelling drift across languages and scripts as expected noise rather than contradiction. Helman, Hellmann, Hilman, and in Cyrillic Gelman. Lando, Landa, Landau. This is the point where an ordinary name search fails, and where most people stop.</p>
+      <h4>Write down every version of the name before you search</h4>
+      <p>Before searching anything. The surname as the family says it, as a German clerk would spell it, as a Hungarian registrar would, and as it comes back out of Cyrillic. Helman, Hellmann, Hilman, and in Russian and Ukrainian <strong>Gelman</strong>, because those alphabets have no H. Land&oacute;, Landa, Landau.</p>
+      <p>Keep the list beside you. Every database below is a name index, and a name index only returns what you type. This is where an ordinary search fails, and where most people stop.</p>
+          <p class="todo">Do this: write the surname five ways on paper. As your family says it. As a German clerk would. As a Hungarian registrar would. Coming back out of Cyrillic, where H becomes G. And the mother&rsquo;s maiden name.</p>
     </div>
   </div>
 
   <div class="step alt">
     <span class="no">02</span>
     <div>
-      <h4>Reconstruct the logistics</h4>
-      <p>Locate each person in time and place through the administrative trail: arrest, ghetto, transport, camp registration, transfer, liberation. Someone who cannot be found by name can still be found by where the paperwork had to put them.</p>
+      <h4>Search the mother&rsquo;s maiden name too</h4>
+      <p>The step almost everyone skips, and the one that finds people. Across much of Subcarpathia and Galicia, marriages that were religious only were not recognised by the state, so children were entered in the civil register under their <em>mother&rsquo;s</em> surname, with the father acknowledging paternity in the margin.</p>
+      <p>My grandmother&rsquo;s own birth record carries no surname for her at all. She is filed under Land&oacute;. Anyone searching Helman would never have found her.</p>
+          <p class="todo">Do this: run every search twice, once under the father&rsquo;s surname and once under the mother&rsquo;s.</p>
     </div>
   </div>
 
   <div class="step">
     <span class="no">03</span>
     <div>
-      <h4>Correlate with AI</h4>
-      <p>Link one individual across archives, languages and scripts at a scale that is not feasible by hand. This is what makes the search possible from a desk, and it is the only step here that is new.</p>
+      <h4>Work out where the paperwork had to put them</h4>
+      <p>Locate the person in time and place through the administrative trail rather than by name: arrest, ghetto, transport, camp registration, transfer, subcamp, liberation, displaced-persons camp, emigration. Each stage had to generate a document, and each document names a date and a place.</p>
+      <p>Someone who cannot be found by name can still be found by where the system was obliged to record them.</p>
+          <p class="todo">Do this: write out the stages in order for the person you want, and search for the <em>stage</em> when the name fails. A transport list is easier to find than a person.</p>
     </div>
   </div>
 
   <div class="step alt">
     <span class="no">04</span>
     <div>
-      <h4>Verify and weigh</h4>
-      <p>Check every linkage against the primary document, and weigh evidence by source type and independence. AI accelerates the search. Human judgment decides.</p>
+      <h4>Read the sequence, not just the entry</h4>
+      <p>A prisoner number is not only a label. It is a position in a list, and lists have neighbours. Transports were registered in order of arrival, and rosters were often compiled alphabetically, so people from one place and one family fall together on the page.</p>
+      <p>This is how the second and third men in this case were found: not by searching for them, but by reading the lines above and below someone already known.</p>
+          <p class="todo">Do this: when you find a record with a number on it, go and read the numbers either side of it.</p>
     </div>
   </div>
 
-  <h2>The standard of proof</h2>
+  <div class="step">
+    <span class="no">05</span>
+    <div>
+      <h4>Let AI do the cross-checking</h4>
+      <p>Link one individual across a dozen collections, languages and scripts at a scale that is not feasible by hand: camp records, civil registers, censuses, victim databases, cemetery transcriptions, directories, testimony. This is the step that makes the search possible from a desk, and the only step here that is new.</p>
+          <p class="todo">Do this: paste what you have found into an AI assistant and ask it to find the contradictions and the gaps. Then go and check what it tells you.</p>
+    </div>
+  </div>
+
+  <div class="step alt">
+    <span class="no">06</span>
+    <div>
+      <h4>Check every match against the original document</h4>
+      <p>Never against an index entry. Indexes are transcriptions and transcriptions carry errors, and an error copied forward becomes a fact nobody questions. Open the register image, read the fields, and confirm the parents.</p>
+      <p>AI accelerates the search. It does not decide anything.</p>
+          <p class="todo">Do this: never stop at the index. Open the register image and read the parents&rsquo; names yourself.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="no">07</span>
+    <div>
+      <h4>If someone left no record, search the people around them</h4>
+      <p>Trace the people around them instead. Cousins, neighbours, anyone from the same village on the same transport. Their records will place the person you want in a time and a place, and sometimes name them outright.</p>
+      <p>Nearly everything recovered in this case came from following someone other than the person being looked for. If your grandmother is invisible, find her neighbours.</p>
+          <p class="todo">Do this: search the village, not the person. Then read every name it returns.</p>
+    </div>
+  </div>
+
+  <h2>Two rules that matter more than any database</h2>
+
   <div class="panel">
-    <span class="lbl">Convergence</span>
-    <p>An identification is admitted only where independent record types corroborate one another without contradiction: camp forms, civil registers, census returns, victim databases, testimony. Every linkage is verified against the primary document. Where the evidence supports a probable conclusion rather than a proven one, it is stated as probable.</p>
+    <span class="lbl">Spelling drift is not contradiction</span>
+    <p>A name written five ways across five countries is one person, not five problems. Treat variation as expected noise. Reject a candidate only when a parent, a place or a date genuinely diverges, never because the spelling moved.</p>
+  </div>
+
+  <div class="panel">
+    <span class="lbl">One document is a lead, three are a finding</span>
+    <p>Hold a conclusion only where independent kinds of record agree without contradicting one another, and verify every linkage against the primary document. Where the evidence supports a probable conclusion rather than a proven one, say probable. Disclose conflicts rather than resolving them by preference.</p>
   </div>
 
   <h2>Why women are the hardest to find</h2>
-  <p>In this region, marriages that were religious only were not recognized by the state, so children were entered in the civil register under their mother&rsquo;s maiden name, with the father acknowledging paternity in the remarks. My grandmother&rsquo;s own birth record carries no surname for her at all. Her mother is the only parent in the column. Her father appears once, in the margin, swearing the child is his, and signing his name.</p>
-  <p>Most people searching for a grandmother are searching the one name they were told, and she is filed under another. It is the most common wall, and it is the reason step one comes first.</p>
+  <p>The maiden-name rule in step two is not a quirk of one family. It was the ordinary practice of a whole region, and it means that most people searching for a grandmother are searching the one name they were told while she sits filed under another. It is the most common wall in this work, and it is the reason step one comes first.</p>
 
-  <h3>Sources cross-referenced</h3>
-  <p class="sources">Arolsen Archives &middot; Yad Vashem &middot; USHMM &middot; USC Shoah Foundation Visual History Archive &middot; JewishGen Subcarpathia and M&aacute;ramaros vital records &middot; the 1921 Czechoslovak census &middot; Buchenwald and Terez&iacute;n rosters and card files &middot; displaced-persons and Red Cross tracing records &middot; cemetery transcriptions &middot; community memorial books.</p>
+  <h2>Where to search</h2>
+  <p>Every collection used in this case, with what each one holds and what it costs, is listed on the <a href="/databases.html">databases page</a>.</p>
+
+  <h3>If you get stuck</h3>
+  <p class="sources">Write to me. I read everything, and if I can point you at the right collection I will. <a href="mailto:sgrajews@stanford.edu">sgrajews@stanford.edu</a></p>
 
   <figure class="sig">
     <img src="images/signature-zacharias.png" alt="The signature of Zacharias Helman">
@@ -138,7 +184,7 @@
   </figure>
 
   <footer class="page">
-    <p>The method is being documented as a public resource. If you want to try it on your own family, write to me.</p>
+    <p>This page is free to print, copy and hand to anyone.</p>
     <p class="place">Kailua, Hawai&lsquo;i</p>
   </footer>
 
@@ -155,6 +201,6 @@
   </audio>
 </dialog>
 
-<script src="theme.js"></script>
+<script src="theme.js?v=20260820015229"></script>
 </body>
 </html>

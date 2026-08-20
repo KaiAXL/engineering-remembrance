@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260820015229">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -62,13 +62,14 @@
     <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
   <p class="tagline">Recovering families from the records that were meant to erase them.</p>
 <button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
-  <nav>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
     <a href="/"><span class="k">01</span> Home</a>
-    <a href="/start.html"><span class="k">02</span> Start Here</a>
-    <a href="/case.html"><span class="k">03</span> The Case</a>
-    <a href="/records.html" aria-current="page"><span class="k">04</span> The Records</a>
-    <a href="/map.html"><span class="k">05</span> The Map</a>
-    <a href="/method.html"><span class="k">06</span> The Method</a>
+    <a href="/case.html"><span class="k">02</span> The Case</a>
+    <a href="/records.html" aria-current="page"><span class="k">03</span> The Records</a>
+    <a href="/map.html"><span class="k">04</span> The Map</a>
+    <a href="/method.html"><span class="k">05</span> The Method</a>
+    <a href="/databases.html"><span class="k">06</span> Databases</a>
     <a href="/brief.html"><span class="k">07</span> Research Brief</a>
     <a href="/about.html"><span class="k">08</span> About</a>
   </nav>
@@ -132,8 +133,68 @@
     </figcaption>
   </figure>
 
-  <h3>More to come</h3>
-  <p class="sources">The registration forms, the Terez&iacute;n cards, the Budapest survivor registrations, the deportation lists under both surnames, and the cemetery stones will be added here as each is prepared with its citation.</p>
+  <h2>Two generations of the same signature</h2>
+
+  <figure class="doc">
+    <img src="images/birth-david-1902.jpg" alt="Civil birth register, Tiszabogdany, 1902, entry 44, for David Helman" loading="lazy" decoding="async">
+    <figcaption>
+      Civil birth register, Tiszabogd&aacute;ny, page 306, entry 44. David Helman, born 20 April 1902 at three in the morning. Zacharias&rsquo;s brother.
+      <span class="cite">Fund 1606, Opus 9, Delo 155 &middot; scan purchased from Sub-Carpathia Genealogy</span>
+    </figcaption>
+  </figure>
+
+  <div class="fields">
+    <div><span class="lbl">Declarant</span><span class="val">Helman Iczik, <em>fuvaros</em>, carter, resident of Tiszabogd&aacute;ny, born in <strong>Delatyn</strong>, age 51</span></div>
+    <div><span class="lbl">Mother</span><span class="val">Dikter Faiga, <em>napsz&aacute;mos</em>, day labourer, born in <strong>Delatyn</strong>, age 37</span></div>
+    <div><span class="lbl">Remarks</span><span class="val">&ldquo;Legitimate&rdquo; struck out and &ldquo;natural&rdquo; entered. Helman Iczik declares he has direct knowledge of the child, that it is his natural child, and acknowledges it as his own.</span></div>
+    <div><span class="lbl">Closing line</span><span class="val">Read aloud to the declarant, <strong>who does not understand Hungarian</strong>, explained to him in a language he does understand, approved, and signed.</span></div>
+    <div><span class="lbl">Signed</span><span class="val">Helman Itzik, in his own hand</span></div>
+  </div>
+
+  <div class="panel">
+    <span class="lbl">What this record shows</span>
+    <p>Both parents are recorded as born in Delatyn, in Galicia, which is where the paternal family comes from and why every search for them has to reach across a border. Iczik is a carter, the trade that runs down to his sons and grandsons and gives this project its wheel.</p>
+    <p>And the same two mechanisms that hide the family are already working in 1902. The marriage was religious only, so the state would not recognise it and the father had to acknowledge the child in the margin. The registrar had to have the entry translated because the man signing it could not read the language his own children were being recorded in.</p>
+  </div>
+
+  <figure class="doc">
+    <img src="images/birth-hinda-1927.jpg" alt="Civil birth register, Bohdan, 1927, entry 48, for Hermina Helman" loading="lazy" decoding="async">
+    <figcaption>
+      Civil birth register, Bohdan, page 6, entry 48. Hermina, called Hinda, born 9 March 1927. The eldest of the six.
+      <span class="cite">Fund 1606, Opus 9 &middot; scan purchased from Sub-Carpathia Genealogy</span>
+    </figcaption>
+  </figure>
+
+  <div class="fields">
+    <div><span class="lbl">Mother</span><span class="val">Land&oacute;-ov&aacute; Ro&#382;a, at home, Bogdan, age 24, entered under her <strong>maiden</strong> name</span></div>
+    <div><span class="lbl">Father</span><span class="val">In the remarks only: Zigmund Helman, resident of Bogdan, 26, <em>povozn&iacute;k</em>, carter, with right of domicile in <strong>Delatyn, Poland</strong>, acknowledging the child as his own</span></div>
+    <div><span class="lbl">Signed</span><span class="val">Zigmund Helman, in his own hand</span></div>
+  </div>
+
+  <div class="panel">
+    <span class="lbl">Why the family could not be found</span>
+    <p>Zigmund and Zacharias are the same man. He is not in the parents column of his own daughter&rsquo;s record. He is in the margin, swearing she is his, and then signing. His children are filed under Land&oacute;.</p>
+    <p>This is the pattern, not the exception. It is why searching the surname you were given returns nothing, and why <a href="/method.html">step two of the method</a> is to search the mother&rsquo;s maiden name as well.</p>
+  </div>
+
+  <h2>The household, 1921</h2>
+
+  <figure class="doc">
+    <img src="images/census-1921-household.jpg" alt="1921 Czechoslovak census, Bohdan, house 263, the Helman household" loading="lazy" decoding="async">
+    <figcaption>
+      1921 Czechoslovak census, Bohdan, house 263. Iczik, born 1849 in Delatyn, and Feige, born 1867 in Delatyn, with their sons Misel 1886, Zigmond 1901 and David 1902, Misel&rsquo;s wife Chaje, and six grandchildren.
+      <span class="cite">Hungaricana, 1921 Karp&aacute;talja census &middot; indexed by JewishGen</span>
+    </figcaption>
+  </figure>
+
+  <div class="panel">
+    <span class="lbl">The line that made them family</span>
+    <p>Misel is Miksa, and he is Lajos and Michal&rsquo;s father. One census sheet puts him in the same house as Zigmond, who is Zacharias. That is the document that turns two unknown men on a camp roster into a nephew and a nephew, and their uncle.</p>
+  </div>
+
+
+  <h3>Still to be added</h3>
+  <p class="sources">The Buchenwald registration forms, the Terez&iacute;n cards, the Budapest survivor registrations in their own handwriting, the deportation lists under both surnames, and the cemetery stones are prepared and will be added here with their citations.</p>
 
   <figure class="sig">
     <img src="images/signature-zacharias.png" alt="The signature of Zacharias Helman">
@@ -158,6 +219,6 @@
   </audio>
 </dialog>
 
-<script src="theme.js"></script>
+<script src="theme.js?v=20260820015229"></script>
 </body>
 </html>

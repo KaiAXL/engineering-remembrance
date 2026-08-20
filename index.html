@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260820015229">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -62,13 +62,14 @@
     <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
   <p class="tagline">Recovering families from the records that were meant to erase them.</p>
 <button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
-  <nav>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
     <a href="/" aria-current="page"><span class="k">01</span> Home</a>
-    <a href="/start.html"><span class="k">02</span> Start Here</a>
-    <a href="/case.html"><span class="k">03</span> The Case</a>
-    <a href="/records.html"><span class="k">04</span> The Records</a>
-    <a href="/map.html"><span class="k">05</span> The Map</a>
-    <a href="/method.html"><span class="k">06</span> The Method</a>
+    <a href="/case.html"><span class="k">02</span> The Case</a>
+    <a href="/records.html"><span class="k">03</span> The Records</a>
+    <a href="/map.html"><span class="k">04</span> The Map</a>
+    <a href="/method.html"><span class="k">05</span> The Method</a>
+    <a href="/databases.html"><span class="k">06</span> Databases</a>
     <a href="/brief.html"><span class="k">07</span> Research Brief</a>
     <a href="/about.html"><span class="k">08</span> About</a>
   </nav>
@@ -86,9 +87,12 @@
 
   <p class="eyebrow">Tiszabogd&aacute;ny &middot; Subcarpathia</p>
 
-  <h1>The paperwork built to erase them is what returns their names.</h1>
+  <h1>Engineering Remembrance</h1>
 
-  <p class="lede">A repeatable method for recovering Holocaust family histories: AI used to trace one person across a dozen fragmented, multilingual archives, and every link then checked by hand against the original document. This is the family it was built on.</p>
+  <p class="claim">One surname. One shtetl. One trade. <span>Together again, over 80 years later.</span></p>
+
+
+  <p class="lede">A repeatable method for recovering family histories from online archives through AI-assisted record linkage. Developed on a Holocaust case, and not limited to one.</p>
 
   <figure class="hero">
     <div class="faces">
@@ -112,13 +116,25 @@
     </figcaption>
   </figure>
 
-  <p class="opening">Three photographs, from three separate cards but one family, are a rare survival. Auschwitz had stopped photographing prisoners the year before, so a face exists at all only for a man pulled out for labour and sent on to a camp that still kept an identification service. These were the first images the family had ever seen of anyone on that side.</p>
+  <nav class="routes" aria-label="Where to go next">
+    <a href="/case.html">
+      <span class="rk">The Case</span>
+      <span class="rd">One prisoner card became three hundred records, two lost cousins and a branch of the family nobody knew existed. Shown in the order it was worked.</span>
+    </a>
+    <a href="/method.html">
+      <span class="rk">The Method</span>
+      <span class="rd">Seven steps you can follow on your own family, each one with something concrete to go and do. No training and no subscription required.</span>
+    </a>
+    <a href="/databases.html">
+      <span class="rk">Databases</span>
+      <span class="rd">Every collection used here, with links, what each one holds, what it costs, and the one trick that makes it work. Most are free.</span>
+    </a>
+  </nav>
 
   <hr class="stitch">
 
   <h2>Where it started</h2>
-  <p>The family had one prisoner card from 2019, and assumed that was the end of it. It sat untouched for seven years. The search began in May 2026, and by August it was a dossier of more than three hundred records: a village on the Tisza, a roundup, a ghetto nobody in the family had ever named, a transport, two camps, a subcamp, a death, two survivals, and a branch of the family in Israel that had been lost for eighty years.</p>
-  <p>None of it required travel. All of it required knowing where the paperwork had to put a person, and being willing to read a list nobody had a reason to finish.</p>
+  <p>The family had one prisoner card from 2019 and assumed that was the end of it. It sat untouched for seven years. The search began in May 2026, and by August it was a dossier of more than three hundred records. None of it required travel. <a href="/case.html">Read how it was found.</a></p>
 
   <div class="panel">
     <span class="lbl">The standard</span>
@@ -143,7 +159,12 @@
     <cite>Helen Land&oacute; Helman &middot; recorded testimony</cite>
   </div>
 
-  <p><a href="/case.html">Read the case</a> &nbsp;&middot;&nbsp; <a href="/method.html">See the method</a></p>
+  <div class="panel contact">
+    <span class="lbl">If you are trying to find your own family</span>
+    <p>Write to me. I read everything, and if I can point you at the right collection I will. Start with <a href="/method.html">the method</a> and <a href="/databases.html">the databases</a>.</p>
+    <p><a href="mailto:sgrajews@stanford.edu">sgrajews@stanford.edu</a></p>
+    <p class="speaking">Speaking at the World Federation of Jewish Holocaust Survivors and Descendants, 36th Annual Conference, Philadelphia, 23 to 26 October 2026.</p>
+  </div>
 
   <figure class="sig">
     <img src="images/signature-zacharias.png" alt="The signature of Zacharias Helman">
@@ -169,6 +190,6 @@
   </audio>
 </dialog>
 
-<script src="theme.js"></script>
+<script src="theme.js?v=20260820015229"></script>
 </body>
 </html>

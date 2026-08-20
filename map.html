@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260820015229">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -62,13 +62,14 @@
     <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
   <p class="tagline">Recovering families from the records that were meant to erase them.</p>
 <button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
-  <nav>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
     <a href="/"><span class="k">01</span> Home</a>
-    <a href="/start.html"><span class="k">02</span> Start Here</a>
-    <a href="/case.html"><span class="k">03</span> The Case</a>
-    <a href="/records.html"><span class="k">04</span> The Records</a>
-    <a href="/map.html" aria-current="page"><span class="k">05</span> The Map</a>
-    <a href="/method.html"><span class="k">06</span> The Method</a>
+    <a href="/case.html"><span class="k">02</span> The Case</a>
+    <a href="/records.html"><span class="k">03</span> The Records</a>
+    <a href="/map.html" aria-current="page"><span class="k">04</span> The Map</a>
+    <a href="/method.html"><span class="k">05</span> The Method</a>
+    <a href="/databases.html"><span class="k">06</span> Databases</a>
     <a href="/brief.html"><span class="k">07</span> Research Brief</a>
     <a href="/about.html"><span class="k">08</span> About</a>
   </nav>
@@ -89,7 +90,7 @@
 
   <p>Budapest is the centre of this map, because Helen was sent there in late 1943 and it is the reason she lived: the household she was left with, the yellow-star house, the route of the march. But it reaches well past the city in both directions: out to the village on the Tisza, to the ghetto and the transport, to the camps and the subcamps, to the roads Tibi and Eva were marched along, and then through the displaced-persons camps to the ship in 1947 and the cities that came after.</p>
 
-  <p>Two journeys are on this map that did not meet until long afterwards. Helen&rsquo;s, and that of Dov &ldquo;Tibor&rdquo; Katz of Satu Mare, who survived the death march west out of Budapest and whose sister-in-law Margit was shot on that road while her small daughter Eva stood beside her. Eva was deported on to Bergen-Belsen and survived. Helen and Tibor married in Los Angeles in 1966, more than twenty years after the war, each of them the survivor of a family they had lost separately.</p>
+  <p>The map holds two Holocaust journeys, Helen&rsquo;s and her husband&rsquo;s. Tibor Katz was from Szatm&aacute;r, in Transylvania, and survived a death march out of Budapest under the Arrow Cross. He and Helen lost their families separately and did not meet until long afterwards, in Los Angeles, where they married in the 1960s. His family&rsquo;s route is on the map alongside hers.</p>
 
   <p class="sources">Everything else on this site concerns Helen&rsquo;s own family: the Helmans, the Land&oacute;s and the Sperbers.</p>
 
@@ -126,6 +127,6 @@
   </audio>
 </dialog>
 
-<script src="theme.js"></script>
+<script src="theme.js?v=20260820015229"></script>
 </body>
 </html>

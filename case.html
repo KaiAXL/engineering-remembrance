@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260820015229">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -62,13 +62,14 @@
     <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
   <p class="tagline">Recovering families from the records that were meant to erase them.</p>
 <button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
-  <nav>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
     <a href="/"><span class="k">01</span> Home</a>
-    <a href="/start.html"><span class="k">02</span> Start Here</a>
-    <a href="/case.html" aria-current="page"><span class="k">03</span> The Case</a>
-    <a href="/records.html"><span class="k">04</span> The Records</a>
-    <a href="/map.html"><span class="k">05</span> The Map</a>
-    <a href="/method.html"><span class="k">06</span> The Method</a>
+    <a href="/case.html" aria-current="page"><span class="k">02</span> The Case</a>
+    <a href="/records.html"><span class="k">03</span> The Records</a>
+    <a href="/map.html"><span class="k">04</span> The Map</a>
+    <a href="/method.html"><span class="k">05</span> The Method</a>
+    <a href="/databases.html"><span class="k">06</span> Databases</a>
     <a href="/brief.html"><span class="k">07</span> Research Brief</a>
     <a href="/about.html"><span class="k">08</span> About</a>
   </nav>
@@ -84,58 +85,138 @@
 <div class="wrap">
 
   <p class="eyebrow">The Case</p>
-  <h1>The Helmans of Tiszabogd&aacute;ny</h1>
-  <p class="lede">One prisoner card, held since 2019. The search began in May 2026 and has since produced more than three hundred records. A family of carters from a village on the Tisza, and the two cousins who came back.</p>
+  <h1>I always thought he was alone.</h1>
+  <p class="lede">He wasn&rsquo;t. Two lines below him on the transport roster was his nephew Michal. Two pages earlier was his nephew Lajos. They were arrested in the same village, carried in the same trade, sent to the same block, and photographed one behind the other on the same morning.</p>
 
-  <p>Helen was born in Tiszabogd&aacute;ny, in Subcarpathian Ruthenia, in 1929, to Zacharias Helman and Roza Land&oacute;. She was the sole survivor of her immediate family. Her mother, her father and five of her brothers and sisters were murdered. For most of her descendants&rsquo; lives the family had nothing of them: no photograph, no date, no place beyond the name of a village.</p>
-
-  <h2>What the records gave back</h2>
-
-  <div class="tl">
+  <div class="step">
+    <span class="no">01</span>
     <div>
-      <span class="when">16 April 1944</span>
-      <p>The day after Passover, the entire Jewish population of the Rakhiv district is rounded up and held about eight days in the village school. The family had always believed they went to the ghetto at Sighet. The town&rsquo;s own survivors&rsquo; book and the district records show it was M&aacute;t&eacute;szalka, two hundred kilometres west.</p>
-    </div>
-    <div>
-      <span class="when">22 May 1944</span>
-      <p>The M&aacute;t&eacute;szalka ghetto is emptied in exactly three trains. The middle one, logged passing Kassa with 3,298 people aboard, is the only one that fits the family&rsquo;s registration dates.</p>
-    </div>
-    <div>
-      <span class="when">24 to 26 May 1944</span>
-      <p>Auschwitz-Birkenau. Roza and five of the children are sent to the side that meant death. Zacharias and his two nephews are selected for labour. Seventeen people born in Tiszabogd&aacute;ny are documented admitted across those three days.</p>
-    </div>
-    <div>
-      <span class="when">2 June 1944</span>
-      <p>The three men are shipped to Buchenwald and housed together in Z-4, in the Little Camp. At intake they are photographed one behind the other: boards 322, 323 and 324.</p>
-    </div>
-    <div>
-      <span class="when">Summer 1944</span>
-      <p>The two nephews are assigned to the synthetic-fuel plant at Rehmsdorf, code-named Wille. On 23 July, Zacharias is sent instead to Magdeburg-Rothensee.</p>
-    </div>
-    <div>
-      <span class="when">October 1944</span>
-      <p>Worked past use, Zacharias is ordered back to Auschwitz on the 6th and moved on the 8th. He is killed there about the 10th, on the same ground where his wife and children had waited five months before.</p>
-    </div>
-    <div>
-      <span class="when">April to May 1945</span>
-      <p>Rehmsdorf is evacuated. The train is strafed from the air, the survivors are marched the rest of the way, and perhaps one in ten reaches Terez&iacute;n. Both nephews are among them, and both are liberated there.</p>
-    </div>
-    <div>
-      <span class="when">June 1945</span>
-      <p>Budapest. Two boys from the village find Helen and tell her what had happened to her family. Their own registration forms, filled out in their own hands that summer, place them in the city in the month she always said they were.</p>
+      <h4>One card, and seven years of nothing</h4>
+      <p>In 2019 the family obtained a single Buchenwald prisoner card for Zacharias Helman, Helen&rsquo;s father, and assumed that was the end of what could be known. It sat untouched until May 2026.</p>
+      <p class="cite">Arolsen Archives &middot; Buchenwald H&auml;ftlings-Personal-Karte 57101</p>
     </div>
   </div>
 
-  <h2>What it found that nobody was looking for</h2>
-  <p>Two of the three men in those photographs were cousins whose names the family had never heard. They surfaced on a camp roster during a search for someone else, and they turned out to be the ones who carried the family&rsquo;s story out.</p>
-  <p>Following them forward led to their descendants in Israel: a branch that had not known Helen or her father existed, and who had never held their own parents&rsquo; birth records. Those records were released online only last year.</p>
+  <div class="step alt">
+    <span class="no">02</span>
+    <div>
+      <h4>Two Helmans, two lines apart</h4>
+      <p>The card carried a prisoner number, and prisoner numbers sit inside sequences. Pulling the intake roster for that transport put Zacharias on page 8, at 57101. Two lines below him, at 57103, was a second Helman. Nobody in the family had ever heard of Michal.</p>
+      <p>Both are coded <strong>Z4</strong>, the block designation, in the same hand on the same page. Between them at 57102 sits Gr&uuml;nfeld, Herman, a stranger.</p>
+      <p class="cite">Arolsen Archives &middot; nominal roll of the 1,000 Hungarian-Jewish arrivals of 2 June 1944, page 8, scan 0002077</p>
+    </div>
+  </div>
+
+  <figure class="doc">
+    <img src="images/roster-p8-zacharias-michal.jpg" alt="Buchenwald intake roster page 8, with Helman Zacharias 57101 and Helman Michal 57103 highlighted" loading="lazy" decoding="async">
+    <figcaption>
+      The moment the case opened. Two Helmans on one page, two lines apart, both in Z4.
+      <span class="cite">Arolsen Archives &middot; scan 0002077</span>
+    </figcaption>
+  </figure>
+
+  <div class="step">
+    <span class="no">03</span>
+    <div>
+      <h4>Then a third, on an earlier page</h4>
+      <p>Reading backwards through the same roll produced Helman, Lajos at 56906, two pages earlier. A lower number means an earlier arrival, and his own card confirms it. He was arrested on 10 April 1944, five weeks before the other two.</p>
+      <p>Three men of one surname on one transport, from a village of sixty-eight Jewish households.</p>
+      <p class="cite">Arolsen Archives &middot; same roll, page 6, scan 0002075; prisoner card 56906</p>
+    </div>
+  </div>
+
+  <figure class="doc">
+    <img src="images/roster-p6-lajos.jpg" alt="Buchenwald intake roster page 6, with Helman Lajos 56906 highlighted" loading="lazy" decoding="async">
+    <figcaption>
+      Helman, Lajos, 56906, two pages earlier in the same roll.
+      <span class="cite">Arolsen Archives &middot; scan 0002075</span>
+    </figcaption>
+  </figure>
+
+  <div class="step alt">
+    <span class="no">04</span>
+    <div>
+      <h4>Who they were to each other</h4>
+      <p>The registration forms name the parents. Lajos and Michal are both sons of Miksa Helman, and the 1921 Czechoslovak census places Miksa in the household of Iczik Helman, Zacharias&rsquo;s father. Two brothers and their uncle. All three born in Tiszabogd&aacute;ny, all three arrested there, all three recorded as <em>Fuhrmann</em>, carters, the same trade.</p>
+      <p>At intake on 2 June they were photographed one behind the other, boards 322, 323 and 324, because the roll was alphabetical and their names fell together.</p>
+      <p class="cite">Buchenwald registration forms 56906, 57101, 57103 &middot; 1921 Czechoslovak census, Bohdan &middot; alphabetical roll, entries 322 to 324</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="no">05</span>
+    <div>
+      <h4>Following them forward, and finding they lived</h4>
+      <p>The two nephews were sent to the synthetic-fuel plant at Rehmsdorf, the Kommando code-named Wille. When it was evacuated in April 1945 the train was strafed from the air and the survivors were marched the rest of the way. Both reached Terez&iacute;n. Both were liberated there.</p>
+      <p>Zacharias went the other way. Transferred to Magdeburg-Rothensee on 23 July 1944, worked past use, ordered back to Auschwitz that October, and killed there about the 10th.</p>
+      <p class="cite">Terez&iacute;n Memorial prisoner cards &middot; Rehmsdorf personnel cards &middot; prisoner card 57101, Magdeburg transfer and October return</p>
+    </div>
+  </div>
+
+  <div class="step alt">
+    <span class="no">06</span>
+    <div>
+      <h4>They were the boys from Helen&rsquo;s story</h4>
+      <p>In her recorded testimony Helen says that after the war, in Budapest, she found two people from her village, and that one of them was a cousin. They told her what had happened to her mother, her father and her brothers and sisters. She never gave their names.</p>
+      <p>Their own Budapest registration forms, filled out in their own hands, place them in the city in June 1945. Lajos registered on 8 June. Michal wrote his own name on his, <em>Helm&aacute;n Mih&aacute;ly</em>.</p>
+      <p>The records named the two people she had described and could not name.</p>
+      <p class="cite">Helen Land&oacute; Helman, recorded testimony &middot; Budapest survivor registration forms (T&ouml;rzslap), 1945</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="no">07</span>
+    <div>
+      <h4>Pages of Testimony, and a family that had been filing them</h4>
+      <p>Searching the nephews&rsquo; parents at Yad Vashem returned Pages of Testimony for Miksa Helman and his wife Ad&eacute;l n&eacute;e Petranker, and for two of their sons. The submitters were their own surviving children, filing from Israel in the 1990s.</p>
+      <p>Which meant the family had not only survived. Some of them had been alive, and documenting their dead, for fifty years.</p>
+      <p class="cite">Yad Vashem Central Database, Pages of Testimony, items 225463, 225464, 225466, 1191850, 1191854</p>
+    </div>
+  </div>
+
+  <div class="step alt">
+    <span class="no">08</span>
+    <div>
+      <h4>A branch of the family, found</h4>
+      <p>Following the submitters forward led to living descendants, from a branch that had settled on a kibbutz before the war. They had built a family tree of their own. Zacharias was not on it, and neither was Helen. They had not known that side of the family existed.</p>
+      <p>Each family had been holding half of the same tree for eighty years.</p>
+    </div>
+  </div>
+
+  <hr class="stitch">
+
+  <h2>Conflicting evidence</h2>
+  <p>Four conflicts sit inside this case. They are recorded here rather than resolved silently.</p>
+
+  <div class="fields">
+    <div>
+      <span class="lbl">The ghetto</span>
+      <span class="val">The family believed the deportation went through Sighet. The town&rsquo;s own survivors&rsquo; book and the Rakhiv district records both give M&aacute;t&eacute;szalka, two hundred kilometres west. The town-level sources are preferred over family memory, and the registration dates at Auschwitz fit only the M&aacute;t&eacute;szalka transport schedule.</span>
+    </div>
+    <div>
+      <span class="lbl">The arrest dates</span>
+      <span class="val">The district roundup is documented as 16 April 1944, and Lajos&rsquo;s card fits it. But five men&rsquo;s cards, Zacharias and Michal among them, read 15 May 1944, and all record the arrest as having taken place in Tiszabogd&aacute;ny. This is <strong>unresolved.</strong> It is either a clerical error repeated across five cards, or a second and later roundup not captured in the community record. The identification does not rest on it, because it rests on the arrival dates.</span>
+    </div>
+    <div>
+      <span class="lbl">Zacharias&rsquo;s birth date</span>
+      <span class="val">Four dates are on record: 11 April 1901 in the civil birth register, 4 November 1901 self-reported at Buchenwald, 4 October 1901 on the Yad Vashem and World Jewish Congress cards, and 4 September 1901 on the Hungarian registry card. Genuinely unresolved. The year is consistent across all four.</span>
+    </div>
+    <div>
+      <span class="lbl">Zacharias&rsquo;s death date</span>
+      <span class="val">Three dates are recorded: 8, 10 and 17 October 1944. His card shows the order back to Auschwitz on 6 October and the transfer on the 8th. The death is stated here as about 10 October rather than as a fixed date.</span>
+    </div>
+  </div>
+
+  <h2>What was searched and not found</h2>
+  <p>Negative results are part of the case. The Helman name does not appear in the Bohdan entry of the Czechoslovak business directory in any of its 1925, 1937 or 1938 editions, which is consistent with a poor carter&rsquo;s family never being registered as a firm. Miksa Helman appears nowhere in the 1,000-name roll under any surname, birthplace or occupation, which is what establishes that he never reached Buchenwald and stayed at Auschwitz. No family passport photograph exists anywhere in the digitised DAZO collection, because the family never emigrated west in the 1920s and so never applied for one.</p>
 
   <div class="panel">
-    <span class="lbl">What this case is really about</span>
-    <p>The records did not replace my grandmother&rsquo;s memory. They tested it. The ghetto she could not name, the transport she never knew the date of, the trade she remembered her father working, the cousins she said found her in Budapest: every one of them is now on a document created by the people trying to erase her. She was right about all of it, and she never saw a single one of these papers.</p>
+    <span class="lbl">Standard applied</span>
+    <p>An identification is admitted only where independent record types corroborate one another without contradiction, and every linkage is verified against the primary document rather than an index entry. Where the evidence supports a probable conclusion rather than a proven one, it is stated as probable. Conflicts are disclosed, not reconciled by preference.</p>
   </div>
 
-  <p>A further identification, of a photograph taken in the birch grove at Birkenau on 26 May 1944, is in preparation for submission to Yad Vashem. It is put forward as probable and warranting formal review, not as proven.</p>
+  <h3>Repositories</h3>
+  <p class="sources">Arolsen Archives &middot; Yad Vashem Central Database of Shoah Victims&rsquo; Names &middot; Terez&iacute;n Memorial &middot; USHMM &middot; JewishGen Subcarpathia and M&aacute;ramaros vital records &middot; Sub-Carpathia Genealogy &middot; the 1921 Czechoslovak census &middot; Budapest survivor registration forms &middot; <em>Sefer Marmaros</em>, Rakhiv and Bogdan chapters &middot; the Kassa deportation log as published in Braham.</p>
 
   <figure class="sig">
     <img src="images/signature-zacharias.png" alt="The signature of Zacharias Helman">
@@ -143,7 +224,7 @@
   </figure>
 
   <footer class="page">
-    <p>Full citations available on request.</p>
+    <p>Every claim on this page is attached to the record it came from. Fuller citations, including fund, opus and delo numbers for the civil registers, are available for any line here.</p>
     <p class="place">Kailua, Hawai&lsquo;i</p>
   </footer>
 
@@ -160,6 +241,6 @@
   </audio>
 </dialog>
 
-<script src="theme.js"></script>
+<script src="theme.js?v=20260820015229"></script>
 </body>
 </html>

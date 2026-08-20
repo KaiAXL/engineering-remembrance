@@ -289,6 +289,33 @@
     'Roza':['#b5487a',[[47.982,24.147],BPc,[47.982,24.147],[47.958,22.328],[48.716,21.261],[50.035,19.178]]],
     'Eva':['#a62c2c',[[46.771,23.624],BPc,[53.19,13.17,'Ravensbrück'],[52.757,9.907],[34.05,-118.24,'Los Angeles']]]
   };
+  // Some destinations are shared: Helen, Tibi and Eva all end in Los Angeles.
+  // Label a shared place once, on its own layer, so the tag never stacks.
+  var sharedPlaces={};
+  Object.keys(journeys).forEach(function(who){
+    journeys[who][1].forEach(function(p){
+      if(!p[2]) return;
+      var k=p[0].toFixed(3)+','+p[1].toFixed(3);
+      sharedPlaces[k]=sharedPlaces[k]||{label:p[2],lat:p[0],lng:p[1],users:[]};
+      if(sharedPlaces[k].users.indexOf(who)<0) sharedPlaces[k].users.push(who);
+    });
+  });
+  var sharedLabelLayer=L.featureGroup();
+  Object.keys(sharedPlaces).forEach(function(k){
+    var sp=sharedPlaces[k];
+    if(sp.users.length<2) return;                       // only the genuinely shared ones
+    sp.marker=L.circleMarker([sp.lat,sp.lng],{radius:4.2,color:'#fff',weight:1.4,fillColor:'#3f3f3f',fillOpacity:1})
+      .bindTooltip(sp.label,{permanent:true,direction:'top',className:'pjlabel'});
+    sp.shared=true;
+  });
+  function refreshSharedLabels(){
+    Object.keys(sharedPlaces).forEach(function(k){
+      var sp=sharedPlaces[k]; if(!sp.shared) return;
+      var anyOn=sp.users.some(function(w){return map.hasLayer(journeyLayers[w]);});
+      if(anyOn && !map.hasLayer(sp.marker)) sp.marker.addTo(map);
+      if(!anyOn && map.hasLayer(sp.marker)) map.removeLayer(sp.marker);
+    });
+  }
   var journeyLayers={};
   Object.keys(journeys).forEach(function(who){
     var color=journeys[who][0], pts=journeys[who][1], line=[], fg=L.featureGroup();
@@ -296,7 +323,9 @@
     L.polyline(line,{color:color,weight:3.5,opacity:.9,dashArray:'1,8',lineCap:'round'}).addTo(fg);
     pts.forEach(function(p){
       var cm=L.circleMarker([p[0],p[1]],{radius:3.6,color:'#fff',weight:1.2,fillColor:color,fillOpacity:1}).addTo(fg);
-      if(p[2]) cm.bindTooltip(p[2],{permanent:true,direction:'top',className:'pjlabel'});
+      var k=p[0].toFixed(3)+','+p[1].toFixed(3);
+      var isShared=sharedPlaces[k]&&sharedPlaces[k].shared;
+      if(p[2]&&!isShared) cm.bindTooltip(p[2],{permanent:true,direction:'top',className:'pjlabel'});
     });
     journeyLayers[who]=fg;
   });
@@ -315,7 +344,8 @@
     document.querySelectorAll('input[data-who]').forEach(function(cb){
       cb.onchange=function(){var who=cb.getAttribute('data-who'),fg=journeyLayers[who];
         if(cb.checked){fg.addTo(map);try{map.fitBounds(fg.getBounds(),{padding:[45,45]});}catch(e){}}
-        else{map.removeLayer(fg);}};
+        else{map.removeLayer(fg);}
+        refreshSharedLabels();};
     });
   })();
 </script>

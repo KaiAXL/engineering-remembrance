@@ -115,3 +115,59 @@ document.addEventListener('close', function(e){
   });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') hide(); });
 })();
+
+/* ============ compact nav on phones ============ */
+(function(){
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.navtoggle');
+    if(!b) return;
+    var open = document.documentElement.getAttribute('data-nav') === 'open';
+    document.documentElement.setAttribute('data-nav', open ? 'shut' : 'open');
+    b.setAttribute('aria-expanded', open ? 'false' : 'true');
+    b.textContent = open ? 'Menu' : 'Close';
+  });
+  document.addEventListener('click', function(e){
+    if(e.target.closest('.sidebar nav a')){
+      document.documentElement.setAttribute('data-nav','shut');
+      var b=document.querySelector('.navtoggle');
+      if(b){ b.setAttribute('aria-expanded','false'); b.textContent='Menu'; }
+    }
+  });
+})();
+
+/* ============ restrained reveal on scroll ============ */
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+  var sel = '.hero, .routes, .strip, .panel, .doc, .step, .fields, .pull, .clip, .db, .sig';
+  var els = [].slice.call(document.querySelectorAll(sel));
+  if (!els.length) return;
+
+  function reveal(el){ el.classList.add('risen'); }
+  function revealAll(){ els.forEach(reveal); }
+
+  els.forEach(function(el){ el.classList.add('rise'); });
+
+  // failsafe: whatever happens, everything is visible shortly after load
+  var guard = setTimeout(revealAll, 1200);
+  window.addEventListener('pagehide', revealAll);
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ reveal(en.target); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.02 });
+  els.forEach(function(el){ io.observe(el); });
+
+  // anything already on screen appears at once, with no flash
+  requestAnimationFrame(function(){
+    els.forEach(function(el){
+      var b = el.getBoundingClientRect();
+      if (b.top < window.innerHeight * 1.05) reveal(el);
+    });
+  });
+
+  // if the user scrolls before the observer has done anything, reveal regardless
+  window.addEventListener('scroll', function once(){
+    clearTimeout(guard); revealAll();
+    window.removeEventListener('scroll', once);
+  }, { passive:true, once:true });
+})();
