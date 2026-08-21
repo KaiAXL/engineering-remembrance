@@ -73,7 +73,7 @@ body{
 
 /* ============ main ============ */
 .main{ margin-left:20rem; }
-.wrap{ max-width:62rem; margin-inline:auto; padding:3.2rem 3.4rem 7rem; }
+.wrap{ max-width:72rem; margin-inline:auto; padding:3.4rem 4rem 7rem; }
 
 .eyebrow{
   font-family:var(--mono); font-weight:500;
@@ -980,3 +980,111 @@ figure.doc{ margin:2rem 0; }
 /* hover feedback on the things that are actually clickable */
 .doc img, .cards img{ transition:filter .25s ease; }
 .doc:hover img{ filter:brightness(1.04); }
+
+/* ============ researcher portrait ============ */
+figure.portrait img{ width:100%; height:auto; display:block; border-radius:3px; border:1px solid var(--rule); }
+figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8rem; font-style:italic; }
+
+/* ============ map: interactive label ============ */
+.maplabel{ margin:0 0 .75rem; font-size:.95rem; line-height:1.5; color:var(--ink-dim); max-width:62ch; }
+.maplabel .tag{ display:inline-block; margin-right:.5rem; padding:.15rem .55rem; font-family:var(--mono); font-weight:500; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:#fff; background:var(--accent-deep); border-radius:3px; vertical-align:1px; }
+
+/* ============ method: the flowsheet ============ */
+.flow{ margin:1.7rem 0 2.8rem; padding:1.5rem 1.6rem 1.4rem; background:var(--panel); border:1px solid var(--rule); border-radius:3px; }
+.flowrow{ display:flex; flex-wrap:wrap; align-items:stretch; justify-content:center; gap:.55rem .3rem; }
+.fnode{ flex:1 1 8.5rem; min-width:7.5rem; display:flex; flex-direction:column; gap:.4rem; padding:.7rem .8rem; background:var(--paper); border:1px solid var(--rule); border-top:2px solid var(--accent-deep); border-radius:2px; }
+.fnode .fn{ font-family:var(--mono); font-weight:500; font-size:.62rem; letter-spacing:.14em; color:var(--accent); }
+.fnode .ft{ font-family:var(--serif); font-size:.92rem; line-height:1.24; color:var(--ink); }
+.farr{ align-self:center; color:var(--accent-deep); font-size:1.05rem; opacity:.6; }
+.flowgate{ margin-top:1.05rem; padding:.75rem .9rem; border:1px dashed var(--rule); border-radius:2px; font-size:.92rem; line-height:1.5; color:var(--ink-dim); }
+.flowgate .gk{ display:inline-block; margin-right:.5rem; font-family:var(--mono); font-weight:500; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); }
+.flow figcaption{ margin-top:.9rem; color:var(--muted); font-size:.85rem; font-style:italic; }
+@media (max-width:52rem){ .flowrow{ flex-direction:column; } .fnode{ flex-basis:auto; } .farr{ transform:rotate(90deg); } }
+
+/* ============ more air between numbered steps ============ */
+.step{ padding-top:1.85rem; padding-bottom:1.85rem; margin-bottom:.55rem; }
+
+/* ── Wide desktop: use the screen, keep the reading measure ───────────────── */
+@media (min-width:90rem){
+  .wrap{ max-width:84rem; padding:3.8rem 5rem 7rem; }
+  /* prose keeps its measure; evidence blocks widen */
+  .step > div > p, .db p, .panel p{ max-width:72ch; }
+}
+@media (min-width:112rem){
+  .main{ margin-left:22rem; }
+  .wrap{ max-width:96rem; padding:4.2rem 6rem 7rem; }
+}
+
+/* Databases read as two columns once there is room */
+@media (min-width:78rem){
+  .dbgrid{
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 2.6rem; align-items:start;
+  }
+  .dbgrid .db{ margin-left:0; margin-right:0; padding-left:0; padding-right:0; }
+}
+
+/* A document and its reading sit side by side on a wide screen */
+@media (min-width:90rem){
+  .pair{
+    display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+    gap:0 3rem; align-items:start; margin:2.8rem 0;
+  }
+  .pair figure.doc{ margin:0; }
+  .pair > .fields, .pair > .panel{ margin-top:0; }
+}
+
+/* ── Method: paragraph rhythm inside a step ──────────────────────────────── */
+.step p + p{ margin-top:.8rem; }
+.step .cite{ margin-top:.9rem; }
+
+/* ── Method: process flowsheet ───────────────────────────────────────────── */
+.fsheet{ position:relative; padding:0 0 0 0; }
+.fstream{
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); border:1px dashed var(--rule); border-radius:2px;
+  padding:.55rem .8rem; background:transparent; text-align:center;
+}
+.fstream b{ font-weight:500; color:var(--ink-dim); letter-spacing:.04em; text-transform:none; font-family:var(--sans,inherit); font-size:.9rem; }
+.fstream.in{ margin-bottom:.2rem; }
+.fstream.out{ margin-top:.2rem; border-style:solid; border-color:var(--accent-deep); }
+
+.funits{ list-style:none; margin:0; padding:0; }
+.funits li{
+  position:relative; display:grid; grid-template-columns:2.6rem 1fr; align-items:baseline;
+  gap:0 .9rem; margin:0; padding:.7rem .9rem .7rem .8rem;
+  border:1px solid var(--rule); border-radius:2px; background:var(--panel);
+}
+.funits li + li{ margin-top:1.35rem; }
+/* the rail between unit operations */
+.funits li + li::before{
+  content:''; position:absolute; left:2.05rem; top:-1.35rem; height:1.35rem;
+  border-left:1px solid var(--rule);
+}
+.funits li + li::after{
+  content:''; position:absolute; left:calc(2.05rem - 3px); top:-.42rem;
+  border-left:3px solid transparent; border-right:3px solid transparent;
+  border-top:5px solid var(--accent-deep);
+}
+.funits .fn{ font-family:var(--mono); font-size:.72rem; color:var(--accent); letter-spacing:.06em; }
+.funits .ft{ font-size:1rem; color:var(--ink); }
+.funits .fo{ display:block; grid-column:2; font-size:.86rem; color:var(--muted); margin-top:.2rem; }
+
+/* recycle stream: 07 feeds back into 03 */
+.frecycle{
+  position:absolute; right:-.2rem; top:var(--rt,32%); height:var(--rh,46%);
+  width:2.2rem; border:1px dashed var(--accent-deep); border-left:0;
+  border-radius:0 3px 3px 0;
+}
+.frecycle span{
+  position:absolute; right:-.35rem; top:50%; transform:translate(100%,-50%);
+  font-family:var(--mono); font-size:.6rem; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--accent-deep); white-space:nowrap;
+}
+@media (max-width:72rem){ .frecycle{ display:none; } }
+@media (min-width:72rem){ .fsheet{ padding-right:9.5rem; } }
+
+/* ── Clear air between numbered steps ────────────────────────────────────── */
+.step{ margin-bottom:1.5rem; padding-bottom:1.7rem; }
+.step:last-of-type{ margin-bottom:.6rem; }
+@media (max-width:44rem){ .step{ margin-bottom:1.1rem; } }
