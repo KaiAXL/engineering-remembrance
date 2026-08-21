@@ -1,0 +1,30 @@
+---
+import Base from '@layouts/Base.astro';
+import { getPeople } from '@lib/data';
+
+const people = await getPeople();
+---
+<Base
+  title="The People &middot; Engineering Remembrance"
+  description="Everyone recovered from the records so far — the Helman, Landó and Katz families of Tiszabogdány and beyond."
+  current="/people.html"
+  ogTitle="The People · Engineering Remembrance"
+>
+  <p class="eyebrow">The People</p>
+  <h1>Everyone recovered so far</h1>
+  <p class="lede">Each name below is reconstructed from the records. This directory grows as the reconstruction extends across the family and, in time, the wider Subcarpathian community.</p>
+
+  <nav class="routes" aria-label="People">
+    {people.map((person) => (
+      <a href={`/person/${person.id}`}>
+        <span class="rk">{person.name}</span>
+        <span class="rd">{person.role}</span>
+      </a>
+    ))}
+  </nav>
+
+  <footer class="page">
+    <p>{people.length} people recovered. Documents cited on each page.</p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
+  </footer>
+</Base>

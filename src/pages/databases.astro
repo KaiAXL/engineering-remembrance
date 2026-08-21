@@ -1,0 +1,58 @@
+---
+import Base from '@layouts/Base.astro';
+import { getRepositoriesByCategory } from '@lib/data';
+
+const groups = await getRepositoriesByCategory();
+// Alternating .db / .db.alt striping runs across the whole list, as in the original.
+let i = 0;
+---
+<Base
+  title="Databases &middot; Engineering Remembrance"
+  description="Every collection used in this case, with links, what each one holds, what it costs, and the one trick that makes it work. Most are free."
+  current="/databases.html"
+  ogTitle="Databases · Engineering Remembrance"
+  ogDescription="Four steps, and one standard of proof."
+>
+  <p class="eyebrow">Databases</p>
+  <h1>Where to actually look</h1>
+  <p class="lede">Every collection used in this case, what it holds, what it costs, and the one thing that makes each one work. Most of them are free.</p>
+
+  <div class="panel">
+    <span class="lbl">If you only do one thing</span>
+    <p>Go to <a href="https://collections.arolsen-archives.org" target="_blank" rel="noopener">Arolsen</a>, type your surname, and then type it again the way a German clerk would have spelled it. No account, no fee. It is the largest collection of Nazi persecution records in the world and it is open to anyone.</p>
+  </div>
+
+  {groups.map((group) => (
+    <>
+      <h2>{group.category}</h2>
+      {group.items.map((repo) => (
+        <div class={`db${i++ % 2 === 1 ? ' alt' : ''}`}>
+          <div>
+            <span class="nm"><a href={repo.url} target="_blank" rel="noopener">{repo.name}</a></span>
+            <span class={`tag ${repo.costTag}`}>{repo.cost}</span>
+            <p>{repo.description}</p>
+            {repo.tip && <p class="tip" set:html={repo.tip} />}
+          </div>
+        </div>
+      ))}
+    </>
+  ))}
+
+  <div class="panel">
+    <span class="lbl">Before you start</span>
+    <p>Write down every spelling of the surname, and the mother&rsquo;s maiden name as well. Almost every collection above is a name index, and a name index only returns what you type. The <a href="/method.html">method</a> explains why that one step matters more than which database you choose.</p>
+  </div>
+
+  <h3>Something missing?</h3>
+  <p class="sources">If you know a collection that belongs here, or you are stuck on a region I have not worked in, write to me and I will add it. <a href="mailto:sgrajews@stanford.edu">sgrajews@stanford.edu</a></p>
+
+  <figure class="sig">
+    <img src="/images/signature-zacharias.png" alt="The signature of Zacharias Helman" />
+    <figcaption>Zacharias Helman &middot; Buchenwald registration form, 2 June 1944</figcaption>
+  </figure>
+
+  <footer class="page">
+    <p>Free to print, copy and hand to anyone. Links checked August 2026.</p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
+  </footer>
+</Base>

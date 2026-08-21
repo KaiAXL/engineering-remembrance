@@ -1,0 +1,64 @@
+---
+import { getNavigation, getSite } from '@lib/data';
+
+interface Props {
+  /** href of the current page, e.g. "/databases" — marks the active nav link. */
+  current?: string;
+}
+const { current } = Astro.props;
+const nav = await getNavigation();
+const site = await getSite();
+---
+
+<button class="sidetoggle" type="button" aria-label="Show menu">&#9776;</button>
+
+<aside class="sidebar">
+  <a class="brandwrap" href="/">
+    <svg class="wheel" viewBox="0 0 64 64" width="46" height="46" role="img" aria-label="Engineering Remembrance">
+      <circle class="rim" cx="32.0" cy="32.0" r="28.0" fill="none" stroke="currentColor" stroke-width="2.6"/>
+      <circle cx="32.0" cy="32.0" r="23.6" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+      <line x1="32.00" y1="25.40" x2="32.00" y2="8.40" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="32.00" cy="4.00" r="1.9"/>
+      <line x1="35.30" y1="26.28" x2="43.80" y2="11.56" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="46.00" cy="7.75" r="1.9"/>
+      <line x1="37.72" y1="28.70" x2="52.44" y2="20.20" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="56.25" cy="18.00" r="1.9"/>
+      <line x1="38.60" y1="32.00" x2="55.60" y2="32.00" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="60.00" cy="32.00" r="1.9"/>
+      <line x1="37.72" y1="35.30" x2="52.44" y2="43.80" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="56.25" cy="46.00" r="1.9"/>
+      <line x1="35.30" y1="37.72" x2="43.80" y2="52.44" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="46.00" cy="56.25" r="1.9"/>
+      <line x1="32.00" y1="38.60" x2="32.00" y2="55.60" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="32.00" cy="60.00" r="1.9"/>
+      <line x1="28.70" y1="37.72" x2="20.20" y2="52.44" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="18.00" cy="56.25" r="1.9"/>
+      <line x1="26.28" y1="35.30" x2="11.56" y2="43.80" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="7.75" cy="46.00" r="1.9"/>
+      <line x1="25.40" y1="32.00" x2="8.40" y2="32.00" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="4.00" cy="32.00" r="1.9"/>
+      <line x1="26.28" y1="28.70" x2="11.56" y2="20.20" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="7.75" cy="18.00" r="1.9"/>
+      <line x1="28.70" y1="26.28" x2="20.20" y2="11.56" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="18.00" cy="7.75" r="1.9"/>
+      <circle cx="32.0" cy="32.0" r="6.6" fill="none" stroke="currentColor" stroke-width="2.3"/>
+      <circle class="node" cx="32.0" cy="32.0" r="2.5"/>
+    </svg>
+    <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
+  <p class="tagline">{site.tagline}</p>
+  <button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
+    {nav.map((item) => (
+      <a href={item.href} aria-current={current === item.href ? 'page' : undefined}>
+        <span class="k">{item.k}</span> {item.label}
+      </a>
+    ))}
+  </nav>
+  <div class="sidefoot">
+    <button class="themetoggle" type="button">Light mode</button>
+    <button class="sidehide" type="button">Hide menu &larr;</button>
+    <p>{site.researcher}</p>
+    <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+  </div>
+</aside>

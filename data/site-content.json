@@ -1,0 +1,84 @@
+{
+  "site": {
+    "name": "Engineering Remembrance",
+    "domain": "engineeringremembrance.org",
+    "tagline": "Recovering families from the records that were meant to erase them.",
+    "lede": "A repeatable method for recovering family histories from online archives through AI-assisted record linkage. Developed on a Holocaust case, and not limited to one.",
+    "claim": "One surname. One shtetl. One trade. Together again, over 80 years later.",
+    "researcher": "Samantha Seligman-Grajewski",
+    "email": "sgrajews@stanford.edu",
+    "place": "Kailua, Hawai'i",
+    "researchStarted": 2026,
+    "recordCount": "300+",
+    "jewishHouseholds": 68,
+    "conference": "World Federation of Jewish Holocaust Survivors and Descendants, 36th Annual Conference, Philadelphia, 23 to 26 October 2026."
+  },
+  "standard": "An identification is admitted only where independent record types corroborate one another without contradiction, and every linkage is verified against the primary document rather than an index entry. Where the evidence supports a probable conclusion rather than a proven one, it is stated as probable. Conflicts are disclosed, not reconciled by preference.",
+  "quotes": [
+    { "id": "stories", "text": "We all have stories to tell. You know, all of us have some kind of story to tell.", "attribution": "Helen Landó Helman, speaking at a high school, 2003" }
+  ],
+  "audioClips": [
+    { "id": "helen-testimony", "file": "audio/helen-testimony.mp3", "label": "In her own voice", "context": "Recorded testimony" },
+    { "id": "helen-stanford", "file": "audio/helen-stanford.mp3", "context": "Recorded interview, 2008, 14:55 to 15:26 — Helen predicts Samantha will go to Stanford" },
+    { "id": "helen-raw", "file": "audio/helen-raw.mp3", "context": "Raw testimony audio" }
+  ],
+  "navigation": [
+    { "k": "01", "label": "Home", "href": "/" },
+    { "k": "02", "label": "The Case", "href": "/case.html" },
+    { "k": "03", "label": "The Records", "href": "/records.html" },
+    { "k": "04", "label": "The People", "href": "/people.html" },
+    { "k": "05", "label": "The Map", "href": "/map.html" },
+    { "k": "06", "label": "The Method", "href": "/method.html" },
+    { "k": "07", "label": "Databases", "href": "/databases.html" },
+    { "k": "08", "label": "Research Brief", "href": "/brief.html" },
+    { "k": "09", "label": "The Researcher", "href": "/about.html" }
+  ],
+  "caseSteps": [
+    { "no": 1, "title": "One card, and nothing else", "body": "The family held a single Buchenwald prisoner card for Zacharias Helman, Helen's father, and assumed that was the end of what could be known. The research began in 2026.", "cite": "Arolsen Archives · Buchenwald Häftlings-Personal-Karte 57101" },
+    { "no": 2, "title": "Two Helmans, two lines apart", "body": "The card carried a prisoner number, and prisoner numbers sit inside sequences. Pulling the intake roster put Zacharias on page 8, at 57101. Two lines below him, at 57103, was a second Helman — Michal, whom nobody in the family had heard of. Both coded Z4; Grünfeld, Herman at 57102 between them.", "cite": "Arolsen Archives · nominal roll of the 1,000 Hungarian-Jewish arrivals of 2 June 1944, page 8, scan 0002077" },
+    { "no": 3, "title": "Then a third, on an earlier page", "body": "Reading backwards produced Helman, Lajos at 56906, two pages earlier. A lower number means an earlier arrival; his card confirms arrest on 10 April 1944, five weeks before the others. Three men of one surname on one transport, from a village of sixty-eight Jewish households.", "cite": "Arolsen Archives · same roll, page 6, scan 0002075; prisoner card 56906" },
+    { "no": 4, "title": "Who they were to each other", "body": "The registration forms name the parents. Lajos and Michal are both sons of Miksa Helman, and the 1921 census places Miksa in Iczik Helman's household, Zacharias's father. Two brothers and their uncle. All three born and arrested in Tiszabogdány, all three Fuhrmann (carters). Photographed one behind the other, boards 322, 323, 324, because the roll was alphabetical.", "cite": "Buchenwald registration forms 56906, 57101, 57103 · 1921 Czechoslovak census, Bohdan · alphabetical roll, entries 322 to 324" },
+    { "no": 5, "title": "Following them forward, and finding they lived", "body": "The nephews went to the synthetic-fuel plant at Rehmsdorf (Kommando Wille). After the April 1945 evacuation the train was strafed and survivors marched to Terezín, where both were liberated. Zacharias went the other way: Magdeburg-Rothensee on 23 July 1944, ordered back to Auschwitz that October, killed about the 10th.", "cite": "Terezín Memorial prisoner cards · Rehmsdorf personnel cards · prisoner card 57101, Magdeburg transfer and October return" },
+    { "no": 6, "title": "They were the boys from Helen's story", "body": "In her testimony Helen says that after the war, in Budapest, she found two people from her village, one a cousin, who told her what had happened to her family. She never named them. Their Budapest registration forms, in their own hands, place them in the city in June 1945. Lajos registered 8 June; Michal wrote 'Helmán Mihály'.", "cite": "Helen Landó Helman, recorded testimony · Budapest survivor registration forms (Törzslap), 1945" },
+    { "no": 7, "title": "Pages of Testimony, and a family that had been filing them", "body": "Searching the nephews' parents at Yad Vashem returned Pages of Testimony for Miksa Helman and his wife Adél née Petranker, and for two sons. The submitters were their own surviving children, filing from Israel in the 1990s.", "cite": "Yad Vashem Central Database, Pages of Testimony, items 225463, 225464, 225466, 1191850, 1191854" },
+    { "no": 8, "title": "The family who did not know she had survived", "body": "Following the submitters forward led to living descendants, from a branch settled on a kibbutz before the war. Their family tree was missing Zacharias and David, two of Iczik's sons, and everyone after them. The research handed a family back two brothers, and told them one of those brothers had a granddaughter who lived." }
+  ],
+  "conflicts": [
+    { "label": "The ghetto", "value": "The family believed the deportation went through Sighet. The town's survivors' book and the Rakhiv district records both give Mátészalka, two hundred kilometres west. Town-level sources are preferred over family memory, and the Auschwitz registration dates fit only the Mátészalka transport schedule.", "status": "resolved" },
+    { "label": "The arrest dates", "value": "The district roundup is documented as 16 April 1944, and Lajos's card fits it. But five men's cards, Zacharias and Michal among them, read 15 May 1944, all recording arrest in Tiszabogdány. Unresolved: either a clerical error repeated across five cards, or a second later roundup. The identification rests on the arrival dates, not this.", "status": "unresolved" },
+    { "label": "Zacharias's birth date", "value": "Four dates: 11 April 1901 (civil birth register), 4 November 1901 (self-reported at Buchenwald), 4 October 1901 (Yad Vashem and World Jewish Congress), 4 September 1901 (Hungarian registry). Genuinely unresolved; the year is consistent across all four.", "status": "unresolved" },
+    { "label": "Zacharias's death date", "value": "Three dates: 8, 10 and 17 October 1944. His card shows the order back to Auschwitz on 6 October and the transfer on the 8th. Stated as about 10 October rather than a fixed date.", "status": "unresolved" }
+  ],
+  "negativeResults": [
+    "The Helman name does not appear in the Bohdan entry of the Czechoslovak business directory in any of its 1925, 1937 or 1938 editions — consistent with a poor carter's family never registered as a firm.",
+    "Miksa Helman appears nowhere in the 1,000-name roll under any surname, birthplace or occupation — establishing that he never reached Buchenwald and stayed at Auschwitz.",
+    "No family passport photograph exists anywhere in the digitised DAZO collection, because the family never emigrated west in the 1920s and so never applied for one."
+  ],
+  "methodSteps": [
+    { "no": 1, "title": "Write down every version of the name before you search", "body": "The surname as the family says it, as a German clerk would spell it, as a Hungarian registrar would, and as it comes back out of Cyrillic. Helman, Hellmann, Hilman, and in Russian and Ukrainian Gelman, because those alphabets have no H. Landó, Landa, Landau.", "todo": "Write the surname five ways on paper. As your family says it. As a German clerk would. As a Hungarian registrar would. Coming back out of Cyrillic, where H becomes G. And the mother's maiden name." },
+    { "no": 2, "title": "Search the mother's maiden name too", "body": "Across much of Subcarpathia and Galicia, marriages that were religious only were not recognised by the state, so children were entered in the civil register under their mother's surname, with the father acknowledging paternity in the margin.", "todo": "Run every search twice, once under the father's surname and once under the mother's." },
+    { "no": 3, "title": "Work out where the paperwork had to put them", "body": "Locate the person through the administrative trail rather than by name: arrest, ghetto, transport, camp registration, transfer, subcamp, liberation, displaced-persons camp, emigration. Each stage had to generate a document naming a date and place.", "todo": "Write out the stages in order for the person you want, and search for the stage when the name fails. A transport list is easier to find than a person." },
+    { "no": 4, "title": "Read the sequence, not just the entry", "body": "A prisoner number is a position in a list, and lists have neighbours. Transports were registered in order of arrival, and rosters were often compiled alphabetically, so people from one place and one family fall together on the page.", "todo": "When you find a record with a number on it, go and read the numbers either side of it." },
+    { "no": 5, "title": "Let AI do the cross-checking", "body": "Link one individual across a dozen collections, languages and scripts at a scale that is not feasible by hand: camp records, civil registers, censuses, victim databases, cemetery transcriptions, directories, testimony. The only step here that is new.", "todo": "Paste what you have found into an AI assistant and ask it to find the contradictions and the gaps. Then go and check what it tells you." },
+    { "no": 6, "title": "Check every match against the original document", "body": "Never against an index entry. Indexes are transcriptions and transcriptions carry errors. Open the register image, read the fields, and confirm the parents. AI accelerates the search; it does not decide anything.", "todo": "Never stop at the index. Open the register image and read the parents' names yourself." },
+    { "no": 7, "title": "If someone left no record, search the people around them", "body": "Cousins, neighbours, anyone from the same village on the same transport. Their records will place the person you want in a time and place, and sometimes name them outright.", "todo": "Search the village, not the person. Then read every name it returns." }
+  ],
+  "methodRules": [
+    { "label": "Spelling drift is not contradiction", "body": "A name written five ways across five countries is one person, not five problems. Treat variation as expected noise. Reject a candidate only when a parent, a place or a date genuinely diverges, never because the spelling moved." },
+    { "label": "One document is a lead, three are a finding", "body": "Hold a conclusion only where independent kinds of record agree without contradicting one another, and verify every linkage against the primary document. Where the evidence supports a probable conclusion rather than a proven one, say probable. Disclose conflicts rather than resolving them by preference." }
+  ],
+  "brief": {
+    "preparedFor": "World Federation of Jewish Holocaust Survivors and Descendants, 36th Annual Conference, Philadelphia, October 2026",
+    "summary": "Reconstructing one family, and increasingly a vanished Subcarpathian community, from the fragmented records the Holocaust left behind, using recently released online archives and AI-assisted record linkage, a repeatable method that finds what standard searches miss.",
+    "methodShort": [
+      "Normalize the name. Treat orthographic and cross-linguistic spelling drift (Helman, Hellmann, Lando, Landau) as expected noise, not contradiction.",
+      "Reconstruct the logistics. Locate each person in time and place through the administrative trail of arrest, ghetto, transport, and camp registration.",
+      "Correlate with AI. Link one individual across archives, languages, and scripts at a scale infeasible by hand.",
+      "Verify and weigh. Check every linkage against the primary document, and weigh evidence by source type and independence. AI accelerates the search; human judgment decides."
+    ],
+    "result": "1 card → 300+ documents",
+    "contribution": "The contribution is methodological. This project formalizes reproducible AI-assisted linkage across fragmented, multilingual sources, applied to region-wide collections (Arolsen, census records, JewishGen vital registers) usable by any family from the region. Its evidentiary standard is convergence.",
+    "next": "Extending the reconstruction across the Subcarpathian region, and preparing further identifications, including within the Auschwitz Album, for submission to Yad Vashem. The method is also being documented as a public resource.",
+    "sources": "Arolsen Archives · Yad Vashem · USHMM · USC Shoah Foundation · JewishGen vital records · census records · Buchenwald & Theresienstadt rosters · displaced-persons and tracing records"
+  }
+}

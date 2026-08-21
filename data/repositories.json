@@ -1,0 +1,172 @@
+[
+  {
+    "id": "arolsen",
+    "name": "Arolsen Archives",
+    "url": "https://collections.arolsen-archives.org",
+    "category": "Start here",
+    "cost": "Free, no account",
+    "costTag": "free",
+    "description": "Thirty million documents on Nazi persecution: camp registration cards, transport and transfer lists, labour deployment, death books, displaced-persons and postwar tracing files.",
+    "tip": "Search the town as well as the person. A village name returns the neighbours, and the neighbours' records will place your family."
+  },
+  {
+    "id": "yadvashem",
+    "name": "Yad Vashem, Central Database of Shoah Victims' Names",
+    "url": "https://yvng.yadvashem.org",
+    "category": "Start here",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Pages of Testimony, filled in by surviving relatives, so they carry parents, spouses, ages and hometowns that no camp form records.",
+    "tip": "Read the submitter. A Page filed by a relative is a living-family lead, and the address and date on it are where to start looking for descendants."
+  },
+  {
+    "id": "ushmm",
+    "name": "USHMM Collections",
+    "url": "https://collections.ushmm.org",
+    "category": "Start here",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Holds RG-31.136, the full digitisation of the Subcarpathian regional archive, roughly 488,000 images of the civil registers, browsable by fund, opus and file.",
+    "tip": "Use JewishGen to find the fund and file number first, then come here to read the actual page."
+  },
+  {
+    "id": "jewishgen",
+    "name": "JewishGen",
+    "url": "https://www.jewishgen.org",
+    "category": "Births, marriages and deaths",
+    "cost": "Free with registration",
+    "costTag": "free",
+    "description": "Indexed vital records for Subcarpathia, Máramaros, Hungary, Galicia and much of eastern Europe, plus the 1921 Czechoslovak census and the burial registry.",
+    "tip": "Search surname plus town, never a given name first. Given names collide across languages; a village does not."
+  },
+  {
+    "id": "sub-carpathia",
+    "name": "Sub-Carpathia Genealogy",
+    "url": "https://www.sub-carpathia-genealogy.org",
+    "category": "Births, marriages and deaths",
+    "cost": "Index free, scans about $16",
+    "costTag": "part",
+    "description": "The transcription project behind the JewishGen Subcarpathia records, run by Roberta Solit. Also holds more than 25,000 tombstone photographs that are not on JewishGen.",
+    "tip": "Buy the scan when you need the image, but check first whether the index alone answers your question. It often does."
+  },
+  {
+    "id": "gesher-galicia",
+    "name": "Gesher Galicia",
+    "url": "https://www.geshergalicia.org",
+    "category": "Births, marriages and deaths",
+    "cost": "Search free, membership for scans",
+    "costTag": "part",
+    "description": "The All-Galicia Database, for anywhere that was Austrian Galicia: today's south-eastern Poland and western Ukraine.",
+    "tip": "Search by locality when a surname returns nothing. Many towns are indexed by place but not by name."
+  },
+  {
+    "id": "jri-poland",
+    "name": "JRI-Poland",
+    "url": "https://jri-poland.org",
+    "category": "Births, marriages and deaths",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Jewish records indexing for Poland, and the natural companion to Gesher Galicia for anything on the Polish side of the border.",
+    "tip": null
+  },
+  {
+    "id": "hungaricana",
+    "name": "Hungaricana",
+    "url": "https://hungaricana.hu",
+    "category": "Census and maps",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Hungarian and Czechoslovak archival collections, including the 1921 census sheets that put a whole household on one page: everyone under one roof, with ages and birthplaces.",
+    "tip": "A census sheet is the fastest way to prove two people were family, because it shows them living together."
+  },
+  {
+    "id": "terezin",
+    "name": "Terezín Memorial database",
+    "url": "https://www.pamatnik-terezin.cz",
+    "category": "Camps",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Prisoner and transport cards for Terezín, including people who arrived on the last evacuation transports in spring 1945 and were liberated there.",
+    "tip": null
+  },
+  {
+    "id": "gross-rosen",
+    "name": "Gross-Rosen Museum database",
+    "url": "https://www.gross-rosen.eu",
+    "category": "Camps",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Prisoner records for Gross-Rosen and its very large network of subcamps, which absorbed many Hungarian Jews in 1944.",
+    "tip": null
+  },
+  {
+    "id": "kehilalinks",
+    "name": "JewishGen KehilaLinks",
+    "url": "https://kehilalinks.jewishgen.org",
+    "category": "Cemeteries and gravestones",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Volunteer-built town pages. For this region they carry Marshall Katz's photographs and transcriptions of about a hundred Subcarpathian cemeteries.",
+    "tip": "A gravestone names the father. When the civil registers run out, a stone can give you the next generation up."
+  },
+  {
+    "id": "jowbr",
+    "name": "JOWBR, the burial registry",
+    "url": "https://www.jewishgen.org/databases/cemetery/",
+    "category": "Cemeteries and gravestones",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Indexed burials worldwide, searchable by name, with plot positions and often the father's name from the inscription.",
+    "tip": null
+  },
+  {
+    "id": "usc-shoah",
+    "name": "USC Shoah Foundation Visual History Archive",
+    "url": "https://vha.usc.edu",
+    "category": "Testimony and voices",
+    "cost": "Many testimonies viewable free",
+    "costTag": "part",
+    "description": "More than fifty thousand recorded survivor testimonies, indexed by person, place and topic, so you can find someone who was in the same village or on the same transport.",
+    "tip": "Search the town. A neighbour's testimony often describes your family by name."
+  },
+  {
+    "id": "centropa",
+    "name": "Centropa",
+    "url": "https://www.centropa.org",
+    "category": "Testimony and voices",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Long interviews with central European Jewish families, published with their own photographs and captions naming everyone in the frame.",
+    "tip": null
+  },
+  {
+    "id": "degob",
+    "name": "DEGOB protocols",
+    "url": "https://degob.hu",
+    "category": "Testimony and voices",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Roughly five thousand statements taken from Hungarian survivors in 1945, within months of liberation, and the Kassa log of deportation trains.",
+    "tip": null
+  },
+  {
+    "id": "genealogy-indexer",
+    "name": "Genealogy Indexer",
+    "url": "https://www.genealogyindexer.org",
+    "category": "Books, directories and community records",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Full-text search across digitised business directories, yizkor books, school and military lists from central and eastern Europe.",
+    "tip": "This is where you establish a negative. Finding that a family is absent from three editions of a directory is evidence about how they lived."
+  },
+  {
+    "id": "yizkor",
+    "name": "Yizkor books",
+    "url": "https://www.jewishgen.org/yizkor/",
+    "category": "Books, directories and community records",
+    "cost": "Free",
+    "costTag": "free",
+    "description": "Memorial books written by a town's own survivors after the war. They give the roundup date, the route, the names of the rabbi and the shochet, and how many households there were.",
+    "tip": "Many are also scanned in full on archive.org even when the translation on JewishGen is partial."
+  }
+]

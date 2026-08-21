@@ -1,0 +1,150 @@
+[
+  {
+    "id": "card-56906-lajos",
+    "type": "buchenwald-prisoner-card",
+    "title": "Buchenwald prisoner card 56906 — Lajos Helman",
+    "subject": "lajos",
+    "image": "images/card-56906-lajos.jpg",
+    "board": 322,
+    "repository": "arolsen",
+    "reference": "56906",
+    "date": "1944-06-02"
+  },
+  {
+    "id": "card-57103-michal",
+    "type": "buchenwald-prisoner-card",
+    "title": "Buchenwald prisoner card 57103 — Michal Helman",
+    "subject": "michal",
+    "image": "images/card-57103-michal.jpg",
+    "board": 323,
+    "repository": "arolsen",
+    "reference": "57103",
+    "date": "1944-06-02"
+  },
+  {
+    "id": "card-57101-zacharias",
+    "type": "buchenwald-prisoner-card",
+    "title": "Buchenwald prisoner card 57101 — Zacharias Helman",
+    "subject": "zacharias",
+    "image": "images/card-57101-zacharias.jpg",
+    "board": 324,
+    "repository": "arolsen",
+    "reference": "57101",
+    "date": "1944-06-02"
+  },
+  {
+    "id": "greencard-57101",
+    "type": "labour-detail-card",
+    "title": "Labour detail card 57101 — Zacharias Helman",
+    "subject": "zacharias",
+    "image": "images/greencard-57101.jpg",
+    "note": "Transfer to Magdeburg 23 July 1944; transfer to Auschwitz 6 October in a diagonal hand. Yellow line across the face marks a man sent away.",
+    "repository": "arolsen",
+    "reference": "DocID 6081001"
+  },
+  {
+    "id": "roster-p8",
+    "type": "buchenwald-intake-roster",
+    "title": "Buchenwald intake roster, page 8 — Zacharias 57101 and Michal 57103",
+    "subjects": ["zacharias", "michal"],
+    "image": "images/roster-p8-zacharias-michal.jpg",
+    "note": "Nominal roll of the 1,000 Hungarian-Jewish arrivals of 2 June 1944. Both coded Z4; Grünfeld, Herman at 57102 between them.",
+    "repository": "arolsen",
+    "reference": "page 8, scan 0002077"
+  },
+  {
+    "id": "roster-p6",
+    "type": "buchenwald-intake-roster",
+    "title": "Buchenwald intake roster, page 6 — Lajos 56906",
+    "subjects": ["lajos"],
+    "image": "images/roster-p6-lajos.jpg",
+    "note": "Two pages earlier in the same roll; lower number means earlier arrival.",
+    "repository": "arolsen",
+    "reference": "page 6, scan 0002075"
+  },
+  {
+    "id": "helen-birth-1929",
+    "type": "civil-birth-register",
+    "title": "Civil birth register, Bohdan, 1929 — Helen, entry 81",
+    "subject": "helen",
+    "image": "images/helen-birth-1929.jpg",
+    "fields": {
+      "Child": "Helena, girl, Jewish. No surname is entered.",
+      "Mother": "Landó-ová Rozi, at home, age 25",
+      "Father": "Named only in the remarks: Hellman Zacharias, resident of Bohdan, age 29, acknowledging the child as his own",
+      "Signed": "By the father, in his own hand"
+    },
+    "significance": "Because the marriage was religious only, the state entered her under her mother's surname, so the child has no surname on the page. To trace her, look under Landó.",
+    "repository": "jewishgen",
+    "reference": "Fund 1606, Opus 9, Delo 252"
+  },
+  {
+    "id": "birth-david-1902",
+    "type": "civil-birth-register",
+    "title": "Civil birth register, Tiszabogdány, 1902 — David Helman, entry 44",
+    "subject": "david",
+    "image": "images/birth-david-1902.jpg",
+    "fields": {
+      "Declarant": "Helman Iczik, fuvaros (carter), resident of Tiszabogdány, born in Delatyn, age 51",
+      "Mother": "Dikter Faiga, napszámos (day labourer), born in Delatyn, age 37",
+      "Remarks": "'Legitimate' struck out and 'natural' entered. Iczik declares direct knowledge of the child and acknowledges it as his own.",
+      "Closing line": "Read aloud to the declarant, who does not understand Hungarian, explained in a language he does understand, approved, and signed.",
+      "Signed": "Helman Itzik, in his own hand"
+    },
+    "significance": "Both parents born in Delatyn, Galicia — the paternal origin. The religious-only marriage and the language barrier are already at work in 1902.",
+    "repository": "sub-carpathia",
+    "reference": "Fund 1606, Opus 9, Delo 155"
+  },
+  {
+    "id": "birth-hinda-1927",
+    "type": "civil-birth-register",
+    "title": "Civil birth register, Bohdan, 1927 — Hermina (Hinda) Helman, entry 48",
+    "subject": "hinda",
+    "image": "images/birth-hinda-1927.jpg",
+    "fields": {
+      "Mother": "Landó-ová Roža, at home, Bogdan, age 24, entered under her maiden name",
+      "Father": "In the remarks only: Zigmund Helman, resident of Bogdan, 26, povozník (carter), with right of domicile in Delatyn, Poland, acknowledging the child as his own",
+      "Signed": "Zigmund Helman, in his own hand"
+    },
+    "significance": "Zigmund and Zacharias are the same man. Children filed under Landó. The pattern behind step two of the method: search the mother's maiden name.",
+    "repository": "sub-carpathia",
+    "reference": "Fund 1606, Opus 9"
+  },
+  {
+    "id": "census-1921",
+    "type": "census",
+    "title": "1921 Czechoslovak census, Bohdan, house 263 — the Helman household",
+    "subjects": ["iczik", "faiga", "miksa", "zacharias", "david"],
+    "image": "images/census-1921-household.jpg",
+    "note": "Iczik (b.1849 Delatyn) and Feige (b.1867 Delatyn) with sons Misel 1886, Zigmond 1901, David 1902, Misel's wife Chaje, and six grandchildren.",
+    "significance": "One sheet puts Misel (Miksa) in the same house as Zigmond (Zacharias) — turns two unknown men on a camp roster into a nephew and his uncle.",
+    "repository": "hungaricana",
+    "reference": "1921 Kárpátalja census · indexed by JewishGen"
+  },
+  {
+    "id": "signature-zacharias",
+    "type": "signature",
+    "title": "Signature of Zacharias Helman",
+    "subject": "zacharias",
+    "image": "images/signature-zacharias.png",
+    "reference": "Buchenwald registration form, 2 June 1944"
+  },
+  {
+    "id": "pot-yadvashem",
+    "type": "pages-of-testimony",
+    "title": "Yad Vashem Pages of Testimony — Miksa Helman, Adél née Petranker, and two sons",
+    "subjects": ["miksa", "adel"],
+    "note": "Submitted by surviving children filing from Israel in the 1990s.",
+    "repository": "yadvashem",
+    "reference": "items 225463, 225464, 225466, 1191850, 1191854"
+  },
+  {
+    "id": "budapest-registration-1945",
+    "type": "survivor-registration",
+    "title": "Budapest survivor registration forms (Törzslap), 1945",
+    "subjects": ["lajos", "michal"],
+    "note": "In their own hands; place them in Budapest June 1945. Lajos registered 8 June; Michal wrote 'Helmán Mihály'.",
+    "repository": "usc-shoah",
+    "reference": "Törzslap, 1945"
+  }
+]
