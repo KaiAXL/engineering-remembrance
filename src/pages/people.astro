@@ -16,7 +16,7 @@ const people = await getPeople();
 
   <nav class="routes" aria-label="People">
     {people.map((person) => (
-      <a href={`/person/${person.id}`}>
+      <a href={`/person/${person.id}.html`}>
         <span class="rk">{person.name}</span>
         <span class="rd">{person.role}</span>
       </a>

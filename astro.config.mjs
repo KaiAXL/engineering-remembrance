@@ -6,4 +6,8 @@ import { defineConfig } from 'astro/config';
 // root, so no `base` path is needed.
 export default defineConfig({
   site: 'https://engineeringremembrance.org',
+  // Emit /case.html rather than /case/index.html, preserving the site's existing
+  // .html URL scheme that the navigation and cross-links (and any external links
+  // to the live site) already depend on.
+  build: { format: 'file' },
 });

@@ -102,6 +102,36 @@ export async function getRecordsForPerson(personId: string): Promise<ArchivalRec
   );
 }
 
+// ---- Editorial content (case, method, brief) --------------------------------
+
+/** The Case page: narrative steps, conflicts, negatives, and the standard. */
+export async function getCaseStudy() {
+  return {
+    steps: siteContent.caseSteps,
+    conflicts: siteContent.conflicts,
+    negativeResults: siteContent.negativeResults,
+    standard: siteContent.standard,
+  };
+}
+
+/** The Method page: the ordered steps and the two governing rules. */
+export async function getMethod() {
+  return {
+    steps: siteContent.methodSteps,
+    rules: siteContent.methodRules,
+  };
+}
+
+/** The one-page Research Brief. */
+export async function getBrief() {
+  return siteContent.brief;
+}
+
+/** Audio clips (Helen's testimony and interview excerpts). */
+export async function getAudioClips() {
+  return siteContent.audioClips;
+}
+
 // ---- Map & journeys ---------------------------------------------------------
 
 export async function getMapSites() {

@@ -31,7 +31,7 @@ const spouse = person.spouse ? await getPerson(person.spouse) : undefined;
 const records = await getRecordsForPerson(person.id);
 
 // A small helper: link to another person's page only if we actually hold them.
-const rel = (p: Person) => `/person/${p.id}`;
+const rel = (p: Person) => `/person/${p.id}.html`;
 
 // Structured facts, rendered as .fields rows only when present.
 const facts: { label: string; value: string }[] = [];

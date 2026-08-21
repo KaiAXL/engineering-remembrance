@@ -1,0 +1,92 @@
+---
+import Base from '@layouts/Base.astro';
+import { getCaseStudy } from '@lib/data';
+
+const { steps, conflicts, negativeResults, standard } = await getCaseStudy();
+
+// The two intake-roster figures sit between the narrative steps in the original:
+// scan 0002077 after step 2, scan 0002075 after step 3. They are documents, not
+// data, so they stay inline here.
+const figures: Record<number, { src: string; alt: string; caption: string; cite: string }> = {
+  2: {
+    src: '/images/roster-p8-zacharias-michal.jpg',
+    alt: 'Buchenwald intake roster page 8, with Helman Zacharias 57101 and Helman Michal 57103 highlighted',
+    caption: 'The moment the case opened. Two Helmans on one page, two lines apart, both in Z4.',
+    cite: 'Arolsen Archives · scan 0002077',
+  },
+  3: {
+    src: '/images/roster-p6-lajos.jpg',
+    alt: 'Buchenwald intake roster page 6, with Helman Lajos 56906 highlighted',
+    caption: 'Helman, Lajos, 56906, two pages earlier in the same roll.',
+    cite: 'Arolsen Archives · scan 0002075',
+  },
+};
+---
+<Base
+  title="The Case &middot; Engineering Remembrance"
+  description="One prisoner card became a dossier of more than 300 records, tracing the Helman family of Tiszabogd&aacute;ny from a Carpathian village to a reunion in Budapest in 1945."
+  current="/case.html"
+  ogTitle="The Case · Engineering Remembrance"
+  ogDescription="One prisoner card became a dossier of more than 300 records."
+>
+  <p class="eyebrow">The Case</p>
+  <h1>I always thought he was alone.</h1>
+  <p class="lede">He wasn&rsquo;t. Two lines below him on the transport roster was his nephew Michal. Two pages earlier was his nephew Lajos. They were arrested in the same village, carried in the same trade, sent to the same block, and photographed one behind the other on the same morning.</p>
+
+  {steps.map((step, i) => (
+    <>
+      <div class={`step${i % 2 === 1 ? ' alt' : ''}`}>
+        <span class="no">{String(step.no).padStart(2, '0')}</span>
+        <div>
+          <h4>{step.title}</h4>
+          <p>{step.body}</p>
+          {'cite' in step && step.cite && <p class="cite">{step.cite}</p>}
+        </div>
+      </div>
+      {figures[step.no] && (
+        <figure class="doc">
+          <img src={figures[step.no].src} alt={figures[step.no].alt} loading="lazy" decoding="async" />
+          <figcaption>
+            {figures[step.no].caption}
+            <span class="cite">{figures[step.no].cite}</span>
+          </figcaption>
+        </figure>
+      )}
+    </>
+  ))}
+
+  <hr class="stitch" />
+
+  <h2>Conflicting evidence</h2>
+  <p>Four conflicts sit inside this case. They are recorded here rather than resolved silently.</p>
+
+  <div class="fields">
+    {conflicts.map((c) => (
+      <div>
+        <span class="lbl">{c.label}</span>
+        <span class="val" set:html={c.value} />
+      </div>
+    ))}
+  </div>
+
+  <h2>What was searched and not found</h2>
+  <p>Negative results are part of the case. {negativeResults.join(' ')}</p>
+
+  <div class="panel">
+    <span class="lbl">Standard applied</span>
+    <p>{standard}</p>
+  </div>
+
+  <h3>Repositories</h3>
+  <p class="sources">Arolsen Archives &middot; Yad Vashem Central Database of Shoah Victims&rsquo; Names &middot; Terez&iacute;n Memorial &middot; USHMM &middot; JewishGen Subcarpathia and M&aacute;ramaros vital records &middot; Sub-Carpathia Genealogy &middot; the 1921 Czechoslovak census &middot; Budapest survivor registration forms &middot; <em>Sefer Marmaros</em>, Rakhiv and Bogdan chapters &middot; the Kassa deportation log as published in Braham.</p>
+
+  <figure class="sig">
+    <img src="/images/signature-zacharias.png" alt="The signature of Zacharias Helman" />
+    <figcaption>Zacharias Helman &middot; Buchenwald registration form, 2 June 1944</figcaption>
+  </figure>
+
+  <footer class="page">
+    <p>Every claim on this page is attached to the record it came from. Fuller citations, including fund, opus and delo numbers for the civil registers, are available for any line here.</p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
+  </footer>
+</Base>

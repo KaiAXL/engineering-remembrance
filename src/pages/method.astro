@@ -1,0 +1,56 @@
+---
+import Base from '@layouts/Base.astro';
+import { getMethod } from '@lib/data';
+
+const { steps, rules } = await getMethod();
+---
+<Base
+  title="The Method &middot; Engineering Remembrance"
+  description="Four steps for AI-assisted record linkage across fragmented, multilingual archives, held to a standard of convergence."
+  current="/method.html"
+  ogTitle="The Method · Engineering Remembrance"
+  ogDescription="Four steps, and one standard of proof."
+>
+  <p class="eyebrow">The Method</p>
+  <h1>How to do this yourself</h1>
+  <p class="lede">Seven steps, in order. No training, no subscription, and no trip to an archive. Everything here can be done from a kitchen table, for free.</p>
+
+  {steps.map((step, i) => (
+    <div class={`step${i % 2 === 1 ? ' alt' : ''}`}>
+      <span class="no">{String(step.no).padStart(2, '0')}</span>
+      <div>
+        <h4>{step.title}</h4>
+        <p>{step.body}</p>
+        <p class="todo">Do this: {step.todo}</p>
+      </div>
+    </div>
+  ))}
+
+  <h2>Two rules that matter more than any database</h2>
+
+  {rules.map((rule) => (
+    <div class="panel">
+      <span class="lbl">{rule.label}</span>
+      <p>{rule.body}</p>
+    </div>
+  ))}
+
+  <h2>Why women are the hardest to find</h2>
+  <p>The maiden-name rule in step two is not a quirk of one family. It was the ordinary practice of a whole region, and it means that most people searching for a grandmother are searching the one name they were told while she sits filed under another. It is the most common wall in this work, and it is the reason step one comes first.</p>
+
+  <h2>Where to search</h2>
+  <p>Every collection used in this case, with what each one holds and what it costs, is listed on the <a href="/databases.html">databases page</a>.</p>
+
+  <h3>If you get stuck</h3>
+  <p class="sources">Write to me. I read everything, and if I can point you at the right collection I will. <a href="mailto:sgrajews@stanford.edu">sgrajews@stanford.edu</a></p>
+
+  <figure class="sig">
+    <img src="/images/signature-zacharias.png" alt="The signature of Zacharias Helman" />
+    <figcaption>Zacharias Helman &middot; Buchenwald registration form, 2 June 1944</figcaption>
+  </figure>
+
+  <footer class="page">
+    <p>This page is free to print, copy and hand to anyone.</p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
+  </footer>
+</Base>
