@@ -1018,9 +1018,11 @@ figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8re
 /* Databases read as two columns once there is room */
 @media (min-width:78rem){
   .dbgrid{
-    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(30rem,1fr));
     gap:0 2.6rem; align-items:start;
   }
+  /* a section with a single entry fills the row instead of leaving a hole */
+  .dbgrid:has(> .db:only-child){ grid-template-columns:1fr; }
   .dbgrid .db{ margin-left:0; margin-right:0; padding-left:0; padding-right:0; }
 }
 
@@ -1031,51 +1033,7 @@ figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8re
 .step p + p{ margin-top:.8rem; }
 .step .cite{ margin-top:.9rem; }
 
-/* ── Method: process flowsheet ───────────────────────────────────────────── */
-.fsheet{ position:relative; padding:0 0 0 0; }
-.fstream{
-  font-family:var(--mono); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--accent); border:1px dashed var(--rule); border-radius:2px;
-  padding:.55rem .8rem; background:transparent; text-align:center;
-}
-.fstream b{ font-weight:500; color:var(--ink-dim); letter-spacing:.04em; text-transform:none; font-family:var(--sans,inherit); font-size:.9rem; }
-.fstream.in{ margin-bottom:.2rem; }
-.fstream.out{ margin-top:.2rem; border-style:solid; border-color:var(--accent-deep); }
 
-.funits{ list-style:none; margin:0; padding:0; }
-.funits li{
-  position:relative; display:grid; grid-template-columns:2.6rem 1fr; align-items:baseline;
-  gap:0 .9rem; margin:0; padding:.7rem .9rem .7rem .8rem;
-  border:1px solid var(--rule); border-radius:2px; background:var(--panel);
-}
-.funits li + li{ margin-top:1.35rem; }
-/* the rail between unit operations */
-.funits li + li::before{
-  content:''; position:absolute; left:2.05rem; top:-1.35rem; height:1.35rem;
-  border-left:1px solid var(--rule);
-}
-.funits li + li::after{
-  content:''; position:absolute; left:calc(2.05rem - 3px); top:-.42rem;
-  border-left:3px solid transparent; border-right:3px solid transparent;
-  border-top:5px solid var(--accent-deep);
-}
-.funits .fn{ font-family:var(--mono); font-size:.72rem; color:var(--accent); letter-spacing:.06em; }
-.funits .ft{ font-size:1rem; color:var(--ink); }
-.funits .fo{ display:block; grid-column:2; font-size:.86rem; color:var(--muted); margin-top:.2rem; }
-
-/* recycle stream: 07 feeds back into 03 */
-.frecycle{
-  position:absolute; right:-.2rem; top:var(--rt,32%); height:var(--rh,46%);
-  width:2.2rem; border:1px dashed var(--accent-deep); border-left:0;
-  border-radius:0 3px 3px 0;
-}
-.frecycle span{
-  position:absolute; right:-.35rem; top:50%; transform:translate(100%,-50%);
-  font-family:var(--mono); font-size:.6rem; letter-spacing:.13em; text-transform:uppercase;
-  color:var(--accent-deep); white-space:nowrap;
-}
-@media (max-width:72rem){ .frecycle{ display:none; } }
-@media (min-width:72rem){ .fsheet{ padding-right:9.5rem; } }
 
 /* ── Clear air between numbered steps ────────────────────────────────────── */
 .step{ margin-bottom:1.5rem; padding-bottom:1.7rem; }
@@ -1122,3 +1080,135 @@ figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8re
   .pair.rev .panel{ margin-top:1.4rem; }
   .pair.rev .fields + .panel{ margin-top:1.4rem; }
 }
+
+/* ── Wide screens: a measured text column, full-width evidence ───────────── */
+@media (min-width:86rem){
+  .wrap{
+    display:grid;
+    grid-template-columns:1fr min(40rem,100%) 1fr;
+    column-gap:0;
+  }
+  .wrap > *{ grid-column:2; min-width:0; }
+
+  /* anything that carries evidence or navigation uses the whole width */
+  .wrap > .pair,
+  .wrap > .dbgrid,
+  .wrap > .hero,
+  .wrap > .routes,
+  .wrap > .strip,
+  .wrap > .mapframe,
+  .wrap > .flow,
+  .wrap > .pull,
+  .wrap > figure.doc,
+  .wrap > .fields,
+  .wrap > hr.stitch{ grid-column:1 / -1; }
+
+  /* the column now sets the measure, so the per-element caps come off */
+  .wrap > p, .wrap > .lede, .wrap > .claim,
+  .wrap > .panel p, .wrap > .sources, .wrap > .step p{ max-width:none; }
+  .wrap > h1{ max-width:none; }
+}
+
+/* ── Method: the process flowsheet ───────────────────────────────────────── */
+.flow{
+  margin:2rem 0 3.2rem; padding:2rem 2.2rem 1.8rem;
+  background:var(--panel); border:1px solid var(--rule); border-radius:3px;
+}
+.fsheet{ position:relative; }
+
+.fstream{
+  display:flex; align-items:baseline; gap:.9rem;
+  margin:0; padding:.62rem 1rem;
+  border:1px dashed var(--rule); border-radius:2px;
+  background:transparent; max-width:none;
+}
+.fstream .sk{
+  font-family:var(--mono); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--accent); flex:0 0 auto;
+}
+.fstream b{ font-weight:400; color:var(--ink-dim); font-size:.95rem; letter-spacing:0; }
+.fstream.out{ border-style:solid; border-color:var(--accent-deep); }
+.fstream.out .sk{ color:var(--accent-deep); }
+
+.funits{ list-style:none; margin:0; padding:0; counter-reset:none; }
+.funits li{
+  position:relative;
+  display:grid; grid-template-columns:2.9rem 1fr; align-items:start; gap:0 1rem;
+  margin:0; padding:.85rem 1.1rem .85rem .9rem;
+  background:var(--paper); border:1px solid var(--rule); border-radius:2px;
+  transition:border-color .18s ease, transform .18s ease;
+}
+.funits li:hover{ border-color:var(--accent-deep); }
+.funits li + li{ margin-top:1.5rem; }
+
+/* the connector between unit operations */
+.funits li + li::before{
+  content:''; position:absolute; left:2.35rem; top:-1.5rem; height:1.5rem;
+  border-left:1px solid var(--rule);
+}
+.funits li + li::after{
+  content:''; position:absolute; left:calc(2.35rem - 3.5px); top:-.5rem;
+  border-left:3.5px solid transparent; border-right:3.5px solid transparent;
+  border-top:6px solid var(--accent-deep);
+}
+.fstream.in{ margin-bottom:1.5rem; }
+.fstream.out{ margin-top:1.5rem; }
+.fstream.in::after, .fstream.out::before{
+  content:''; position:absolute; left:calc(2.35rem + 1.1rem); width:1px; height:1.5rem;
+  border-left:1px solid var(--rule);
+}
+.fstream.in::after{ margin-top:.62rem; }
+
+.funits .fn{
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.06em;
+  color:var(--accent); padding-top:.16rem;
+}
+.funits .ft{ font-size:1.02rem; color:var(--ink); line-height:1.35; }
+.funits .fo{
+  display:block; grid-column:2; margin-top:.25rem;
+  font-size:.85rem; color:var(--muted); line-height:1.45;
+}
+
+/* recycle stream: the names found at 07 re-enter at 03 */
+.frecycle{
+  position:absolute; right:-1.1rem; top:19%; height:58%;
+  width:2.4rem; border:1px dashed var(--accent-deep); border-left:0;
+  border-radius:0 4px 4px 0; pointer-events:none;
+}
+.frecycle::before,
+.frecycle::after{
+  content:''; position:absolute; left:-4px;
+  border-top:4px solid transparent; border-bottom:4px solid transparent;
+}
+.frecycle::before{ top:-1px; border-right:6px solid var(--accent-deep); }
+.frecycle span{
+  position:absolute; right:0; top:50%;
+  transform:translate(100%,-50%) rotate(90deg); transform-origin:left center;
+  padding-left:.5rem;
+  font-family:var(--mono); font-size:.58rem; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--accent-deep); white-space:nowrap;
+}
+.flowgate{
+  margin-top:1.6rem; padding:.9rem 1.1rem;
+  border:1px solid var(--rule); border-left:2px solid var(--accent-deep);
+  border-radius:2px; background:var(--panel);
+  font-size:.93rem; line-height:1.55; color:var(--ink-dim); max-width:none;
+}
+.flowgate .gk{
+  display:block; margin-bottom:.3rem;
+  font-family:var(--mono); font-weight:500; font-size:.6rem;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent);
+}
+.flow figcaption{ margin-top:1.1rem; color:var(--muted); font-size:.85rem; font-style:italic; line-height:1.55; }
+
+@media (min-width:72rem){ .fsheet{ padding-right:4rem; } }
+@media (max-width:72rem){ .frecycle{ display:none; } }
+@media (max-width:44rem){
+  .flow{ padding:1.4rem 1.2rem 1.2rem; }
+  .funits li{ grid-template-columns:2.4rem 1fr; padding:.75rem .8rem; }
+  .funits li + li::before{ left:1.9rem; }
+  .funits li + li::after{ left:calc(1.9rem - 3.5px); }
+}
+
+/* intrinsic width/height attributes must not fight the fluid layout */
+img{ max-width:100%; height:auto; }
