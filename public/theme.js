@@ -53,7 +53,7 @@ document.addEventListener('close', function(e){
   var MEN = {
     lajos: {
       name: 'Lajos Helman',
-      who: 'Helen\u2019s first cousin. Nineteen years old.',
+      who: 'Helen\u2019s cousin. Nineteen years old.',
       num: 'Board 322 \u00b7 Buchenwald 56906',
       body: [
         'Born 9 December 1924 in Tiszabogd\u00e1ny. A carter, like his uncle.',
@@ -65,7 +65,7 @@ document.addEventListener('close', function(e){
     },
     michal: {
       name: 'Michal Helman',
-      who: 'Helen\u2019s first cousin. Eighteen years old.',
+      who: 'Helen\u2019s cousin. Eighteen years old.',
       num: 'Board 323 \u00b7 Buchenwald 57103',
       body: [
         'Born 15 October 1925 in Tiszabogd\u00e1ny. A carter.',
