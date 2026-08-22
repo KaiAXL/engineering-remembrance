@@ -171,7 +171,10 @@ const mapData = {
   // Budapest-only extent
   var bpBounds = bounds.filter(function(p){ return p[0]>47.30 && p[0]<47.66 && p[1]>18.80 && p[1]<19.40; });
   if(!bpBounds.length) bpBounds = bounds;
-  map.fitBounds(bpBounds,{padding:[40,40]});
+  // Open tight on central Budapest, where most story pins cluster, rather than
+  // fitting the whole Budapest-area box (which shrinks everything into a dot).
+  // The "Budapest" button fits all Budapest-area pins; "Whole journey" fits Europe.
+  map.setView([47.4979, 19.0450], 13);
 
   var legend=L.control({position:'bottomright'});
   legend.onAdd=function(){var d=L.DomUtil.create('div','legend');
