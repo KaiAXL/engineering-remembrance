@@ -1280,3 +1280,11 @@ img{ max-width:100%; height:auto; }
   .wrap > .hero{ grid-column:1 / -1; }
   .hero figcaption{ max-width:46rem; margin-inline:auto; }
 }
+
+/* The hero competes with the text above it, so short windows need a smaller share */
+@media (max-height:56rem) and (min-width:64.01rem){
+  .hero img{ max-height:min(48vh, 30rem); }
+}
+@media (max-height:46rem) and (min-width:64.01rem){
+  .hero img{ max-height:min(42vh, 24rem); }
+}
