@@ -1,0 +1,56 @@
+---
+import Base from '@layouts/Base.astro';
+---
+<Base
+  title="Interactive Map &middot; Engineering Remembrance"
+  description="Every place the records put the family, from Tiszabogdány to Los Angeles, mapped from documents and testimony."
+  current="/map.html"
+  ogTitle="Interactive Map · Engineering Remembrance"
+  ogDescription="From Tiszabogdány to Los Angeles, mapped from documents and testimony."
+>
+  <p class="eyebrow">Interactive Map</p>
+  <h1>From Tiszabogd&aacute;ny to Los Angeles</h1>
+  <p class="lede">An interactive map of five journeys. Zoom, pan, and open any marker to read what places it there. Every site is placed from a record or from testimony.</p>
+
+  <p>Budapest is the centre of this map, because Helen was sent there in late 1943 and it is the reason she lived: the household she was left with, the yellow-star house, the route of the march. But it reaches well past the city in both directions: out to the village on the Tisza, to the ghetto and the transport, to the camps and the subcamps, to the roads Tibi and Eva were marched along, and then through the displaced-persons camps to the ship in 1947 and the cities that came after.</p>
+
+  <p>The map draws five routes. Helen&rsquo;s own, from the village to Budapest and then through the displaced-persons camps to the ship in 1947. Her mother Roza&rsquo;s, from Bohdan to the M&aacute;t&eacute;szalka ghetto and Auschwitz. Her cousins Michal and Lajos, who went through Auschwitz and Buchenwald and came back. And two from the family she married into: Tibor Katz, from Szatm&aacute;r in Transylvania, who survived a death march out of Budapest under the Arrow Cross, and his niece Eva. He and Helen lost their families separately and did not meet until long afterwards, in Los Angeles, where they married in the 1960s.</p>
+
+  <div class="pair rev">
+    <figure class="doc">
+      <img src="/images/kloster-indersdorf.jpg" alt="The monastery church at Kloster Indersdorf, Bavaria, photographed in the present day" loading="lazy" decoding="async" width="1400" height="768" />
+      <figcaption>
+        Kloster Indersdorf, Bavaria. The twelfth-century monastery ran as an UNRRA children&rsquo;s centre after the war, taking in unaccompanied children and teenagers who had come out of the camps and the hiding places. Helen was one of them in 1946.
+        <span class="cite">Photograph by H. Helmlechner &middot; CC BY-SA 4.0 via Wikimedia Commons</span>
+      </figcaption>
+    </figure>
+    <div class="panel">
+      <span class="lbl">Why this place is on the map</span>
+      <p>The children&rsquo;s centre is where the postwar half of Helen&rsquo;s route becomes documented again. She appears in the Indersdorf records, then at Prien am Chiemsee, then on a sponsorship file, then on a passenger list. Five places, four archives, one girl.</p>
+      <p>It is also where the only photograph we have of her from those years was taken, standing with her friend Ibi Weinberger.</p>
+    </div>
+  </div>
+
+  <p class="sources">Everything else on this site concerns Helen&rsquo;s own family: the Helmans, the Land&oacute;s and the Sperbers. The map is the one place where her husband&rsquo;s family appears alongside them. The photograph of Kloster Indersdorf is by H. Helmlechner, used under CC BY-SA 4.0; every other image on this site is a family document or a family photograph.</p>
+
+  <p class="maplabel"><span class="tag">Interactive</span> Click any pin for the record behind it. Drag to move, scroll to zoom, open the timeline index, and switch on a single person&rsquo;s path.</p>
+  <div class="mapframe">
+    <iframe src="/budapest-map.html" title="Interactive map of family sites from Tiszabogd&aacute;ny to Los Angeles" loading="lazy"></iframe>
+  </div>
+  <p class="caption">Every pin opens the record that places it, with a link to the spot on Google Maps. <a href="/budapest-map.html" target="_blank" rel="noopener">Open the map full screen</a>.</p>
+
+  <div class="panel">
+    <span class="lbl">How the pins were placed</span>
+    <p>An address is only on this map if a document put it there: a registration card, a directory entry, a deportation record, a testimony that names the street. Where the record gives a building and the family memory gives a different one, both are noted rather than reconciled.</p>
+  </div>
+
+  <figure class="sig">
+    <img src="/images/signature-zacharias.png" alt="The signature of Zacharias Helman" width="939" height="171" />
+    <figcaption>Zacharias Helman &middot; Buchenwald registration form, 2 June 1944</figcaption>
+  </figure>
+
+  <footer class="page">
+    <p>Base map &copy; OpenStreetMap contributors.</p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
+  </footer>
+</Base>

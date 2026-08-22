@@ -1,0 +1,70 @@
+---
+import Sidebar from '@components/Sidebar.astro';
+import HelenDialog from '@components/HelenDialog.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** href of this page for the active nav state, e.g. "/databases". */
+  current?: string;
+  /** Overrides for social cards; sensible defaults below. */
+  ogTitle?: string;
+  ogDescription?: string;
+}
+
+const {
+  title,
+  description,
+  current,
+  ogTitle = title,
+  ogDescription = description,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/images/og-image.jpg', Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Engineering Remembrance" />
+  <meta property="og:title" content={ogTitle} />
+  <meta property="og:description" content={ogDescription} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Buchenwald intake photographs of three men of one family, 2 June 1944" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href={canonical} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script is:inline>
+    (function () {
+      var t;
+      try { t = localStorage.getItem('er-theme'); } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t || 'dark');
+      var d;
+      try { d = localStorage.getItem('er-side'); } catch (e) {}
+      document.documentElement.setAttribute('data-side', d || 'on');
+    })();
+  </script>
+</head>
+<body>
+  <Sidebar current={current} />
+  <main class="main">
+    <div class="wrap">
+      <slot />
+    </div>
+  </main>
+  <HelenDialog />
+  <script is:inline src="/theme.js"></script>
+</body>
+</html>

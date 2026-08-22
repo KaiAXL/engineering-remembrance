@@ -1,0 +1,316 @@
+---
+import { getMapSites, getJourneys } from '@lib/data';
+
+// Build the map's data at build time from the data layer, transforming the
+// stored object shapes into the tuple/collection shapes the Leaflet renderer
+// below expects. This is the "wire the map to the data layer" step: the pins,
+// routes and journeys now come from /data (soon a DB), not inline literals.
+const ms = await getMapSites();
+const jr = await getJourneys();
+const colors = ms.colors as Record<string, string>;
+
+const toTuple = (s: any) => [s.id, s.lat, s.lng, colors[s.color], s.name, s.why, s.address];
+const sites = ms.sites.map(toTuple);
+const journey = ms.journey.map(toTuple);
+
+// Timeline: {header} objects become ['header'] arrays; ids stay as-is.
+const idxOrder = ms.timelineOrder.map((e: any) =>
+  e && typeof e === 'object' && 'header' in e ? [e.header] : e,
+);
+
+const C = jr.waypoints as Record<string, [number, number]>;
+const routes = jr.routes.map((r: any) => ({
+  a: C[r.from],
+  b: r.to ? C[r.to] : r.toCoord,
+  color: r.color,
+  label: r.label,
+  detail: r.detail,
+}));
+
+const mapData = {
+  colors,
+  topPriority: ms.topPriority,
+  starHouses: ms.starHouses,
+  sites,
+  journey,
+  idxOrder,
+  C,
+  routes,
+  evac: jr.evacuationTrain,
+  foot: jr.footMarch,
+  dm: jr.budapestDeathMarch,
+  specials: ms.specialMarkers, // bomb / margit / tibi — coords + text from data
+  personPaths: jr.personPaths,
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Helen and Tibi Family Sites</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html,body{margin:0;height:100%;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  #map{height:100%;width:100%}
+  .pin{width:26px;height:26px;border-radius:50%;color:#fff;font:700 13px Georgia,serif;
+       display:flex;align-items:center;justify-content:center;border:2px solid #fff;
+       box-shadow:0 1px 5px rgba(0,0,0,.45)}
+  .leaflet-popup-content{font:14px/1.4 -apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:11px 13px}
+  .leaflet-popup-content b{font-size:14.5px}
+  .leaflet-popup-content a{color:#1a73e8;text-decoration:none;font-weight:600}
+  .legend{background:#fff;padding:9px 11px;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.3);
+          font:12.5px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#333}
+  .legend b{display:block;margin-bottom:4px;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:#666}
+  .legend i{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:-1px}
+  .banner{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,.94);
+          padding:6px 16px;border-radius:20px;box-shadow:0 1px 6px rgba(0,0,0,.25);font:13px/1.3 -apple-system,Segoe UI,Arial,sans-serif;color:#333;text-align:center}
+  .banner b{font-size:14px}
+  .dmlabel,.crlabel{display:none}
+  .crlabel{background:rgba(255,255,255,.85);border:none;box-shadow:none;font-size:10.5px;color:#555;font-weight:600;padding:0 3px}
+  .pjlabel{background:rgba(255,255,255,.92);border:1px solid rgba(0,0,0,.12);border-radius:3px;font-size:10px;color:#333;font-weight:700;padding:0 3px}
+  .idx{max-height:54vh;overflow:auto;min-width:180px}
+  .idx a{display:block;color:#1a56b0;text-decoration:none;padding:1px 2px;cursor:pointer;font-size:12px;line-height:1.45}
+  .idx a:hover{text-decoration:underline;background:#f0f4ff}
+  .idx .gh{font-weight:700;color:#8a5a00;margin:7px 0 2px;text-transform:uppercase;font-size:10px;letter-spacing:.04em}
+  .idx .gh:first-child{margin-top:2px}
+</style>
+</head>
+<body>
+<div class="banner"><b>Helen &amp; Tibi Family Sites</b><br><span style="font-size:11px;color:#666">tap a pin for the story and a Google Maps link</span></div>
+<div id="map"></div>
+<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script is:inline define:vars={{ mapData }}>
+  var G=mapData.colors.G, A=mapData.colors.A, R=mapData.colors.R, P=mapData.colors.P,
+      D=mapData.colors.D, J=mapData.colors.J, H=mapData.colors.H, E=mapData.colors.E;
+  var topPriority=mapData.topPriority;   // key spots render purple
+  var starHouses=mapData.starHouses;     // confirmed yellow-star houses get a yellow badge
+  var sites=mapData.sites;               // [num, lat, lng, colorHex, name, why, address]
+  var journey=mapData.journey;
+  var idxOrder=mapData.idxOrder;
+
+  // display number = chronological position (so the home village is 1)
+  var dispNum={};(function(){var n=0;idxOrder.forEach(function(e){if(typeof e==='number'){n++;dispNum[e]=n;}});})();
+  var map = L.map('map').setView([47.4979,19.0450],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {attribution:'&copy; OpenStreetMap contributors', maxZoom:19}).addTo(map);
+  var bounds=[];
+  var markerById={}, coordById={};
+  sites.forEach(function(s){
+    var num=s[0],lat=s[1],lng=s[2],color=s[3],name=s[4],why=s[5],addr=s[6];
+    if(topPriority.indexOf(num)>=0) color=P;
+    bounds.push([lat,lng]);
+    var icon=L.divIcon({className:'',html:'<div class="pin" style="background:'+color+'">'+dispNum[num]+'</div>',
+      iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-13]});
+    var g='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
+    markerById[num]=L.marker([lat,lng],{icon:icon}).addTo(map)
+      .bindPopup('<b>'+dispNum[num]+'. '+name+'</b><br>'+why+'<br><a href="'+g+'" target="_blank" rel="noopener">Open in Google Maps &#8599;</a>');
+    coordById[num]=[lat,lng];
+    if(starHouses.indexOf(num)>=0){
+      L.marker([lat,lng],{icon:L.divIcon({className:'',html:'<div style="color:#f5c518;font-size:18px;line-height:1;text-shadow:0 0 2px #6b4e00,0 1px 2px rgba(0,0,0,.65)">&#10017;</div>',iconSize:[18,18],iconAnchor:[-3,25]}),interactive:false,zIndexOffset:900}).addTo(map);
+    }
+  });
+  journey.forEach(function(s){
+    var num=s[0],lat=s[1],lng=s[2],color=s[3],name=s[4],why=s[5],addr=s[6];
+    var icon=L.divIcon({className:'',html:'<div class="pin" style="background:'+color+'">'+dispNum[num]+'</div>',
+      iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-13]});
+    var g='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
+    markerById[num]=L.marker([lat,lng],{icon:icon}).addTo(map)
+      .bindPopup('<b>'+dispNum[num]+'. '+name+'</b><br>'+why+'<br><a href="'+g+'" target="_blank" rel="noopener">Open in Google Maps &#8599;</a>');
+    coordById[num]=[lat,lng];
+  });
+  // --- Deportation and camp routes (dotted lines; dated labels collapsible) ---
+  var C=mapData.C;
+  function croute(a,b,color,label,detail){
+    var ln=L.polyline([a,b],{color:color,weight:2.5,opacity:.8,dashArray:'2,6'}).addTo(map);
+    ln.bindTooltip(label,{permanent:true,direction:'center',className:'crlabel'});
+    ln.bindPopup('<b>'+label+'</b>'+(detail?'<br>'+detail:''));
+    return ln;}
+  mapData.routes.forEach(function(r){ croute(r.a,r.b,r.color,r.label,r.detail); });
+
+  // April 1945 evacuation train, then the foot march to Terezín
+  L.polyline(mapData.evac.path,{color:mapData.evac.color,weight:2.5,opacity:.8,dashArray:'2,6'}).addTo(map)
+    .bindTooltip(mapData.evac.label,{permanent:true,direction:'center',className:'crlabel'})
+    .bindPopup('<b>'+mapData.evac.title+'</b><br>'+mapData.evac.detail);
+  L.polyline(mapData.foot.path,{color:mapData.foot.color,weight:2.6,opacity:.85,dashArray:'7,5'}).addTo(map)
+    .bindTooltip(mapData.foot.label,{permanent:true,direction:'center',className:'crlabel'})
+    .bindPopup('<b>'+mapData.foot.title+'</b><br>'+mapData.foot.detail);
+
+  // Special markers (bespoke glyphs; coordinates + text from the data layer)
+  var specialById={};
+  mapData.specials.forEach(function(s){ specialById[s.id]=s; });
+  function special(id){ return specialById[id]; }
+
+  var sBomb=special('bomb');
+  coordById.bomb=[sBomb.lat,sBomb.lng];
+  markerById.bomb=L.marker([sBomb.lat,sBomb.lng],{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#5a5a5a;width:24px;height:24px;font-size:13px">&#10041;</div>',iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-12]})}).addTo(map)
+    .bindTooltip(sBomb.label,{permanent:true,direction:'top',className:'crlabel'})
+    .bindPopup('<b>'+sBomb.title+'</b><br>'+sBomb.detail);
+
+  // --- The Budapest death march (November 1944) ---
+  var route=mapData.dm.path;
+  var marchLine=L.polyline(route,{color:mapData.dm.color,weight:4,opacity:.8}).addTo(map);
+  marchLine.bindTooltip(mapData.dm.label,{permanent:true,direction:'top',className:'dmlabel'});
+  route.forEach(function(p){bounds.push(p);});
+  L.polyline([route[route.length-1],mapData.dm.continuation.toCoord],{color:mapData.dm.color,weight:2.5,opacity:.45,dashArray:'8,8'}).addTo(map)
+    .bindTooltip(mapData.dm.continuation.label,{permanent:true,direction:'top',className:'dmlabel'});
+
+  var sMargit=special('margit');
+  coordById.margit=[sMargit.lat,sMargit.lng];
+  markerById.margit=L.marker([sMargit.lat,sMargit.lng],{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#fff;border:3px solid #8e2020;width:30px;height:30px;font-size:16px">👠</div>',iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-15]})}).addTo(map)
+    .bindTooltip(sMargit.label,{permanent:true,direction:'top',className:'dmlabel'})
+    .bindPopup('<b>'+sMargit.title+'</b><br>'+sMargit.detail);
+
+  var sTibi=special('tibi');
+  coordById.tibi=[sTibi.lat,sTibi.lng];
+  markerById.tibi=L.marker([sTibi.lat,sTibi.lng],{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#fff;border:3px solid #2a9d8f;width:30px;height:30px;font-size:16px">🐻</div>',iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-15]})}).addTo(map)
+    .bindTooltip(sTibi.label,{permanent:true,direction:'bottom',className:'dmlabel'})
+    .bindPopup('<b>'+sTibi.title+'</b><br>'+sTibi.detail);
+
+  // Budapest-only extent
+  var bpBounds = bounds.filter(function(p){ return p[0]>47.30 && p[0]<47.66 && p[1]>18.80 && p[1]<19.40; });
+  if(!bpBounds.length) bpBounds = bounds;
+  // Default view is the tight central-Budapest setView from init (top of script).
+  // We intentionally do NOT fitBounds(bpBounds) here — that shrank every pin into a
+  // dot. The "Budapest" button fits all Budapest-area pins; "Whole journey" fits Europe.
+
+  var legend=L.control({position:'bottomright'});
+  legend.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    d.innerHTML='<b id="legHdr" style="cursor:pointer;user-select:none">Legend &#9656;</b>'+
+      '<div id="legBody" style="margin-top:3px;display:none">'+
+      '<i style="background:#8e44ad"></i>Top priority<br>'+
+      '<i style="background:#2f8b57"></i>Confirmed<br>'+
+      '<i style="background:#dd9b2b"></i>Candidate / uncertain<br>'+
+      '<span style="color:#f5c518;font-size:15px;margin-right:3px;vertical-align:-1px">&#10017;</span>Confirmed yellow-star house<br>'+
+      '<i style="background:#3d7ea6"></i>Family home &amp; origin<br>'+
+      '<i style="background:#3f3f3f"></i>Deportation + camps<br>'+
+      '<i style="background:#2a9d8f"></i>DP + emigration journey<br>'+
+      '<i style="background:#a62c2c"></i>Deportation to Auschwitz (dotted)<br>'+
+      '<i style="background:#5a5a5a"></i>Camp transfers (dotted)<br>'+
+      '<i style="background:#7a2f52"></i>The eastern front, 1943 (dotted)<br>'+
+      '<i style="background:#a62c2c"></i>Margit &amp; Eva: death march &rarr; Bergen-Belsen<br>'+
+      '<i style="background:#2a9d8f"></i>Where Tibi feigned death &amp; escaped (approx.)';
+    d.innerHTML+='</div>';
+    L.DomEvent.disableClickPropagation(d);
+    return d;};
+  legend.addTo(map);
+  (function(){var h=document.getElementById('legHdr');h.onclick=function(){var b=document.getElementById('legBody');var open=b.style.display!=='none';b.style.display=open?'none':'';h.innerHTML='Legend '+(open?'&#9656;':'&#9662;');};})();
+
+  // --- collapsible route/date labels (hidden by default) ---
+  var dmCtl=L.control({position:'bottomright'});
+  dmCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    d.innerHTML='<b id="dmHdr" style="cursor:pointer;user-select:none">Route labels &amp; dates &#9656;</b>';
+    L.DomEvent.disableClickPropagation(d);return d;};
+  dmCtl.addTo(map);
+  (function(){var shown=false;var h=document.getElementById('dmHdr');
+    h.onclick=function(){shown=!shown;
+      document.querySelectorAll('.leaflet-tooltip.dmlabel,.leaflet-tooltip.crlabel').forEach(function(el){el.style.display=shown?'block':'none';});
+      h.innerHTML='Route labels &amp; dates '+(shown?'&#9662;':'&#9656;');};})();
+
+  var allBounds = bounds.concat(journey.map(function(s){return [s[1],s[2]];}));
+  var euBounds = allBounds.filter(function(p){ return p[1] < 30; });
+  if(!euBounds.length) euBounds = allBounds;
+  var viewCtl = L.control({position:'topleft'});
+  viewCtl.onAdd=function(){
+    var d=L.DomUtil.create('div','legend');
+    d.innerHTML='<b>View</b><button id="vBp" style="display:block;width:100%;margin:2px 0;cursor:pointer">Budapest</button><button id="vAll" style="display:block;width:100%;margin:2px 0;cursor:pointer">Whole journey</button>';
+    L.DomEvent.disableClickPropagation(d);
+    return d;};
+  viewCtl.addTo(map);
+  document.getElementById('vBp').onclick=function(){map.fitBounds(bpBounds,{padding:[40,40]});};
+  document.getElementById('vAll').onclick=function(){map.fitBounds(euBounds,{padding:[30,30]});};
+
+  // --- Clickable timeline index ---
+  var nameById={};
+  sites.concat(journey).forEach(function(s){nameById[s[0]]=s[4];});
+  nameById.margit='Margit shot on the death march (approx.)';
+  nameById.tibi='Tibi feigned death &amp; escaped (approx.)';
+  nameById.bomb='Reitzenhain: the train attacked';
+  function stripName(s){return s.replace(/\s*&#9733;/g,'');}
+  var idxCtl=L.control({position:'topright'});
+  idxCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    var html='<b id="idxHdr" style="cursor:pointer;user-select:none">Timeline index &#9656;</b><div id="idxBody" class="idx" style="display:none">';
+    idxOrder.forEach(function(e){
+      if(Array.isArray(e)){html+='<div class="gh">'+e[0]+'</div>';}
+      else{var lbl=(typeof e==='number'?dispNum[e]+'. ':'')+stripName(nameById[e]||('#'+e));
+        html+='<a data-id="'+e+'">'+lbl+'</a>';}
+    });
+    html+='</div>';d.innerHTML=html;
+    L.DomEvent.disableClickPropagation(d);L.DomEvent.disableScrollPropagation(d);
+    return d;};
+  idxCtl.addTo(map);
+  (function(){
+    var h=document.getElementById('idxHdr');var b=document.getElementById('idxBody');
+    h.onclick=function(){var open=b.style.display!=='none';b.style.display=open?'none':'';h.innerHTML='Timeline index '+(open?'&#9656;':'&#9662;');};
+    b.querySelectorAll('a[data-id]').forEach(function(a){
+      a.onclick=function(){var id=a.getAttribute('data-id');if(!isNaN(id))id=+id;
+        var c=coordById[id];if(!c)return;
+        var z=(id==='bomb')?8:((typeof id==='string')?11:(id<=31?15:7));
+        map.flyTo(c,z,{duration:.8});
+        var m=markerById[id];if(m)setTimeout(function(){m.openPopup();},850);};
+    });
+  })();
+
+  // --- Per-person journey layers (toggle; off by default) ---
+  var BPc=[47.4979,19.0450];
+  var journeys=mapData.personPaths; // { name: { color, points:[[lat,lng] | [lat,lng,label]] } }
+  var sharedPlaces={};
+  Object.keys(journeys).forEach(function(who){
+    journeys[who].points.forEach(function(p){
+      if(!p[2]) return;
+      var k=p[0].toFixed(3)+','+p[1].toFixed(3);
+      sharedPlaces[k]=sharedPlaces[k]||{label:p[2],lat:p[0],lng:p[1],users:[]};
+      if(sharedPlaces[k].users.indexOf(who)<0) sharedPlaces[k].users.push(who);
+    });
+  });
+  Object.keys(sharedPlaces).forEach(function(k){
+    var sp=sharedPlaces[k];
+    if(sp.users.length<2) return;
+    sp.marker=L.circleMarker([sp.lat,sp.lng],{radius:4.2,color:'#fff',weight:1.4,fillColor:'#3f3f3f',fillOpacity:1})
+      .bindTooltip(sp.label,{permanent:true,direction:'top',className:'pjlabel'});
+    sp.shared=true;
+  });
+  function refreshSharedLabels(){
+    Object.keys(sharedPlaces).forEach(function(k){
+      var sp=sharedPlaces[k]; if(!sp.shared) return;
+      var anyOn=sp.users.some(function(w){return map.hasLayer(journeyLayers[w]);});
+      if(anyOn && !map.hasLayer(sp.marker)) sp.marker.addTo(map);
+      if(!anyOn && map.hasLayer(sp.marker)) map.removeLayer(sp.marker);
+    });
+  }
+  var journeyLayers={};
+  Object.keys(journeys).forEach(function(who){
+    var color=journeys[who].color, pts=journeys[who].points, line=[], fg=L.featureGroup();
+    pts.forEach(function(p){line.push([p[0],p[1]]);});
+    L.polyline(line,{color:color,weight:3.5,opacity:.9,dashArray:'1,8',lineCap:'round'}).addTo(fg);
+    pts.forEach(function(p){
+      var cm=L.circleMarker([p[0],p[1]],{radius:3.6,color:'#fff',weight:1.2,fillColor:color,fillOpacity:1}).addTo(fg);
+      var k=p[0].toFixed(3)+','+p[1].toFixed(3);
+      var isShared=sharedPlaces[k]&&sharedPlaces[k].shared;
+      if(p[2]&&!isShared) cm.bindTooltip(p[2],{permanent:true,direction:'top',className:'pjlabel'});
+    });
+    journeyLayers[who]=fg;
+  });
+  var pjCtl=L.control({position:'bottomleft'});
+  pjCtl.onAdd=function(){var d=L.DomUtil.create('div','legend');
+    var html='<b id="pjHdr" style="cursor:pointer;user-select:none">A person\'s path &#9656;</b><div id="pjBody" style="margin-top:3px;display:none">';
+    Object.keys(journeys).forEach(function(who){
+      html+='<label style="display:block;cursor:pointer;white-space:nowrap"><input type="checkbox" data-who="'+who+'" style="vertical-align:-1px;margin-right:5px"><span style="border-bottom:2.5px dotted '+journeys[who].color+'">'+who+'</span></label>';
+    });
+    html+='</div>'; d.innerHTML=html;
+    L.DomEvent.disableClickPropagation(d); return d;};
+  pjCtl.addTo(map);
+  (function(){
+    var h=document.getElementById('pjHdr'),b=document.getElementById('pjBody');
+    h.onclick=function(){var open=b.style.display!=='none';b.style.display=open?'none':'';h.innerHTML='A person\'s path '+(open?'&#9656;':'&#9662;');};
+    document.querySelectorAll('input[data-who]').forEach(function(cb){
+      cb.onchange=function(){var who=cb.getAttribute('data-who'),fg=journeyLayers[who];
+        if(cb.checked){fg.addTo(map);try{map.fitBounds(fg.getBounds(),{padding:[45,45]});}catch(e){}}
+        else{map.removeLayer(fg);}
+        refreshSharedLabels();};
+    });
+  })();
+</script>
+</body>
+</html>

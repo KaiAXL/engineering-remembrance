@@ -1,0 +1,13 @@
+---
+import { getPrimaryQuote } from '@lib/data';
+const quote = await getPrimaryQuote();
+---
+<dialog id="helen" class="helen">
+  <button class="hclose" type="button" aria-label="Close">&times;</button>
+  <p class="hlabel">In her own voice</p>
+  <blockquote class="hquote">&ldquo;{quote.text}&rdquo;</blockquote>
+  <p class="hattr">{quote.attribution}</p>
+  <audio class="hear" controls preload="none" src="/audio/helen-testimony.mp3">
+    <a href="/audio/helen-testimony.mp3">Download the clip</a>
+  </audio>
+</dialog>

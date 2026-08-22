@@ -1,0 +1,174 @@
+---
+import Base from '@layouts/Base.astro';
+import {
+  getPeople,
+  getPerson,
+  getPeopleByIds,
+  getRecordsForPerson,
+} from '@lib/data';
+import type { Person } from '@lib/types';
+
+// One static page per person, generated at build time. When the data layer moves
+// to a DB, this same function pages over DB rows instead of the JSON array — the
+// route itself is unchanged.
+export async function getStaticPaths() {
+  const people = await getPeople();
+  return people.map((person) => ({
+    params: { id: person.id },
+    props: { person },
+  }));
+}
+
+interface Props {
+  person: Person;
+}
+const { person } = Astro.props;
+
+// Resolve relational edges and attached documents through the data layer.
+const parents = await getPeopleByIds(person.parents);
+// Renderable child links come from `sons` (arrays of person ids). `children` is
+// only ever a count (e.g. 6) or non-id names, so it is not a source of links.
+const sons = await getPeopleByIds(person.sons);
+const spouse = person.spouse ? await getPerson(person.spouse) : undefined;
+const records = await getRecordsForPerson(person.id);
+
+// A small helper: link to another person's page only if we actually hold them.
+const rel = (p: Person) => `/person/${p.id}.html`;
+
+// Structured facts, rendered as .fields rows only when present.
+const facts: { label: string; value: string }[] = [];
+if (person.born) facts.push({ label: 'Born', value: person.born + (person.bornPlace ? ` · ${person.bornPlace}` : '') });
+else if (person.bornPlace) facts.push({ label: 'Born', value: person.bornPlace });
+if (person.died) facts.push({ label: 'Died', value: person.died });
+if (person.trade) facts.push({ label: 'Trade', value: person.trade });
+if (person.residence) facts.push({ label: 'Residence', value: person.residence });
+if (person.origin) facts.push({ label: 'Origin', value: person.origin });
+if (person.aka?.length) facts.push({ label: 'Also recorded as', value: person.aka.join(', ') });
+if (person.arrest) facts.push({ label: 'Arrest', value: person.arrest });
+if (person.buchenwald) {
+  const b = person.buchenwald;
+  const parts = [
+    b.board ? `board ${b.board}` : null,
+    b.prisonerNumber ? `Buchenwald ${b.prisonerNumber}` : null,
+    b.block ? `block ${b.block}` : null,
+    b.registered ? `registered ${b.registered}` : null,
+  ].filter(Boolean);
+  facts.push({ label: 'Buchenwald', value: parts.join(' · ') });
+}
+---
+<Base
+  title={`${person.name} · Engineering Remembrance`}
+  description={person.role}
+  current="/people.html"
+  ogTitle={`${person.name} · Engineering Remembrance`}
+>
+  <p class="eyebrow"><a href="/people.html">The People</a></p>
+  <h1>{person.name}</h1>
+  <p class="lede">{person.role}</p>
+
+  {person.bio && <p>{person.bio}</p>}
+  {person.note && <p>{person.note}</p>}
+
+  {facts.length > 0 && (
+    <div class="fields">
+      {facts.map((f) => (
+        <div><span class="lbl">{f.label}</span><span class="val">{f.value}</span></div>
+      ))}
+    </div>
+  )}
+
+  {person.fate && (
+    <div class="panel">
+      <span class="lbl">Fate</span>
+      <p>{person.fate}</p>
+    </div>
+  )}
+
+  {person.path && person.path.length > 0 && (
+    <>
+      <h2>The administrative trail</h2>
+      <div class="fields">
+        {person.path.map((stage, n) => (
+          <div><span class="lbl">{String(n + 1).padStart(2, '0')}</span><span class="val">{stage}</span></div>
+        ))}
+      </div>
+    </>
+  )}
+
+  {((person.birthDateConflict && person.birthDateConflict.length > 0) ||
+    (person.deathDateConflict && person.deathDateConflict.length > 0)) && (
+    <>
+      <h2>Conflicting evidence</h2>
+      {person.birthDateConflict && person.birthDateConflict.length > 0 && (
+        <div class="panel">
+          <span class="lbl">Birth date on record</span>
+          <p>{person.birthDateConflict.join(' · ')}</p>
+        </div>
+      )}
+      {person.deathDateConflict && person.deathDateConflict.length > 0 && (
+        <div class="panel">
+          <span class="lbl">Death date on record</span>
+          <p>{person.deathDateConflict.join(' · ')}</p>
+        </div>
+      )}
+    </>
+  )}
+
+  {(parents.length > 0 || spouse || sons.length > 0) && (
+    <>
+      <h2>Family</h2>
+      <div class="fields">
+        {parents.length > 0 && (
+          <div>
+            <span class="lbl">Parents</span>
+            <span class="val">{parents.map((p, n) => (<>{n > 0 && ', '}<a href={rel(p)}>{p.name}</a></>))}</span>
+          </div>
+        )}
+        {spouse && (
+          <div><span class="lbl">Spouse</span><span class="val"><a href={rel(spouse)}>{spouse.name}</a></span></div>
+        )}
+        {sons.length > 0 && (
+          <div>
+            <span class="lbl">Children</span>
+            <span class="val">{sons.map((p, n) => (<>{n > 0 && ', '}<a href={rel(p)}>{p.name}</a></>))}</span>
+          </div>
+        )}
+      </div>
+    </>
+  )}
+
+  {records.length > 0 && (
+    <>
+      <h2>Records</h2>
+      {records.map((r) => (
+        <figure class="doc">
+          {r.image && <img src={`/${r.image}`} alt={r.title} loading="lazy" decoding="async" />}
+          <figcaption>
+            {r.title}
+            {r.note && <> — {r.note}</>}
+            {r.reference && <span class="cite">{r.reference}</span>}
+          </figcaption>
+        </figure>
+      ))}
+    </>
+  )}
+
+  {person.photos && person.photos.length > 0 && (
+    <div class="strip">
+      <span class="lbl">Photographs</span>
+      <div class="frames">
+        {person.photos.map((ph) => (
+          <figure>
+            <img src={`/${ph.file}`} alt={ph.caption} loading="lazy" decoding="async" />
+            <figcaption><span class="yr">{ph.year}</span><span class="cap">{ph.caption}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <footer class="page">
+    <p><a href="/people.html">← All people</a></p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
+  </footer>
+</Base>

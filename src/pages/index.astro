@@ -1,0 +1,106 @@
+---
+import Base from '@layouts/Base.astro';
+import { getPerson, getPrimaryQuote } from '@lib/data';
+
+const helen = await getPerson('helen');
+const photos = helen?.photos ?? [];
+const quote = await getPrimaryQuote();
+---
+<Base
+  title="Engineering Remembrance &middot; recovering Holocaust families from the archive"
+  description="Recovering Holocaust family histories from fragmented, multilingual archives. A repeatable method, and the case it was built on."
+  current="/"
+  ogTitle="Engineering Remembrance &middot; recovering Holocaust families from the archive"
+  ogDescription="Recovering families from the records that were meant to erase them."
+>
+  <p class="eyebrow">Tiszabogd&aacute;ny &middot; Subcarpathia</p>
+
+  <h1>Engineering Remembrance</h1>
+
+  <p class="claim">One surname. One shtetl. One trade. <span>Together again, over 80 years later.</span></p>
+
+  <p class="lede">A repeatable method for recovering family histories from online archives through AI-assisted record linkage. Developed on a Holocaust case, and not limited to one.</p>
+
+  <figure class="hero">
+    <div class="faces">
+      <img src="/images/hero-three-men.jpg" alt="Buchenwald intake photographs of Lajos, Michal and Zacharias Helman, 2 June 1944, boards 322, 323 and 324" loading="eager" decoding="async">
+      <button class="face" type="button" data-man="lajos"     aria-label="Lajos Helman, board 322"></button>
+      <button class="face" type="button" data-man="michal"    aria-label="Michal Helman, board 323"></button>
+      <button class="face" type="button" data-man="zacharias" aria-label="Zacharias Helman, board 324"></button>
+    </div>
+    <p class="facehint">Tap or click a face for his record</p>
+    <div class="facecard" id="facecard" hidden>
+      <button class="fcclose" type="button" aria-label="Close">&times;</button>
+      <p class="fcname"></p>
+      <p class="fcwho"></p>
+      <p class="fcnum"></p>
+      <div class="fcbody"></div>
+      <p class="fcfate"></p>
+    </div>
+    <figcaption>
+      Buchenwald intake, 2 June 1944. The placards read A 2 6 44, then the board number. Two brothers and their uncle. All three born and raised in Tiszabogd&aacute;ny, all three arrested there, all three carters by trade, photographed one behind the other about a week after Auschwitz and housed together in the tent camp at Z-4. Their cards were then filed apart for more than eighty years. Here they are side by side again.
+      <span class="cite">Arolsen Archives &middot; prisoner cards 56906, 57103, 57101</span>
+    </figcaption>
+  </figure>
+
+  <nav class="routes" aria-label="Where to go next">
+    <a href="/case.html">
+      <span class="rk">The Case</span>
+      <span class="rd">One prisoner card became more than three hundred records, two cousins Helen had described but never named, and a living branch of the family whose tree was missing two of Iczik&rsquo;s sons. Shown in the order it was worked.</span>
+    </a>
+    <a href="/method.html">
+      <span class="rk">The Method</span>
+      <span class="rd">Seven steps you can follow on your own family, each one with something concrete to go and do. No training and no subscription required.</span>
+    </a>
+    <a href="/databases.html">
+      <span class="rk">Databases</span>
+      <span class="rd">Every collection used here, with links, what each one holds, what it costs, and the one trick that makes it work. Most are free.</span>
+    </a>
+  </nav>
+
+  <hr class="stitch">
+
+  <h2>Where it started</h2>
+  <p>The family had one prisoner card and assumed that was the end of it. The research began in 2026, and it is now a dossier of more than three hundred records. None of it required travel. <a href="/case.html">Read how it was found.</a></p>
+
+  <div class="panel">
+    <span class="lbl">The standard</span>
+    <p>An identification is admitted only where independent record types corroborate one another without contradiction, and every linkage is verified against the primary document. Where the evidence supports a probable conclusion rather than a proven one, it is stated as probable.</p>
+  </div>
+
+  <hr class="stitch">
+
+  <div class="strip">
+    <span class="lbl">Helen &middot; 1929 to 2013</span>
+    <div class="frames">
+      {photos.map((photo) => (
+        <figure>
+          <img src={`/${photo.file}`} alt={photo.caption} loading="lazy" decoding="async">
+          <figcaption><span class="yr">{photo.year}</span><span class="cap">{photo.caption}</span></figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+
+  <div class="pull">
+    <p>&ldquo;{quote.text}&rdquo;</p>
+    <cite>{quote.attribution}</cite>
+  </div>
+
+  <div class="panel contact">
+    <span class="lbl">If you are trying to find your own family</span>
+    <p>Write to me. I read everything, and if I can point you at the right collection I will. Start with <a href="/method.html">the method</a> and <a href="/databases.html">the databases</a>.</p>
+    <p><a href="mailto:sgrajews@stanford.edu">sgrajews@stanford.edu</a></p>
+    <p class="speaking">Speaking at the World Federation of Jewish Holocaust Survivors and Descendants, 36th Annual Conference, Philadelphia, 23 to 26 October 2026.</p>
+  </div>
+
+  <figure class="sig">
+    <img src="/images/signature-zacharias.png" alt="The signature of Zacharias Helman">
+    <figcaption>Zacharias Helman &middot; Buchenwald registration form, 2 June 1944</figcaption>
+  </figure>
+
+  <footer class="page">
+    <p>Ongoing research. Documents cited on request.</p>
+    <p class="place">Kailua, Hawai&lsquo;i</p>
+  </footer>
+</Base>

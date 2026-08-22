@@ -1,0 +1,186 @@
+[
+  {
+    "id": "helen",
+    "name": "Helen Landó Helman",
+    "aka": ["Helena", "Ilona"],
+    "role": "The survivor at the centre of the project; the researcher's grandmother",
+    "born": "1929-04-13",
+    "bornPlace": "Bohdan (Tiszabogdány), Subcarpathia",
+    "birthRegistered": "1929-04-20",
+    "died": "2013",
+    "birthRecord": {
+      "register": "Civil birth register, Bohdan",
+      "entry": 81,
+      "note": "Registered under mother's surname Landó; father named only in the remarks. No surname entered for the child.",
+      "citation": "JewishGen Subcarpathia · Fund 1606, Opus 9, Delo 252"
+    },
+    "fate": "Only survivor of her immediate family; mother, father and five siblings murdered. Sent to Budapest late 1943, then through DP camps to the USA on the SS Marine Marlin, May 1947.",
+    "parents": ["zacharias", "roza"],
+    "photos": [
+      { "year": "1946", "file": "images/helen-1946.jpg", "caption": "Indersdorf, Germany, with her best friend Ibi Weinberger (middle)" },
+      { "year": "1948", "file": "images/helen-1948.jpg", "caption": "Chicago, USA" },
+      { "year": "1950s", "file": "images/helen-1950s.jpg", "caption": "Studio portrait" },
+      { "year": "2000", "file": "images/helen-2000.jpg", "caption": "With her granddaughter Sam" },
+      { "year": "2010", "file": "images/helen-2010.jpg", "caption": "With Sam, Huntington Beach High School graduation" }
+    ]
+  },
+  {
+    "id": "zacharias",
+    "name": "Zacharias Helman",
+    "aka": ["Zigmund Helman", "Zigmond"],
+    "role": "Helen's father",
+    "born": "1901",
+    "bornPlace": "Tiszabogdány",
+    "birthDateConflict": ["1901-04-11 (civil birth register)", "1901-11-04 (self-reported, Buchenwald)", "1901-10-04 (Yad Vashem / World Jewish Congress)", "1901-09-04 (Hungarian registry card)"],
+    "trade": "Fuhrmann (carter)",
+    "spouse": "roza",
+    "children": 6,
+    "buchenwald": { "board": 324, "prisonerNumber": 57101, "registered": "1944-06-02", "block": "Z-4" },
+    "arrest": "Recorded 15 May 1944 at Tiszabogdány (conflicts with district roundup date)",
+    "path": ["Auschwitz 26 May 1944", "Buchenwald 2 June 1944", "Magdeburg-Rothensee 23 July 1944", "ordered back to Auschwitz 6 October 1944"],
+    "fate": "Murdered at Auschwitz, about 10 October 1944.",
+    "deathDateConflict": ["8 October 1944", "10 October 1944", "17 October 1944"],
+    "parents": ["iczik", "faiga"]
+  },
+  {
+    "id": "lajos",
+    "name": "Lajos Helman",
+    "role": "Helen's first cousin (son of Miksa/Miksa)",
+    "born": "1924-12-09",
+    "bornPlace": "Tiszabogdány",
+    "trade": "Fuhrmann (carter)",
+    "age1944": 19,
+    "buchenwald": { "board": 322, "prisonerNumber": 56906, "registered": "1944-06-02" },
+    "arrest": "1944-04-10",
+    "path": ["Auschwitz 24 May 1944", "Buchenwald 2 June 1944", "Rehmsdorf (Wille) subcamp", "evacuation train and death march", "Terezín"],
+    "fate": "Survived. Liberated at Terezín, 8 May 1945. In Budapest June 1945 (registered 8 June) he and Michal found Helen.",
+    "parents": ["miksa", "adel"]
+  },
+  {
+    "id": "michal",
+    "name": "Michal Helman",
+    "aka": ["Helmán Mihály"],
+    "role": "Helen's first cousin (son of Miksa)",
+    "born": "1925-10-15",
+    "bornPlace": "Tiszabogdány",
+    "trade": "Fuhrmann (carter)",
+    "age1944": 18,
+    "buchenwald": { "board": 323, "prisonerNumber": 57103, "registered": "1944-06-02", "block": "Z-4" },
+    "path": ["Auschwitz 26 May 1944", "Buchenwald 2 June 1944", "Rehmsdorf (Wille)", "evacuation and march", "Terezín (block C III/257)"],
+    "fate": "Survived. Liberated at Terezín, 8 May 1945. In Budapest June 1945 he and Lajos found Helen and told her what had happened to her family.",
+    "parents": ["miksa", "adel"]
+  },
+  {
+    "id": "roza",
+    "name": "Roza Landó",
+    "aka": ["Rozi", "Roža", "Landó-ová Rozi"],
+    "role": "Helen's mother",
+    "bornAge": "25 in 1929",
+    "residence": "Bohdan",
+    "path": ["Rounded up at Bohdan 16 April 1944", "Mátészalka ghetto", "Auschwitz 26 May 1944"],
+    "fate": "Murdered on arrival at Auschwitz with five of the children, 26 May 1944.",
+    "spouse": "zacharias"
+  },
+  {
+    "id": "iczik",
+    "name": "Iczik Helman",
+    "aka": ["Itzik", "Icyk"],
+    "role": "Zacharias's father; family patriarch",
+    "born": "1849",
+    "bornPlace": "Delatyn (Delyatyn), Galicia",
+    "trade": "Fuvaros (carter)",
+    "note": "Did not understand Hungarian; entries read to him in a language he understood. Signed in his own hand.",
+    "spouse": "faiga",
+    "sons": ["zacharias", "david", "miksa", "jeno"]
+  },
+  {
+    "id": "faiga",
+    "name": "Faiga Dikter",
+    "aka": ["Feige", "Feiga"],
+    "role": "Iczik's wife; family matriarch",
+    "born": "1867",
+    "bornPlace": "Delatyn, Galicia",
+    "trade": "Napszámos (day labourer)",
+    "spouse": "iczik"
+  },
+  {
+    "id": "david",
+    "name": "David Helman",
+    "role": "Zacharias's brother",
+    "born": "1902-04-20",
+    "bornPlace": "Tiszabogdány",
+    "birthRecord": { "register": "Civil birth register, Tiszabogdány", "page": 306, "entry": 44, "citation": "Fund 1606, Opus 9, Delo 155 · scan from Sub-Carpathia Genealogy" },
+    "fate": "Fled east into the Soviet Union in 1939, joined the Red Army, and fell at Stalingrad about 1943 (Soviet side of the front).",
+    "parents": ["iczik", "faiga"]
+  },
+  {
+    "id": "miksa",
+    "name": "Miksa Helman",
+    "aka": ["Misel", "Miksa"],
+    "role": "Iczik's son; father of Lajos and Michal; Zacharias's brother",
+    "born": "1886",
+    "note": "Placed in Iczik's household by the 1921 Czechoslovak census. Never reached Buchenwald; stayed at Auschwitz. Absent from the 1,000-name roll under any surname.",
+    "spouse": "adel",
+    "parents": ["iczik", "faiga"]
+  },
+  {
+    "id": "adel",
+    "name": "Adél Petranker",
+    "aka": ["Hani"],
+    "role": "Miksa's wife; mother of Lajos and Michal",
+    "spouse": "miksa",
+    "note": "Named on Yad Vashem Pages of Testimony filed by surviving children from Israel in the 1990s."
+  },
+  {
+    "id": "jeno",
+    "name": "Jenő Helman",
+    "role": "Zacharias's brother",
+    "fate": "Taken with his son Mordekhai to the Fünfteichen subcamp; died there about January 1945.",
+    "children": ["Mordekhai"]
+  },
+  {
+    "id": "hinda",
+    "name": "Hermina (Hinda) Helman",
+    "role": "Eldest of Zacharias and Roza's six children; Helen's sibling",
+    "born": "1927-03-09",
+    "bornPlace": "Bohdan",
+    "birthRecord": { "register": "Civil birth register, Bohdan", "page": 6, "entry": 48, "note": "Mother entered under maiden name Landó; father Zigmund Helman in the remarks only.", "citation": "Fund 1606, Opus 9 · scan from Sub-Carpathia Genealogy" },
+    "parents": ["zacharias", "roza"]
+  },
+  {
+    "id": "samantha",
+    "name": "Samantha Seligman-Grajewski",
+    "role": "Founder of Engineering Remembrance; the researcher (3G, granddaughter of Helen)",
+    "bio": "Process engineer finishing an M.S. in Chemical Engineering at Stanford. Began the research in 2026 with no prior training in Holocaust research or genealogy.",
+    "email": "sgrajews@stanford.edu"
+  },
+  {
+    "id": "tibor-katz",
+    "name": "Tibor (Tibi) Katz",
+    "role": "Helen's husband; from the family she married into",
+    "origin": "Szatmár / Satu Mare, Transylvania (4 Kossuth Lajos utca)",
+    "fate": "Survived a death march out of Budapest under the Arrow Cross (feigned death and escaped). DP camp at Ainring, then Palestine. Married Helen in Los Angeles in the 1960s.",
+    "family": "Katz"
+  },
+  {
+    "id": "eva",
+    "name": "Eva Katz",
+    "role": "Tibor's niece",
+    "born": "1938",
+    "bornPlace": "Kolozsvár (Cluj)",
+    "parents": ["sandor-katz", "margit-roth"],
+    "fate": "Seized with her mother Margit leaving home; forced onto the death march west, then deported to Bergen-Belsen, where she survived as a small child."
+  },
+  {
+    "id": "sandor-katz",
+    "name": "Sándor Katz",
+    "role": "Eva's father; of the Katz family Helen married into",
+    "family": "Katz"
+  },
+  {
+    "id": "margit-roth",
+    "name": "Margit Roth",
+    "role": "Eva's mother",
+    "fate": "Seized with little Eva on what should have been Eva's first day of school, informed on despite forged Christian papers, and forced onto the death march west out of Budapest. Unable to walk in her heels, she was shot where she stood waiting for a wagon."
+  }
+]

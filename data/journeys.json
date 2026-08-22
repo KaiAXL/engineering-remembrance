@@ -1,0 +1,56 @@
+{
+  "_note": "Source of truth for the routes and per-person paths drawn on budapest-map.html. Coordinates are [lat, lng] or [lat, lng, label]. Key waypoints (C.*) are referenced by name in `routes`.",
+  "waypoints": {
+    "bohdan": [47.9820, 24.1470],
+    "mates": [47.9580, 22.3280],
+    "satu": [47.7920, 22.8780],
+    "kassa": [48.7160, 21.2610],
+    "ausch": [50.0350, 19.1780],
+    "buchen": [51.0220, 11.2480],
+    "magd": [52.1830, 11.6830],
+    "trog": [51.0500, 12.1300],
+    "funf": [51.0300, 17.3200],
+    "terez": [50.5130, 14.1500],
+    "budapest": [47.4979, 19.0450]
+  },
+  "routes": [
+    { "from": "bohdan", "to": "mates", "kind": "deportation", "color": "#a62c2c", "label": "deported, April 1944", "detail": "The whole Rakhiv district, Roza and the children among them, was rounded up on 16 April 1944 and taken to the Mátészalka ghetto. The men of the family were taken separately and later: Lajos on 10 April, and Zacharias and Michal not until 15 May 1944." },
+    { "from": "mates", "to": "kassa", "kind": "deportation", "color": "#a62c2c", "label": "toward Auschwitz, via Kassa", "detail": "" },
+    { "from": "kassa", "to": "ausch", "kind": "deportation", "color": "#a62c2c", "label": "22 May 1944: 3,298 counted at Kassa", "detail": "The transport was counted through Kassa on 22 May 1944, 3,298 people on board, and reached Auschwitz-Birkenau on 24 to 26 May 1944, where Roza and five of the children were murdered on arrival." },
+    { "from": "satu", "to": "ausch", "kind": "deportation", "color": "#a62c2c", "label": "the Satu Mare relatives, May–June 1944", "detail": "The Katz family of Satu Mare were deported to Auschwitz on the same days." },
+    { "from": "ausch", "to": "buchen", "kind": "camp-transfer", "color": "#5a5a5a", "label": "the three Helman men, 2 June 1944", "detail": "Zacharias, Michal, and Lajos were sent from Auschwitz to Buchenwald on 2 June 1944." },
+    { "from": "buchen", "to": "magd", "kind": "camp-transfer", "color": "#5a5a5a", "label": "Zacharias, 23 July 1944", "detail": "Zacharias was sent from Buchenwald to the Magdeburg-Rothensee subcamp on 23 July 1944." },
+    { "from": "buchen", "to": "trog", "kind": "camp-transfer", "color": "#5a5a5a", "label": "Michal & Lajos, to the fuel plant", "detail": "The brothers were sent from Buchenwald to the Rehmsdorf / Tröglitz subcamp, the 'Wille' synthetic-fuel plant." },
+    { "from": "ausch", "to": "funf", "kind": "camp-transfer", "color": "#5a5a5a", "label": "Jenő & Mordekhai, to Fünfteichen", "detail": "Zacharias's brother Jenő and his son Mordekhai were taken to the Fünfteichen subcamp; Jenő died there about January 1945." },
+    { "from": "bohdan", "toCoord": [48.7080, 44.5133], "kind": "eastern-front", "color": "#7a2f52", "label": "David: fled east 1939, fell at Stalingrad", "detail": "David Helman, Zacharias's brother, fled into the Soviet Union in 1939, joined the Red Army as an armed soldier, and fell at Stalingrad in 1942 to 1943, on the SOVIET side of the front, while his nephews Yosef and Moshe were unarmed forced labourers on the Axis side of the same front." },
+    { "from": "bohdan", "toCoord": [50.6000, 40.0000], "kind": "eastern-front", "color": "#7a2f52", "label": "Yosef & Moshe: forced labour on the Don", "detail": "Yosef and Moshe, sons of Miksa, were conscripted into the Hungarian army's unarmed Jewish labour service (the munkaszolgálat) and sent to the Don front, on the Axis side against the Soviets. They carried no weapons; the labour servicemen dug, hauled, and cleared mines under brutal conditions and died in vast numbers when the Soviet breakthrough shattered the front in the winter of 1942 to 1943." }
+  ],
+  "evacuationTrain": {
+    "path": [[51.0500, 12.1300], [50.856, 13.075], [50.706, 13.207], [50.667, 13.150], [50.561, 13.219]],
+    "color": "#5a5a5a",
+    "label": "evacuation train, April 1945",
+    "title": "The Rehmsdorf evacuation train, April 1945",
+    "detail": "As the front closed in, the Rehmsdorf / Tröglitz subcamp (about 4,000 prisoners) was evacuated in open coal wagons up into the Ore Mountains toward Theresienstadt. It reached Reitzenhain, on the Saxon–Bohemian border."
+  },
+  "footMarch": {
+    "path": [[50.561, 13.219], [50.460, 13.418], [50.428, 13.462], [50.359, 13.703], [50.515, 14.051], [50.534, 14.131], [50.5130, 14.1500]],
+    "color": "#6b2f2f",
+    "label": "then on foot to Terezín (death march)",
+    "title": "On foot to Terezín, April 1945",
+    "detail": "At Reitzenhain the train was strafed by Allied aircraft; the survivors were driven on foot down through Chomutov and the Ohře valley to Theresienstadt, about 80 km. Of some 4,000 who left Rehmsdorf, only a few hundred reached Terezín. Michal and Lajos Helman were among the survivors, liberated there on 8 May 1945."
+  },
+  "budapestDeathMarch": {
+    "path": [[47.5350, 19.0400], [47.6350, 18.8300], [47.7220, 18.7280], [47.7600, 18.5550], [47.7480, 18.4430], [47.7220, 18.2830], [47.7430, 18.1200], [47.7150, 18.0100], [47.7300, 17.8200], [47.6870, 17.6350], [47.7200, 17.5000], [47.8700, 17.2670], [47.9130, 17.1590]],
+    "color": "#a62c2c",
+    "label": "Eva: the whole march west to Hegyeshalom",
+    "note": "Documented route along the Danube: Budapest, Piliscsaba, Dorog, Nyergesújfalu, Süttő, Dunaalmás, Komárom, Ács, Gönyű, Győr, Öttevény, Mosonmagyaróvár, Hegyeshalom (the Austrian border).",
+    "continuation": { "toCoord": [52.7570, 9.9070], "label": "then the train to Bergen-Belsen" }
+  },
+  "personPaths": {
+    "Helen": { "color": "#e08a1e", "points": [[47.982, 24.147], [47.4979, 19.0450], [48.352, 11.382], [47.855, 12.345], [53.54, 8.58], [40.71, -74.01, "New York"], [41.88, -87.63, "Chicago"], [34.05, -118.24, "Los Angeles"]] },
+    "Tibi": { "color": "#2a9d8f", "points": [[47.792, 22.878], [47.4979, 19.0450], [53.013, 18.598], [47.812, 12.943], [32.08, 34.78, "Israel"], [34.05, -118.24, "Los Angeles"]] },
+    "Michal & Lajos": { "color": "#3d7ea6", "points": [[47.982, 24.147], [47.958, 22.328], [50.035, 19.178], [51.022, 11.248], [51.05, 12.13], [50.513, 14.15], [47.4979, 19.0450], [47.982, 24.147], [48.615, 22.298]] },
+    "Roza": { "color": "#b5487a", "points": [[47.982, 24.147], [47.4979, 19.0450], [47.982, 24.147], [47.958, 22.328], [48.716, 21.261], [50.035, 19.178]] },
+    "Eva": { "color": "#a62c2c", "points": [[46.771, 23.624], [47.4979, 19.0450], [53.19, 13.17, "Ravensbrück"], [52.757, 9.907], [34.05, -118.24, "Los Angeles"]] }
+  }
+}
