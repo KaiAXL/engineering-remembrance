@@ -16,12 +16,15 @@ const pages = all.filter((f) => f.endsWith('.html'));
 const broken = new Set();
 for (const f of pages) {
   const html = fs.readFileSync(f, 'utf8');
-  for (const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)"/g)) {
-    let l = m[1];
-    if (l.startsWith('//')) continue;
+  for (const m of html.matchAll(/(?:href|src)="(\/[^"]*)"/g)) {
+    // Strip fragment/query so anchored and query-bearing links are still validated
+    // against their target file (previously they were skipped entirely).
+    let l = m[1].split('#')[0].split('?')[0];
+    if (l === '' || l.startsWith('//')) continue;
     if (l.endsWith('/')) l += 'index.html';
-    if (!/\.[a-z0-9]+$/i.test(l)) continue; // skip extensionless
-    if (!exists.has(l)) broken.add(`${path.relative('dist', f)}  ->  ${l}`);
+    // No extensionless skip: under build.format:'file' an extensionless internal
+    // link 404s on Pages, so a missing target is reported rather than ignored.
+    if (!exists.has(l)) broken.add(`${path.relative('dist', f)}  ->  ${m[1]}`);
   }
 }
 
