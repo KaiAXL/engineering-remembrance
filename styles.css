@@ -1005,7 +1005,7 @@ figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8re
 .step{ padding-top:1.85rem; padding-bottom:1.85rem; margin-bottom:.55rem; }
 
 /* ── Wide desktop: use the screen, keep the reading measure ───────────────── */
-@media (min-width:90rem){
+@media (min-width:78rem){
   .wrap{ max-width:84rem; padding:3.8rem 5rem 7rem; }
   /* prose keeps its measure; evidence blocks widen */
   .step > div > p, .db p, .panel p{ max-width:72ch; }
@@ -1027,7 +1027,6 @@ figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8re
 }
 
 
-}
 
 /* ── Method: paragraph rhythm inside a step ──────────────────────────────── */
 .step p + p{ margin-top:.8rem; }
@@ -1082,10 +1081,10 @@ figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8re
 }
 
 /* ── Wide screens: a measured text column, full-width evidence ───────────── */
-@media (min-width:86rem){
+@media (min-width:72rem){
   .wrap{
     display:grid;
-    grid-template-columns:1fr min(40rem,100%) 1fr;
+    grid-template-columns:1fr min(46rem,100%) 1fr;
     column-gap:0;
   }
   .wrap > *{ grid-column:2; min-width:0; }
@@ -1212,3 +1211,53 @@ figure.portrait figcaption{ margin-top:.6rem; color:var(--muted); font-size:.8re
 
 /* intrinsic width/height attributes must not fight the fluid layout */
 img{ max-width:100%; height:auto; }
+
+/* ── Alternating bands: every other block sits on tinted ground ───────────── */
+.step.alt,
+.funits li:nth-child(even),
+.db.alt{
+  background:rgba(184,88,55,.055);
+}
+[data-theme="light"] .step.alt,
+[data-theme="light"] .funits li:nth-child(even),
+[data-theme="light"] .db.alt{
+  background:rgba(150,62,36,.05);
+}
+.funits li:nth-child(odd){ background:var(--panel); }
+.db{ padding-left:1.15rem; padding-right:1.15rem; border-radius:3px; }
+
+/* ── Method: give the flowsheet some life ────────────────────────────────── */
+.fstream{
+  display:flex; align-items:baseline; gap:.9rem;
+  text-align:left; justify-content:flex-start;
+}
+.fstream .sk{ flex:0 0 auto; }
+.fstream b{ flex:1 1 auto; }
+
+.funits li{
+  border-left:2px solid transparent;
+  transition:border-left-color .18s ease, background .18s ease;
+}
+.funits li:hover{ border-left-color:var(--accent); }
+.funits .fn{
+  font-size:1.05rem; font-weight:500; letter-spacing:0;
+  color:var(--accent); opacity:.75; padding-top:0;
+}
+.funits li:hover .fn{ opacity:1; }
+.funits .ft{ font-size:1.06rem; }
+
+/* the wheel, quietly, behind the flowsheet */
+.flow{ position:relative; overflow:hidden; }
+.flow::after{
+  content:''; position:absolute; right:-6.5rem; bottom:-6.5rem;
+  width:19rem; height:19rem; border-radius:50%;
+  border:1px solid var(--rule);
+  opacity:.6; pointer-events:none;
+}
+.flow::before{
+  content:''; position:absolute; right:-2.6rem; bottom:-2.6rem;
+  width:11rem; height:11rem; border-radius:50%;
+  border:1px solid var(--rule);
+  opacity:.5; pointer-events:none;
+}
+.flow > *{ position:relative; z-index:1; }
