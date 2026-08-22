@@ -100,6 +100,16 @@
     "tip": null
   },
   {
+    "id": "ancestry",
+    "name": "Ancestry, Arolsen Concentration Camp Lists 1939–1944",
+    "url": "https://www.ancestry.com/search/collections/63194/",
+    "category": "Camps",
+    "cost": "Subscription, often free at a public library",
+    "costTag": "part",
+    "description": "The same Arolsen camp registers, indexed and name-searchable by Ancestry, with the roster page images attached. A search here sometimes surfaces a person the free Arolsen search misses, and it holds the alphabetical intake rolls that let you read the names on either side of your own. The three men in this case sit one under the other in its 2 June 1944 roll, entries 322, 323 and 324.",
+    "tip": "Search the surname the German way too, and always open the image rather than stopping at the index card. Ancestry also carries the US census, naturalisation and passenger records that document a survivor’s life after 1945, and many public libraries provide free access."
+  },
+  {
     "id": "kehilalinks",
     "name": "JewishGen KehilaLinks",
     "url": "https://kehilalinks.jewishgen.org",

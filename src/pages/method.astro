@@ -15,13 +15,32 @@ const { steps, rules } = await getMethod();
   <h1>How to do this yourself</h1>
   <p class="lede">Seven steps, in order. No training, no subscription, and no trip to an archive. Everything here can be done from a kitchen table, for free.</p>
 
+  <figure class="flow" aria-label="The method as a process flowsheet">
+    <div class="fsheet">
+      <p class="fstream in"><span class="sk">Feed</span> <b>one name, one place, one document</b></p>
+      <ol class="funits">
+        <li><span class="fn">01</span><span class="ft">Normalise the name</span><span class="fo">every spelling, and the mother&rsquo;s maiden name</span></li>
+        <li><span class="fn">02</span><span class="ft">Search both surnames</span><span class="fo">father&rsquo;s and mother&rsquo;s, every time</span></li>
+        <li><span class="fn">03</span><span class="ft">Reconstruct the paper trail</span><span class="fo">arrest, ghetto, transport, camp, liberation, emigration</span></li>
+        <li><span class="fn">04</span><span class="ft">Read the sequence</span><span class="fo">the lines and pages either side of a hit</span></li>
+        <li><span class="fn">05</span><span class="ft">Cross-check with AI</span><span class="fo">collections, languages and scripts at once</span></li>
+        <li><span class="fn">06</span><span class="ft">Verify against the original</span><span class="fo">the register image, not the index</span></li>
+        <li><span class="fn">07</span><span class="ft">Search the people around them</span><span class="fo">neighbours, cousins, the same village</span></li>
+      </ol>
+      <p class="fstream out"><span class="sk">Product</span> <b>a verified linkage, or a gap stated as a gap</b></p>
+      <div class="frecycle" aria-hidden="true"><span>recycle to 03</span></div>
+    </div>
+    <div class="flowgate"><span class="gk">Specification</span> A conclusion is held only where independent kinds of record agree without contradiction, each one verified against the primary document. Anything short of that is recorded as probable, and the conflict is disclosed.</div>
+    <figcaption>Every name recovered at step 07 re-enters the process at step 03, which is why the search compounds. Each unit below is one step, with something concrete to go and do.</figcaption>
+  </figure>
+
   {steps.map((step, i) => (
     <div class={`step${i % 2 === 1 ? ' alt' : ''}`}>
       <span class="no">{String(step.no).padStart(2, '0')}</span>
       <div>
         <h4>{step.title}</h4>
-        <p>{step.body}</p>
-        <p class="todo">Do this: {step.todo}</p>
+        {step.body.map((para) => <p set:html={para} />)}
+        <p class="todo">Do this: <span set:html={step.todo} /></p>
       </div>
     </div>
   ))}

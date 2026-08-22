@@ -14,7 +14,7 @@
     "budapest": [47.4979, 19.0450]
   },
   "routes": [
-    { "from": "bohdan", "to": "mates", "kind": "deportation", "color": "#a62c2c", "label": "deported, April 1944", "detail": "The whole Rakhiv district, Roza and the children among them, was rounded up on 16 April 1944 and taken to the Mátészalka ghetto." },
+    { "from": "bohdan", "to": "mates", "kind": "deportation", "color": "#a62c2c", "label": "deported, April 1944", "detail": "The whole Rakhiv district, Roza and the children among them, was rounded up on 16 April 1944 and taken to the Mátészalka ghetto. The men of the family were taken separately and later: Lajos on 10 April, and Zacharias and Michal not until 15 May 1944." },
     { "from": "mates", "to": "kassa", "kind": "deportation", "color": "#a62c2c", "label": "toward Auschwitz, via Kassa", "detail": "" },
     { "from": "kassa", "to": "ausch", "kind": "deportation", "color": "#a62c2c", "label": "22 May 1944: 3,298 counted at Kassa", "detail": "The transport was counted through Kassa on 22 May 1944, 3,298 people on board, and reached Auschwitz-Birkenau on 24 to 26 May 1944, where Roza and five of the children were murdered on arrival." },
     { "from": "satu", "to": "ausch", "kind": "deportation", "color": "#a62c2c", "label": "the Satu Mare relatives, May–June 1944", "detail": "The Katz family of Satu Mare were deported to Auschwitz on the same days." },
