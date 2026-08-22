@@ -69,6 +69,20 @@ node scripts/check-links.mjs
 The build fails on broken references; the link checker catches dead internal links. CI runs
 both on every pull request, so a red check blocks the merge.
 
+## Before you push (Claude sessions)
+
+**Always run `/code-review low` before pushing.** If you are Claude and about to `git push`
+(or open a PR), run a low-effort code review on the working diff first, and address anything
+it surfaces. No push goes out unreviewed.
+
+```
+/code-review low
+```
+
+Keep it at `low` for routine pushes — high-confidence findings, low noise. Reach for a
+higher effort level only when the change is large or risky. This is in addition to the build
+and link check above, not a replacement for them.
+
 ## Keeping in sync with the old static site
 
 Historically the site author edited the original HTML directly. **That should stop now** —
