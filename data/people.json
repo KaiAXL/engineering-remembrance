@@ -40,17 +40,7 @@
     "path": ["Auschwitz 26 May 1944", "Buchenwald 2 June 1944", "Magdeburg-Rothensee 23 July 1944", "ordered back to Auschwitz 6 October 1944"],
     "fate": "Murdered at Auschwitz, about 10 October 1944.",
     "deathDateConflict": ["8 October 1944", "10 October 1944", "17 October 1944"],
-    "parents": ["iczik", "faiga"],
-    "faceCard": {
-      "who": "Helen's father.",
-      "body": [
-        "Born 1901 in Tiszabogdány. A carter. Married to Roza Landó, six children.",
-        "Auschwitz 26 May. Buchenwald 2 June. Magdeburg-Rothensee on 23 July.",
-        "Worked past use, he was ordered back to Auschwitz that October."
-      ],
-      "fate": "Murdered at Auschwitz, about 10 October 1944, on the ground where his wife and children had waited five months before.",
-      "outcome": "died"
-    }
+    "parents": ["iczik", "faiga"]
   },
   {
     "id": "lajos",
@@ -64,17 +54,7 @@
     "arrest": "1944-04-10",
     "path": ["Auschwitz 24 May 1944", "Buchenwald 2 June 1944", "Rehmsdorf (Wille) subcamp", "evacuation train and death march", "Terezín"],
     "fate": "Survived. Liberated at Terezín, 8 May 1945. In Budapest June 1945 (registered 8 June) he and Michal found Helen.",
-    "parents": ["miksa", "adel"],
-    "faceCard": {
-      "who": "Helen's first cousin. Nineteen years old.",
-      "body": [
-        "Born 9 December 1924 in Tiszabogdány. A carter, like his uncle.",
-        "Arrested 10 April 1944, five weeks before the others on this card.",
-        "Auschwitz 24 May. Buchenwald 2 June. Sent on to the synthetic-fuel plant at Rehmsdorf."
-      ],
-      "fate": "Survived. Liberated at Terezín, May 1945.",
-      "outcome": "lived"
-    }
+    "parents": ["miksa", "adel"]
   },
   {
     "id": "michal",
@@ -88,17 +68,7 @@
     "buchenwald": { "board": 323, "prisonerNumber": 57103, "registered": "1944-06-02", "block": "Z-4" },
     "path": ["Auschwitz 26 May 1944", "Buchenwald 2 June 1944", "Rehmsdorf (Wille)", "evacuation and march", "Terezín (block C III/257)"],
     "fate": "Survived. Liberated at Terezín, 8 May 1945. In Budapest June 1945 he and Lajos found Helen and told her what had happened to her family.",
-    "parents": ["miksa", "adel"],
-    "faceCard": {
-      "who": "Helen's first cousin. Eighteen years old.",
-      "body": [
-        "Born 15 October 1925 in Tiszabogdány. A carter.",
-        "Auschwitz 26 May. Buchenwald 2 June. Rehmsdorf, then the evacuation and the march.",
-        "At Terezín he was billeted in block C III/257."
-      ],
-      "fate": "Survived. In Budapest in June 1945 he and Lajos found Helen and told her what had happened to her family.",
-      "outcome": "lived"
-    }
+    "parents": ["miksa", "adel"]
   },
   {
     "id": "roza",
@@ -198,7 +168,19 @@
     "role": "Tibor's niece",
     "born": "1938",
     "bornPlace": "Kolozsvár (Cluj)",
-    "parents": ["Sándor Katz", "Margit Roth"],
+    "parents": ["sandor-katz", "margit-roth"],
     "fate": "Seized with her mother Margit leaving home; forced onto the death march west, then deported to Bergen-Belsen, where she survived as a small child."
+  },
+  {
+    "id": "sandor-katz",
+    "name": "Sándor Katz",
+    "role": "Eva's father; of the Katz family Helen married into",
+    "family": "Katz"
+  },
+  {
+    "id": "margit-roth",
+    "name": "Margit Roth",
+    "role": "Eva's mother",
+    "fate": "Seized with little Eva on what should have been Eva's first day of school, informed on despite forged Christian papers, and forced onto the death march west out of Budapest. Unable to walk in her heels, she was shot where she stood waiting for a wagon."
   }
 ]

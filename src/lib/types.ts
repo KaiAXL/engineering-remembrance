@@ -9,14 +9,6 @@
  * different facts than a birth register.
  */
 
-export interface FaceCard {
-  who: string;
-  body: string[];
-  fate: string;
-  /** "lived" | "died" — drives the styling of the outcome line. */
-  outcome: 'lived' | 'died';
-}
-
 export interface Photo {
   year: string;
   file: string;
@@ -69,7 +61,6 @@ export interface Person {
   birthRecord?: BirthRecordRef;
   buchenwald?: CampRecord;
   photos?: Photo[];
-  faceCard?: FaceCard;
 }
 
 export interface ArchivalRecord {
