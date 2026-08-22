@@ -26,7 +26,9 @@ const { person } = Astro.props;
 
 // Resolve relational edges and attached documents through the data layer.
 const parents = await getPeopleByIds(person.parents);
-const sons = Array.isArray(person.children) ? [] : await getPeopleByIds(person.sons);
+// Renderable child links come from `sons` (arrays of person ids). `children` is
+// only ever a count (e.g. 6) or non-id names, so it is not a source of links.
+const sons = await getPeopleByIds(person.sons);
 const spouse = person.spouse ? await getPerson(person.spouse) : undefined;
 const records = await getRecordsForPerson(person.id);
 
@@ -82,7 +84,7 @@ if (person.buchenwald) {
     </div>
   )}
 
-  {person.path?.length && (
+  {person.path && person.path.length > 0 && (
     <>
       <h2>The administrative trail</h2>
       <div class="fields">
@@ -93,16 +95,17 @@ if (person.buchenwald) {
     </>
   )}
 
-  {(person.birthDateConflict?.length || person.deathDateConflict?.length) && (
+  {((person.birthDateConflict && person.birthDateConflict.length > 0) ||
+    (person.deathDateConflict && person.deathDateConflict.length > 0)) && (
     <>
       <h2>Conflicting evidence</h2>
-      {person.birthDateConflict?.length && (
+      {person.birthDateConflict && person.birthDateConflict.length > 0 && (
         <div class="panel">
           <span class="lbl">Birth date on record</span>
           <p>{person.birthDateConflict.join(' · ')}</p>
         </div>
       )}
-      {person.deathDateConflict?.length && (
+      {person.deathDateConflict && person.deathDateConflict.length > 0 && (
         <div class="panel">
           <span class="lbl">Death date on record</span>
           <p>{person.deathDateConflict.join(' · ')}</p>
@@ -150,7 +153,7 @@ if (person.buchenwald) {
     </>
   )}
 
-  {person.photos?.length && (
+  {person.photos && person.photos.length > 0 && (
     <div class="strip">
       <span class="lbl">Photographs</span>
       <div class="frames">
