@@ -94,6 +94,32 @@ searching.
 | JewishGen, USC Shoah | `credentialed` | Login required. Never automate; the researcher holds the credentials. |
 | The other 12 | `link-only` | No public interface. Prefilled searches only. |
 
+## Prototype access policy (amended 2026-08-22)
+
+This is a prototype for development and a conference pitch, not production. For **soft-blocked**
+sources we may bend access a little to demonstrate value — but only under heavy limiters and a
+tiny footprint, and never past a hard refusal. The tiers:
+
+| Signal | Archives | Prototype stance |
+|---|---|---|
+| Open by policy | archive.org | Use freely, within the limiters below. No bending needed. |
+| Soft block (unpublished-but-reachable endpoint; robots `Allow`) | Arolsen | May prototype against the observed endpoint under the limiters, **in parallel with** the written outreach — never instead of it. |
+| Hard refusal (scripted 403, robots `Disallow` on the search path) | Hungaricana, USHMM search path | **Not bent.** Honor the refusal; deep-link only. Honoring it *is* treating the API nicely. |
+| Credentialed | JewishGen, USC Shoah | **Never automated.** The researcher holds the credentials. Not a rule to bend. |
+
+**The limiters are inviolable and enforced in the MCP layer, not left to the caller:**
+
+- **Overloading with volume, or inefficient/wildcard queries, is a hard NO — always.** Smallest query that answers the question (surname + town, not wildcards); first page only unless the researcher asks for more.
+- **Retries capped at 1** — one retry with backoff, then stop. Never a retry loop.
+- Per-archive rate limit, target **≤1 request/second**; a per-session request budget; single-flight (no wide parallel fan-out).
+- Aggressive response caching — never re-fetch the same normalised query.
+- Query-driven, never crawling — fetch only what the researcher explicitly asked for.
+- Honor `robots.txt`, `Retry-After`, and any 429/403 by backing off and stopping. Send a truthful User-Agent with a contact address.
+
+This amends, for the prototype phase only, the "No archive's data without permission" line
+below: soft-blocked sources may be prototyped against under these limiters while permission is
+pursued; hard refusals and credentials are respected exactly as stated.
+
 ## Data flow
 
 **`plan_research`** — resolve the place; filter the registry to archives whose coverage
