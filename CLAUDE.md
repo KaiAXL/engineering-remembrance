@@ -13,49 +13,71 @@ content, names, dates, and photographs with corresponding care and accuracy.
 
 ## Stack & hosting
 
-- **Plain static HTML/CSS/JS.** No build step, no framework, no package manager, no
-  dependencies. Just open the `.html` files in a browser, or serve the folder.
-- Hosted on **GitHub Pages** with a custom domain (`CNAME` → `engineeringremembrance.org`).
-  Commits to `main` deploy the site.
-- One external dependency: Google Fonts (Newsreader + IBM Plex Mono), loaded via `<link>`.
-  Everything else (CSS, JS, images, audio) is self-hosted in the repo.
+- **Astro (static site generation).** `npm run dev` to develop, `npm run build` to emit
+  static HTML/CSS/JS to `dist/`, `npm run preview` to serve the built output.
+- Node 18+ (CI uses 20; local dev has used 26). One-time after `npm install`, the esbuild
+  and sharp install scripts must be approved (`npm approve-scripts …`) — already recorded
+  in `package.json` under `allowScripts`.
+- Hosted on **GitHub Pages via GitHub Actions** (`.github/workflows/deploy.yml`): every push
+  and PR builds and link-checks; pushes to `main` deploy. The Pages source must be set to
+  **GitHub Actions** in repo settings (not "deploy from a branch"). `public/CNAME` →
+  `engineeringremembrance.org` carries the custom domain into `dist/`.
+- Only external runtime dependency: Google Fonts (Newsreader + IBM Plex Mono) via `<link>`,
+  and Leaflet (from unpkg) inside the standalone map page. Everything else is self-hosted.
 
 ## Layout
 
-- `index.html` and the numbered pages: `case.html`, `records.html`, `map.html`,
-  `method.html`, `databases.html`, `brief.html`, `about.html`. Plus `start.html`,
-  `budapest-map.html`.
-- `styles.css` — single global stylesheet for the whole site.
-- `theme.js` — single global script (light/dark toggle, sidebar show/hide, mobile nav,
-  the audio `<dialog>`, the hero "three faces" interactive cards, scroll reveal).
-- `images/`, `audio/` — assets. `favicon.svg`, `CNAME`, `og-image.jpg`.
+- `src/pages/` — one file per route. `.astro` pages emit `.html` (build format is `file`,
+  so `case.astro` → `/case.html`). `person/[id].astro` is a dynamic route: `getStaticPaths`
+  generates one page per person. `budapest-map.astro` is a standalone Leaflet document (no
+  site chrome) injected with data at build time; `map.astro` embeds it in an iframe.
+- `src/layouts/Base.astro` — the shared page frame: `<head>`/OG metadata, the theme
+  bootstrap script, `<Sidebar>`, the `<main class="main"><div class="wrap">` wrapper,
+  `<HelenDialog>`, and `theme.js`. Every content page renders inside `<Base>`.
+- `src/components/` — `Sidebar.astro` (nav is data-driven), `HelenDialog.astro`.
+- `src/lib/data.ts` — **the data-access layer**. The ONLY module that reads `/data`. Every
+  accessor is `async` and returns the typed interfaces in `src/lib/types.ts`. This is the
+  single seam for a future DB (Supabase/Postgres): swapping file reads for queries touches
+  only this file. Nothing else imports from `@data/*`.
+- `data/*.json` — the content "database": `people`, `records`, `repositories`, `map-sites`,
+  `journeys`, `site-content`. See `data/README.md`. IDs are the join keys between files.
+- `public/` — static assets copied verbatim to the site root: `styles.css`, `theme.js`,
+  `images/`, `audio/`, `favicon.svg`, `CNAME`, and the standalone `brief.html` print sheet.
+- `_legacy/` — the original hand-written HTML pages, kept as the content source of truth to
+  port from. Not part of the build (excluded in `tsconfig.json`).
+- `scripts/check-links.mjs` — post-build internal-link checker; run it after every build.
 
 ## Conventions (match these when editing)
 
-- **Every page shares the same chrome**: the `<aside class="sidebar">` nav block and the
-  inline `<head>` theme-bootstrap script are duplicated across pages. If you change the
-  nav, the brand SVG, or the head boilerplate, apply the same change to **every** HTML
-  file — there is no templating.
-- **Theming**: `data-theme` (`dark` default / `light`) and `data-side` (`on`/`off`) are set
-  on `<html>` by an inline script before paint to avoid flash, and persisted in
-  `localStorage` (`er-theme`, `er-side`). Colors come from CSS custom properties in
-  `:root` at the top of `styles.css`.
-- **Cache-busting**: `styles.css` and `theme.js` are referenced with a `?v=YYYYMMDDHHMMSS`
-  query string (e.g. `?v=20260820131653`). When you change either file, bump that version
-  string across all HTML pages so browsers pick up the change.
-- **Typography/entities**: prose uses HTML entities for punctuation (`&middot;`,
-  `&rsquo;`, `&ldquo;`, `&oacute;`, `&aacute;`, etc.). Fonts: serif (`--serif`) for body,
-  mono (`--mono`) for labels/nav/eyebrows.
-- **JS style**: `theme.js` is vanilla ES5-ish, uses delegated `document` click listeners,
-  wraps features in IIFEs, and guards for feature support. No modules, no libraries.
+- **Content is data-driven where the content is data-shaped** (databases, people, records,
+  map). Prose-heavy narrative pages (case, method, about, start, index) are faithful ports
+  in `.astro`, still through `<Base>`. When a page's content changes, update the relevant
+  `data/*.json` or the page's `.astro`, not the `_legacy/` copy.
+- **Path aliases**: `@lib/*`, `@components/*`, `@layouts/*`, `@data/*` (see `tsconfig.json`).
+- **Asset paths are absolute from the site root**: `/images/…`, `/audio/…`.
+- **Theming**: `data-theme` (`dark` default / `light`) and `data-side` (`on`/`off`) set on
+  `<html>` by the inline bootstrap in `Base.astro` before paint, persisted in `localStorage`
+  (`er-theme`, `er-side`). Colors are CSS custom properties in `:root` in `public/styles.css`.
+- **Scripts served from `public/`** (like `/theme.js`) must be referenced with `is:inline`
+  so Astro doesn't try to bundle them.
+- **Typography/entities**: prose uses HTML entities (`&middot;`, `&rsquo;`, `&oacute;`, …).
+  Serif (`--serif`) for body, mono (`--mono`) for labels/nav/eyebrows. `theme.js` is
+  vanilla ES5-ish (delegated listeners, IIFEs, feature guards) — no modules, no libraries.
 - **Accessibility**: interactive elements carry `aria-label`/`aria-current`; scroll reveal
   respects `prefers-reduced-motion`. Preserve these.
 
+## Keeping in sync with `main`
+
+The site author edits the original static HTML directly on `main`. When `main` moves ahead,
+merge it into the working branch: git rename-detection routes edited `styles.css`/`theme.js`/
+images into `public/` and edited pages into `_legacy/`. Then move any brand-new assets into
+`public/`, and re-port the changed page content into `/data` + `src/pages`. Verify with
+`npm run build` and `node scripts/check-links.mjs`.
+
 ## Editorial standard
 
-The project holds itself to a documented evidentiary standard (see the "The standard"
-panel on `index.html`): identifications require corroborating independent record types,
-every linkage is verified against the primary document, and probable conclusions are
-labeled as probable. Do not invent, embellish, or soften historical facts. If asked to
-change dates, names, records, or fates, treat them as factual claims — confirm rather than
-guess.
+The project holds itself to a documented evidentiary standard (see the "The standard" panel
+on the home page): identifications require corroborating independent record types, every
+linkage is verified against the primary document, and probable conclusions are labeled as
+probable. Do not invent, embellish, or soften historical facts. If asked to change dates,
+names, records, or fates, treat them as factual claims — confirm rather than guess.
