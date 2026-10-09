@@ -207,7 +207,7 @@
   var pfd=el('div','pfd','<div class="pk">The method at work</div><div class="pr">'+UNITS.map(function(u,i){
       return (i?'<i class="arr"></i>':'')+'<span class="u" data-u="'+u[0]+'">'+(/^\d$/.test(u[0])?'<em>'+u[0]+'</em>':'')+u[1]+'</span>'; }).join('')+
     '</div><svg class="rec" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path d="M92 2 V14 H8 V3" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="3 3"/><path d="M6 6 L8 2 L10 6" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>'+
-    '<div class="rl"><span class="cnt"><b id="pfdN">1</b> finds</span><span>↺ recycle: each find feeds the next search</span><span class="purge" data-u="purge">purge ↓</span></div>');
+    '<div class="rl"><span class="cnt"><b id="pfdN">1</b> finds</span><span>↺ add to the matrix: each find feeds the next search</span><span class="purge" data-u="purge">purge ↓</span></div>');
   function paintPfd(s){
     var on=s&&s.part===2&&!s.flow; document.body.classList.toggle('pfd-on',!!on);
     if(!on) return;
@@ -374,6 +374,9 @@
     if(job.o.tag) html=html.replace(/<\/div>$/,'<span class="walker-tag" style="color:'+job.color+'">'+job.o.tag+'</span></div>');
     return L.divIcon({className:'',html:html,iconSize:job.o.train?[26,14]:[12,12],iconAnchor:job.o.train?[13,7]:[6,6]});
   }
+  // moving markers glide between pixels: Leaflet rounds every position to a whole pixel, so a slow train ticked and shook (Sam, 9 Oct 2026)
+  function glide(mk,ll){ var el=mk.getElement(); if(!el){ mk.setLatLng(ll); return; } mk._latlng=L.latLng(ll);
+    var pt=map.project(mk._latlng,map.getZoom()).subtract(map.getPixelOrigin()); L.DomUtil.setPosition(el,pt); }
   function animate(jobs,g,durMax,yearFrom,yearTo,durMin){
     jobs.forEach(function(j){ j.cum=pxLen(j.pts); if(!j.wheel) j.walker=L.marker(j.pts[0],{interactive:false,keyboard:false,zIndexOffset:2500,icon:walkerIcon(j)}).addTo(fxLayer); });
     var longest=Math.max.apply(null,jobs.map(function(j){return j.cum[j.cum.length-1];}));
@@ -385,10 +388,10 @@
         var f=dur?Math.min(1,(now-t0)/dur):1, e=ease(f);
         jobs.forEach(function(j){
           var r=along(j.pts,j.cum,e); drawProgress(j,r.k,r.pt);
-          if(j.wheel){ wheel.setLatLng(r.pt); wheelAngle=a0+j.cum[j.cum.length-1]*e/14*57.3; spin(wheelAngle);
+          if(j.wheel){ glide(wheel,r.pt); wheelAngle=a0+j.cum[j.cum.length-1]*e/14*57.3; spin(wheelAngle);
             var cl=j.lines.filter(function(l){ return r.k>l.from&&r.k<=l.to+1; })[0], md=cl&&cl.mode;
             shipAt(r.pt,(md==='sea'||md==='foot')&&f<1,md); }
-          else { j.walker.setLatLng(r.pt);
+          else { glide(j.walker,r.pt);
             // her family's walker: a train on the rails, footprints where they were marched
             var cl2=j.lines.filter(function(l){ return r.k>l.from&&r.k<=l.to+1; })[0], md2=cl2&&cl2.mode, el2=j.walker.getElement();
             if(el2&&md2&&el2._md!==md2){ el2._md=md2; var inner=el2.firstChild; if(inner){ var tg=inner.querySelector('.walker-tag'); var tagH=tg?tg.outerHTML:'';
@@ -540,7 +543,7 @@
        box(472,284,184,52,'','Purge',['rejected leads, kept on a list'],'purge');
     s+='<path d="M696 '+(y+88)+' V368 H56 V'+(y+90)+'" fill="none" stroke="'+C+'" stroke-width="1.6" stroke-dasharray="7 5" marker-end="url(#ah)"/>'+
        '<path d="M368 360 L384 368 L368 376 Z M400 360 L384 368 L400 376 Z" fill="none" stroke="'+C+'" stroke-width="1.4"/><line x1="384" y1="368" x2="384" y2="352" stroke="'+C+'" stroke-width="1.4"/><rect x="377" y="346" width="14" height="6" fill="none" stroke="'+C+'" stroke-width="1.2"/>'+
-       '<text x="140" y="395" font-family="'+M+'" font-size="12.5" fill="'+C+'" letter-spacing="1">RECYCLE · every find is the input to the next search · 300+ times</text>';
+       '<text x="140" y="395" font-family="'+M+'" font-size="12.5" fill="'+C+'" letter-spacing="1">ADD TO THE MATRIX · every find is the input to the next search · 300+ times</text>';
     return s+'</svg>';
   }
   function purgeHtml(){
@@ -633,7 +636,7 @@
   }
   function marksHtml(d){
     return (d.regions||[]).map(function(r,k){
-      var tagPos=(r.y<0.16?' below':'')+(r.x+r.w/2>0.62?' right':'');
+      var tagPos=r.spot!=null?(r.spot?' '+r.spot:''):(r.y<0.16?' below':'')+(r.x+r.w/2>0.62?' right':'');   // a record can set where its label goes (crowded boards)
       return '<span class="mk'+(r.kind?' '+r.kind:'')+tagPos+'" data-k="'+k+'"'+(r.lane?' data-lane="'+r.lane+'"':'')+' style="left:'+(r.x*100)+'%;top:'+(r.y*100)+'%;width:'+(r.w*100)+'%;height:'+(r.h*100)+'%">'+(r.notag?'':'<span class="tag">'+(r.gloss||r.label)+'</span>')+'</span>';
     }).join('');
   }
@@ -717,6 +720,23 @@
       for(var k=1;k<=10;k++){ t.style.marginTop=(bI?k*14:-k*14)+'px'; if(!hits(t,m)) return; } }
     t.style.marginTop=''; m.className=keep;
   }
+  // phones show one record at a time, full size (Sam, 9 Oct 2026: before, a stop's second record never showed on a phone).
+  // The record the highlights are on comes up; records with nothing highlighted take turns every few seconds; "1 / 2" says there are more.
+  var phT=null, phAt=0, phLast=0;
+  function phoneCycle(g){
+    clearInterval(phT); phT=null; doc.classList.remove('phc'); var old=doc.querySelector('.phn'); if(old) old.remove();
+    var figs=doc.querySelectorAll('figure[data-i]'); if(!PHONE()||figs.length<2) return;
+    doc.classList.add('phc'); el('div','phn','',doc); phoneShow(+figs[0].dataset.i);
+    phT=setInterval(function(){ if(!alive(g)){ clearInterval(phT); phT=null; return; } var marked=!!doc.querySelector('.mk'), hold=marked?($('dR').classList.contains('rest')?4500:1e9):6000; if(paused||Date.now()-phLast<hold) return;   // highlights first, then each record in turn
+      var f=doc.querySelectorAll('figure[data-i]'), k=0; for(var j=0;j<f.length;j++) if(+f[j].dataset.i===phAt) k=j;
+      phoneShow(+f[(k+1)%f.length].dataset.i); },1000);
+  }
+  function phoneShow(i){
+    if(!doc.classList.contains('phc')) return;
+    var f=doc.querySelectorAll('figure[data-i]'), k=0; phAt=i; phLast=Date.now();
+    for(var j=0;j<f.length;j++){ var on=+f[j].dataset.i===i; f[j].classList.toggle('ph-on',on); if(on) k=j; }
+    var n=doc.querySelector('.phn'); if(n) n.textContent=(k+1)+' / '+f.length;
+  }
   function runLoupe(s,g,total){
     var m=s.media||[], regs=[];
     m.forEach(function(d,i){ (d.regions||[]).forEach(function(r){ regs.push({d:d,i:i,r:r}); }); });
@@ -733,9 +753,11 @@
     loupeT.push(setTimeout(function(){ if(alive(g)) $('dR').classList.add('rest'); },1400+steps.length*step+800));
   }
   function showRegion(x,keepOthers){
+    if(!keepOthers) phoneShow(x.i);
     var fig=doc.querySelector('figure[data-i="'+x.i+'"]'); if(!fig) return;
     if(!keepOthers) [].forEach.call(doc.querySelectorAll('.mk.now'),function(b){ b.classList.remove('now'); });
     var r=x.r, kk=x.d.regions.indexOf(r), b=fig.querySelector('.mk[data-k="'+kk+'"]'); if(b) b.classList.add('on','now');
+    if(b&&PHONE()){ var tg=b.querySelector('.tag'), fw=fig.querySelector('.frame').clientWidth; if(tg&&fw) tg.style.maxWidth=Math.max(90,fw-6)+'px'; }   // phones: never wider than the record
     if(!keepOthers) [].forEach.call(doc.querySelectorAll('.mklist li.now'),function(l){ l.classList.remove('now'); });
     var li=doc.querySelector('.mklist li[data-i="'+x.i+'"][data-k="'+kk+'"]'); if(li){ li.classList.add('on','now'); var ol=li.parentNode; if(ol.scrollHeight>ol.clientHeight) ol.scrollTop=li.offsetTop-ol.offsetTop; }
     if(b) requestAnimationFrame(function(){ for(var p=0;p<2;p++){ untangle(b); [].forEach.call(doc.querySelectorAll('.mk.on'),function(o){ if(o!==b) untangle(o); }); } });   // two passes: a new box can land under an earlier label
@@ -799,7 +821,7 @@
     return new Promise(function(res){
       showVoice(v,s,keep); var vw=[].slice.call($('vT').querySelectorAll(':scope > .w'));
       var done=false; function fin(){ if(done) return; done=true; skipPart=null; hv.ontimeupdate=hv.onended=hv.onerror=null; voice.classList.remove('playing'); talking=0; fadeMusic(); vw.forEach(function(w){w.classList.add('s');}); post(); res(); }
-      if(QUIET){ vw.forEach(function(w){w.classList.add('s');}); setTimeout(fin,FAST?800:Math.max(4000,v.text.length*55)); return; }
+      if(QUIET){ vw.forEach(function(w){w.classList.add('s');}); voice.classList.add('playing'); setTimeout(fin,FAST?800:Math.max(4000,v.text.length*55)); return; }   // shown for as long as she would speak
       hv.onerror=fin;
       skipPart=function(){ try{ hv.pause(); }catch(e){} fin(); };
       hv.ontimeupdate=function(){
@@ -857,7 +879,7 @@
     markPlace((tos.length?tos[tos.length-1].at:null)||s.at||s.ring||null, tos.length>0);   // the city the road leads to; its title already names it
     if(n===0||!s.other||s.helen) wheelState(null);
     setYear(s.y,s.yl);
-    renderDoc(s); renderCap(s);
+    renderDoc(s); renderCap(s); phoneCycle(g);
     document.documentElement.style.setProperty('--capH',(cap.offsetHeight||200)+'px');   // drawn documents sit above the caption
     if(s.voice){ $('vT').innerHTML=wordsHtml('“'+s.voice.text+'”'); $('vN').textContent=s.voice.note||''; }   // laid out (still hidden) so the map can frame around it
     await settle(s); if(!alive(g)) return;

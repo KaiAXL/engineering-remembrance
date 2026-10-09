@@ -447,3 +447,297 @@ h2.dbh{ scroll-margin-top:16rem; }
 [data-theme="light"] .pfd .reo{ stroke:#7d6b52; }
 .pfd .xo{ font:500 18px var(--serif); fill:var(--ink-dim); text-decoration:line-through; text-decoration-color:#d0573f; }
 .pfd .xs{ font:400 14px var(--serif); fill:var(--muted); }
+
+/* ---------- What I do: three doors (Sam, 9 Oct 2026) ---------- */
+.doorsec h2{ max-width:30ch; }
+.doors{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin:1.4rem 0 .8rem; }
+.door{ display:flex; flex-direction:column; gap:.55rem; padding:1.2rem 1.25rem 1.1rem; border:1px solid var(--rule); border-top:3px solid var(--accent); border-radius:4px; background:var(--panel); color:var(--ink); text-decoration:none; transition:border-color .2s, transform .2s; }
+.door:hover, .door:focus-visible{ border-color:var(--accent); transform:translateY(-2px); }
+.door .dk{ font:500 .7rem/1.3 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--accent); }
+.door b{ font:400 1.3rem/1.2 var(--serif); }
+.door span:not(.dk){ font-size:.98rem; line-height:1.5; color:var(--ink-dim); }
+.door em{ color:var(--ink); font-style:italic; }
+.door i{ margin-top:auto; padding-top:.4rem; font:500 .74rem/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-style:normal; }
+.balalink{ display:inline-block; font:500 .78rem/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+@media (max-width:900px){ .doors{ grid-template-columns:1fr; } }
+/* Balagula page */
+.bala-steps{ list-style:none; padding:0; margin:1rem 0 1.4rem; counter-reset:bs; }
+.bala-steps li{ counter-increment:bs; position:relative; padding:.7rem 0 .7rem 3rem; border-bottom:1px solid var(--rule-soft); }
+.bala-steps li::before{ content:counter(bs); position:absolute; left:0; top:.55rem; width:2rem; height:2rem; border-radius:50%; border:1px solid var(--accent); color:var(--accent); font:500 .85rem/2rem var(--mono); text-align:center; }
+.bala-note{ border-left:3px solid var(--accent); padding:.8rem 1.1rem; background:var(--panel); margin:1.2rem 0; }
+.bala-soon{ display:inline-block; font:500 .72rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--bg); background:var(--accent); padding:.45rem .7rem; border-radius:3px; }
+
+.roadcard .rct .rcred{ color:#e2685c; display:block; }   /* Sam, 9 Oct 2026: as on the link preview */
+.roadcard img{ opacity:.9; }
+.roadcard .rcover{ background:linear-gradient(90deg,rgba(13,15,18,.94) 0%,rgba(13,15,18,.86) 48%,rgba(13,15,18,.25) 100%)!important; }
+.roadcard img{ object-position:72% 50%; }
+@media (max-width:760px){ .roadcard .rcover{ background:#0d0f12!important; } }
+/* the road card carries Helen's 1946 portrait and when it was found (Sam, 9 Oct 2026), as on the link preview */
+.roadcard .rcover{ flex-direction:row; align-items:center; justify-content:flex-start; gap:1.2rem; }
+.roadcard .rctext{ display:flex; flex-direction:column; gap:.7rem; min-width:0; }
+.roadcard .rcpor{ position:relative; flex:0 0 32%; align-self:center; }
+.roadcard .rcpor img{ position:static; width:100%; height:auto; object-fit:initial; opacity:1; transform:none!important; border-radius:3px; box-shadow:0 10px 30px rgba(0,0,0,.55),0 0 0 1px rgba(243,236,223,.12); }
+.roadcard .rctag{ position:absolute; top:6px; left:6px; right:6px; padding:.3rem .35rem; text-align:center; font:600 .56rem/1.3 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:#e2685c; background:rgba(13,15,18,.9); border:1.5px solid #e2685c; border-radius:2px; }
+@media (max-width:760px){
+  .roadcard .rcover{ flex-direction:column; align-items:stretch; }
+  .roadcard .rcpor{ flex:none; width:46%; align-self:center; }
+}
+.roadcard > img{ position:absolute; inset:0; width:100%; height:100%; }
+.roadcard .rcover{ position:relative; inset:auto; min-height:100%; padding:1.3rem 1.3rem 1.3rem 1.2rem; }
+.roadcard .rct{ font-size:clamp(1.25rem,1.9vw,1.75rem)!important; }
+.roadcard .rcd{ font-size:.92rem; }
+.roadcard .rcgo{ font-size:.72rem; padding:.65rem .95rem; }
+.roadcard .rcpor{ flex-basis:30%; }
+@media (max-width:760px){ .roadcard > img{ position:static; height:auto; aspect-ratio:16/9; } .roadcard .rcover{ min-height:0; } }
+/* the hero is Helen's Road alone; the photographs follow, each explained (Sam, 9 Oct 2026) */
+.hhero.solo{ grid-template-columns:minmax(0,1fr)!important; }
+.hhero.solo .roadcard{ grid-column:1!important; grid-row:auto!important; min-height:20rem; }
+.hhero.solo .hhero-note{ grid-column:1!important; grid-row:auto!important; }
+.hhero.solo .roadcard .rcpor{ flex-basis:22%; max-width:15rem; }
+.hhero.solo .roadcard .rct{ font-size:clamp(1.5rem,2.6vw,2.4rem)!important; }
+.gave h2{ max-width:30ch; }
+.gave-grid{ display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:1.4rem; margin-top:1.2rem; align-items:start; }
+.gave-item{ margin:0; min-width:0; }
+.gave figure.hero{ margin:0; }
+.gave figure.hero img{ max-height:none; }
+.gave .facehint{ margin:.5rem 0 0; }
+.gave .herocap{ margin:.5rem 0 0; color:var(--muted); font-size:.92rem; font-style:italic; line-height:1.55; }
+.gave .herocap .cite{ display:block; margin-top:.35rem; font-style:normal; font-family:var(--mono); font-size:.64rem; letter-spacing:.13em; text-transform:uppercase; color:var(--warm-dim); }
+.gave .facecard{ margin:.5rem 0 0; }
+.gave-dror img{ display:block; width:100%; height:auto; }
+.gave-dror figcaption{ margin-top:.5rem; color:var(--muted); font-size:.92rem; font-style:italic; line-height:1.55; }
+.gave-dror figcaption .cite{ display:block; margin-top:.35rem; font-style:normal; font-family:var(--mono); font-size:.64rem; letter-spacing:.13em; text-transform:uppercase; color:var(--warm-dim); }
+@media (max-width:900px){ .gave-grid{ grid-template-columns:minmax(0,1fr); } }
+@media (max-width:760px){
+  .roadcard > img{ display:none; }   /* phones: the portrait and the words carry the card; the dark map read as an empty block */
+  .roadcard .rcpor img{ aspect-ratio:auto!important; height:auto!important; }
+  .roadcard .rcover{ padding:1.1rem; gap:1rem; }
+  .roadcard .rcpor{ width:58%; }
+}
+/* Sam, 9 Oct 2026: the card ends after its words; the Three Helmans sit beside it, explained */
+.hhero.solo{ grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)!important; align-items:start; column-gap:1.4rem; }
+.hhero.solo .roadcard{ grid-column:1!important; grid-row:1!important; }
+.hhero.solo .hhelm{ grid-column:2; grid-row:1 / span 2; min-width:0; }
+.hhero.solo .hhero-note{ grid-column:1!important; grid-row:2!important; }
+.hhelm figure.hero{ margin:0; } .hhelm figure.hero img{ max-height:none; }
+.hhelm .facehint{ margin:.5rem 0 0; }
+.hhelm .herocap{ margin:.5rem 0 0; color:var(--muted); font-size:.9rem; font-style:italic; line-height:1.55; }
+.hhelm .herocap .cite{ display:block; margin-top:.35rem; font-style:normal; font-family:var(--mono); font-size:.62rem; letter-spacing:.13em; text-transform:uppercase; color:var(--warm-dim); }
+.hhelm .facecard{ margin:.5rem 0 0; }
+.hhero.solo .roadcard .rcpor{ flex-basis:34%; max-width:none; }
+.hhero.solo .roadcard .rct{ font-size:clamp(1.3rem,2vw,2rem)!important; }
+.gave-grid{ grid-template-columns:minmax(0,1fr)!important; max-width:46rem; }
+@media (max-width:900px){ .hhero.solo{ grid-template-columns:minmax(0,1fr)!important; } .hhero.solo .hhelm,.hhero.solo .hhero-note{ grid-column:1!important; grid-row:auto!important; } }
+.gave-grid{ max-width:38rem!important; }
+/* phones and small screens: Hear Helen lives in the menu, so it doesn't take room on the page (Sam, 9 Oct 2026) */
+.sidebar nav .navhelen{ display:none; }
+@media (max-width:64rem){
+  .helenbtn{ display:none!important; }
+  .sidebar nav .navhelen{ display:flex; gap:.95rem; align-items:baseline; width:100%; background:none; border:0; border-bottom:1px solid var(--rule-soft); padding:.58rem 0; margin:0; cursor:pointer; text-align:left;
+    color:var(--warm); font-family:var(--mono); font-weight:400; font-size:.74rem; letter-spacing:.13em; text-transform:uppercase; }
+  .sidebar nav .navhelen .k{ color:var(--warm); font-size:.68rem; }
+}
+.sidebar nav a .soon{ font-size:.58rem; letter-spacing:.12em; color:var(--muted); border:1px solid var(--rule); border-radius:3px; padding:.12rem .35rem; margin-left:.1rem; align-self:center; white-space:nowrap; }
+.sidebar nav a .soon.now{ color:var(--accent); border-color:var(--accent-deep); }
+.hhero.solo{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)!important; }
+.hhero.solo .roadcard .rcpor{ flex-basis:30%; }
+.hhero.solo .roadcard .rct{ font-size:clamp(1.2rem,1.7vw,1.75rem)!important; }
+.hhero.solo .roadcard .rcd{ font-size:.88rem; }
+.hhero.solo{ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important; }
+.hhero.solo .roadcard .rcpor{ flex:0 0 30%; min-width:8.5rem; }
+.hhero.solo .roadcard .rctag{ font-size:.5rem; padding:.22rem .25rem; }
+.hhero.solo .roadcard .rcgo{ white-space:nowrap; }
+@media (max-width:1400px){ .hhero.solo .roadcard .rcgo{ white-space:normal; } .hhero.solo .roadcard .rcd{ display:none; } }
+.hintro{ grid-column:1 / -1; max-width:44rem; font-size:1.12rem; line-height:1.6; color:var(--ink-dim); margin:-.4rem 0 1.6rem; }
+/* when each photo was found (Sam, 9 Oct 2026): 2026, and Zacharias's card in 2019 */
+.faces{ position:relative; }
+.ftagwrap{ position:relative; display:block; }
+.ftag{ position:absolute; top:6px; transform:translateX(-50%); z-index:2; pointer-events:none; white-space:nowrap;
+  font:600 .58rem/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:#e2685c; background:rgba(13,15,18,.88); border:1.5px solid #e2685c; border-radius:2px; padding:.28rem .4rem; }
+.ftag.old{ color:#cf9f63; border-color:#cf9f63; }
+@media (max-width:34rem){ .ftag{ font-size:.5rem; padding:.22rem .3rem; letter-spacing:.08em; } }
+.roadcard .rcd.rcnum{ display:block!important; font:500 .78rem/1.4 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:#cf9f63; }
+/* the one-card-to-300 line, as on the research brief (Sam, 9 Oct 2026) */
+.onecard{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.4rem 1.4rem; margin:1.2rem 0 1.6rem; padding:1rem 1.3rem; border-left:3px solid var(--warm); background:var(--panel); border-radius:3px; max-width:46rem; }
+.onecard .ocn{ margin:0; font:400 clamp(1.6rem,2.6vw,2.2rem)/1.1 var(--serif); color:var(--ink); }
+.onecard .ocn b{ font-weight:500; color:var(--warm); }
+.onecard .ocn span{ color:var(--muted); }
+.onecard .ocs{ margin:0; font-size:.95rem; color:var(--ink-dim); }
+/* when each face was found, under the photo, never on it (Sam, 9 Oct 2026) */
+.ftrow{ display:grid; grid-template-columns:repeat(3,1fr); margin-top:.35rem; }
+.ftrow span{ text-align:center; font:600 .6rem/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:#e2685c; }
+.ftrow span.old{ color:#cf9f63; }
+/* What I do, tightened (Sam, 9 Oct 2026: "this could be better") */
+.doorsec h2{ max-width:none!important; }
+.doorsec .doors{ max-width:none; grid-column:1 / -1; gap:1.1rem; }
+.door{ padding:1.3rem 1.35rem 1.2rem; gap:.6rem; }
+.door b{ font-size:1.42rem; }
+.door .dl{ font-size:1rem!important; line-height:1.5; color:var(--ink-dim); }
+.door .dnext{ font:500 .7rem/1.4 var(--mono)!important; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)!important; }
+.door .dgo, .door .dsub{ font:500 .74rem/1.3 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--accent); text-decoration:none; }
+.door .dgo{ margin-top:auto; padding-top:.4rem; }
+.door .dsub{ color:var(--muted); border-top:1px solid var(--rule); padding-top:.6rem; text-transform:none; letter-spacing:.04em; font-size:.8rem; }
+.door .dsub em{ color:var(--ink); font-style:italic; }
+.door .dgo:hover, .door .dsub:hover{ color:var(--warm); }
+div.door:hover{ transform:none; }
+/* Sam, 9 Oct 2026: her portrait bigger, more room around the words, the button low in the card as before */
+.hhero.solo .roadcard .rcover{ align-items:stretch; gap:2rem; padding:1.5rem 1.6rem 1.5rem 1.4rem; }
+.hhero.solo .roadcard .rcpor{ flex:0 0 40%!important; align-self:center; }
+.hhero.solo .roadcard .rctext{ align-self:stretch; justify-content:flex-start; gap:1rem; padding:.4rem 0 .2rem; }
+.hhero.solo .roadcard .rct{ line-height:1.2; margin:0; }
+.hhero.solo .roadcard .rcgo{ margin-top:auto; }
+.hhero.solo .roadcard .rctag{ font-size:.55rem; }
+@media (max-width:760px){ .hhero.solo .roadcard .rcover{ gap:1.1rem; } .hhero.solo .roadcard .rcgo{ margin-top:.6rem; } }
+.roadcard .rcgo .sm{ display:none; }
+@media (max-width:1400px) and (min-width:761px){
+  .roadcard .rcgo .lg{ display:none; } .roadcard .rcgo .sm{ display:inline; }
+  .roadcard .rcgo{ white-space:nowrap!important; }
+  .hhero.solo .roadcard .rcpor{ flex-basis:36%!important; }
+  .hhero.solo .roadcard .rcover{ gap:1.4rem; }
+}
+/* Sam, 9 Oct 2026: the words line up with the photo, label level with its top, button level with its bottom */
+@media (min-width:761px){
+  .hhero.solo .roadcard .rcover{ display:grid!important; grid-template-columns:40% minmax(0,1fr); column-gap:1.6rem; align-items:stretch; padding:1.6rem; }
+  .hhero.solo .roadcard .rcpor{ align-self:start; max-width:none; }
+  .hhero.solo .roadcard .rctext{ align-self:stretch; display:flex; flex-direction:column; justify-content:space-between; gap:.8rem; padding:0; }
+  .hhero.solo .roadcard .rcgo{ margin-top:0; }
+}
+.roadcard .rctag{ line-height:1.35; }
+@media (min-width:761px){
+  .hhero.solo .roadcard .rcover{ align-items:start; }
+  .hhero.solo .roadcard .rctext{ align-self:start; height:var(--porH,auto); }
+}
+.roadcard .rctag{ left:50%!important; right:auto!important; transform:translateX(-50%); white-space:nowrap; padding:.32rem .6rem!important; font-size:.56rem!important; line-height:1.45; }
+/* Sam, 9 Oct 2026: the label and the headline read as one block at the top; the button alone at the bottom */
+@media (min-width:761px){
+  .hhero.solo .roadcard .rctext{ justify-content:flex-start!important; gap:0!important; }
+  .hhero.solo .roadcard .rck{ margin:0 0 1.1rem; }
+  .hhero.solo .roadcard .rct{ margin:0; }
+  .hhero.solo .roadcard .rcgo{ margin-top:auto!important; }
+}
+.hhelm .herohead .hht{ font-weight:600; letter-spacing:-.005em; }
+/* make the card want to be clicked (Sam, 9 Oct 2026): a bigger line, her voice promised, a button that glows */
+@media (min-width:761px){
+  .hhero.solo .roadcard .rct{ font-size:clamp(1.6rem,2.35vw,2.5rem)!important; line-height:1.15!important; }
+  .hhero.solo .roadcard .rcvoice{ margin-top:1.3rem; }
+}
+.roadcard .rcvoice{ display:flex; align-items:center; gap:.6rem; font:500 .76rem/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:#e9dcc0; }
+.roadcard .rcvoice .bars{ display:inline-flex; align-items:flex-end; gap:2px; height:14px; }
+.roadcard .rcvoice .bars i{ width:3px; height:4px; background:#cf9f63; border-radius:1px; animation:rcbar 1.1s ease-in-out infinite; }
+.roadcard .rcvoice .bars i:nth-child(2){ animation-delay:.18s } .roadcard .rcvoice .bars i:nth-child(3){ animation-delay:.36s } .roadcard .rcvoice .bars i:nth-child(4){ animation-delay:.54s }
+@keyframes rcbar{ 0%,100%{ height:4px } 50%{ height:14px } }
+.roadcard .rcgo{ padding:.95rem 1.5rem!important; font-size:.82rem!important; box-shadow:0 0 0 0 rgba(207,159,99,.55); animation:rcglow 2.6s ease-out infinite; transition:transform .2s, background .2s; }
+.roadcard:hover .rcgo, .roadcard:focus-visible .rcgo{ background:#e6b66e; transform:translateY(-1px); }
+@keyframes rcglow{ 0%{ box-shadow:0 0 0 0 rgba(207,159,99,.5) } 70%{ box-shadow:0 0 0 14px rgba(207,159,99,0) } 100%{ box-shadow:0 0 0 0 rgba(207,159,99,0) } }
+@media (prefers-reduced-motion:reduce){ .roadcard .rcgo, .roadcard .rcvoice .bars i{ animation:none; } }
+@media (min-width:761px){
+  .hhero.solo .roadcard .rcover{ grid-template-columns:36% minmax(0,1fr)!important; column-gap:1.5rem!important; }
+  .hhero.solo .roadcard .rct{ font-size:clamp(1.35rem,1.75vw,2rem)!important; }
+  .hhero.solo .roadcard .rcvoice{ margin-top:1rem; white-space:nowrap; }
+  .hhero.solo .roadcard .rcgo{ max-width:100%; padding:.85rem 1.2rem!important; font-size:.76rem!important; }
+}
+@media (max-width:1400px) and (min-width:761px){ .hhero.solo .roadcard .rcvoice{ font-size:.66rem; letter-spacing:.1em; } }
+/* Helen, in brief: her photo beside the words (Sam, 9 Oct 2026) */
+.brief{ display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:2.2rem; align-items:start; }
+.brief .brieftext p{ max-width:none; }
+.briefpic{ margin:.3rem 0 0; }
+.briefpic img{ display:block; width:100%; height:auto; border-radius:3px; box-shadow:0 14px 40px rgba(0,0,0,.5),0 0 0 1px rgba(243,236,223,.08); }
+.briefpic figcaption{ margin-top:.55rem; color:var(--muted); font-size:.88rem; font-style:italic; line-height:1.5; }
+@media (max-width:900px){ .brief{ grid-template-columns:minmax(0,1fr); gap:1.2rem; } .briefpic{ max-width:28rem; } }
+#journey .brief{ max-width:none!important; width:100%; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); }
+#journey .briefpic{ max-width:30rem; }
+.briefpic .ftagin{ display:block; margin-top:.4rem; font:600 .6rem/1 var(--mono); font-style:normal; letter-spacing:.14em; text-transform:uppercase; color:#cf9f63; }
+@media (min-width:761px){ .hhero.solo .roadcard .rcvoice{ margin-top:auto!important; margin-bottom:.8rem; } .hhero.solo .roadcard .rcgo{ margin-top:0!important; } }
+/* What came back: the panel on top, then two finds side by side (Sam, 9 Oct 2026) */
+#found .gave-grid{ max-width:none!important; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)!important; gap:1.6rem; align-items:start; }
+#found .onecard{ max-width:none; }
+#found .gave-item img{ display:block; width:100%; height:auto; }
+#found figcaption{ margin-top:.5rem; color:var(--muted); font-size:.9rem; font-style:italic; line-height:1.55; }
+#found figcaption .cite{ display:block; margin-top:.35rem; font-style:normal; font-family:var(--mono); font-size:.62rem; letter-spacing:.13em; text-transform:uppercase; color:var(--warm-dim); }
+#found .ftagin{ display:block; margin-top:.45rem; font:600 .6rem/1 var(--mono); font-style:normal; letter-spacing:.14em; text-transform:uppercase; color:#e2685c; }
+@media (max-width:900px){ #found .gave-grid{ grid-template-columns:minmax(0,1fr)!important; } #found .gave-la{ max-width:26rem; } }
+/* when each photo was found, set in the photo's empty space, never on a person (Sam, 9 Oct 2026) */
+.ftagwrap{ position:relative; display:block; }
+.ptag{ position:absolute; z-index:2; pointer-events:none; white-space:nowrap; font:600 .58rem/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:#e2685c; background:rgba(13,15,18,.88); border:1.5px solid #e2685c; border-radius:2px; padding:.32rem .45rem; }
+@media (max-width:34rem){ .ptag{ font-size:.5rem; padding:.24rem .32rem; letter-spacing:.08em; } }
+/* the three buttons on one line at the bottom; the Balagula note plain, like door 2's "Next" line (Sam, 9 Oct 2026) */
+.door .dsub{ border:0!important; padding:0!important; font:500 .7rem/1.4 var(--mono)!important; letter-spacing:.12em!important; text-transform:uppercase!important; color:var(--muted)!important; }
+.door .dsub em{ font-family:var(--serif); font-size:.95rem; letter-spacing:0; text-transform:none; color:var(--ink); }
+.door .dgo{ margin-top:auto!important; padding-top:.9rem!important; border:0!important; }
+.door i{ padding-top:.9rem!important; }
+/* the method page: each step shows its example from Helen's case beside it, so it teaches by showing (Sam, 9 Oct 2026) */
+.step{ grid-template-columns:3.1rem minmax(0,1.15fr) minmax(0,1fr)!important; column-gap:1.8rem!important; align-items:start; }
+.stepex{ margin:0; padding:.9rem 1rem 1rem; background:rgba(13,15,18,.45); border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:3px; }
+.stepex .exk{ display:block; font:500 .66rem/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:0 0 .7rem; }
+.stepex img{ display:block; width:100%; height:auto; border-radius:2px; background:#f3ecdf; }
+.stepex figcaption{ margin-top:.65rem; font-size:.94rem; line-height:1.5; color:var(--ink-dim); font-style:normal; }
+.stepex figcaption b{ color:var(--ink); font-weight:500; }
+.stepex .cite{ display:block; margin-top:.45rem; font:400 .62rem/1.4 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--warm-dim); }
+@media (max-width:64rem){ .step{ grid-template-columns:3.1rem minmax(0,1fr)!important; } .stepex{ grid-column:2; margin-top:1rem; } }
+.dbwhere{ margin-top:.55rem!important; font-size:.88rem!important; color:var(--muted); }
+.dbwhere b{ color:var(--ink-dim); font-weight:500; }
+/* the method examples, marked like Helen's Road: a box on each piece of the record, its words beside it (Sam, 9 Oct 2026) */
+.stepex .exdoc{ position:relative; display:block; margin:1.9rem 0 1.9rem; }
+.stepex .exdoc img{ display:block; width:100%; height:auto; }
+.exmk{ position:absolute; border:2px solid #cf9f63; border-radius:2px; box-shadow:0 0 0 1px rgba(0,0,0,.35); }
+.exmk.true{ border-color:#7fc49a; } .exmk.false{ border-color:#e2685c; }
+.exl{ position:absolute; left:-2px; bottom:calc(100% + 4px); width:max-content; max-width:min(17rem,calc(100cqw)); white-space:normal;
+  font:500 .68rem/1.3 var(--mono); letter-spacing:.02em; color:#f3ecdf; background:rgba(12,13,16,.93); border:1px solid #cf9f63; border-radius:3px; padding:.25rem .4rem; z-index:2; }
+.exmk.true .exl{ border-color:#7fc49a; color:#c9ecd6; } .exmk.false .exl{ border-color:#e2685c; color:#ffc9c1; }
+.exmk.below .exl{ bottom:auto; top:calc(100% + 4px); }
+.stepex{ container-type:inline-size; }
+/* examples under each step, full width, so the record is big enough to read (Sam, 9 Oct 2026) */
+.step{ grid-template-columns:3.1rem minmax(0,1fr)!important; }
+.stepex{ grid-column:2!important; margin-top:1.2rem!important; max-width:52rem; }
+.stepex .exdoc{ margin:2.4rem 0 2.4rem!important; }
+.exl{ font-size:.74rem!important; max-width:22rem!important; }
+.exmk.right .exl{ left:auto!important; right:-2px; }
+.cta .line:first-child{ color:#e2685c!important; }
+.rarity{ display:block; margin:.6rem 0 0!important; padding-left:.7rem; border-left:2px solid #e2685c; font:italic 400 .95rem/1.5 var(--serif)!important; color:var(--ink)!important; max-width:none; }
+.hintro2{ margin-top:-1rem!important; font-size:1rem!important; color:var(--muted)!important; }
+/* phones and small tablets: one column again (the side-by-side rule was leaking onto phones), and a lighter top (Sam, 9 Oct 2026) */
+@media (max-width:900px){
+  .hhero.solo{ grid-template-columns:minmax(0,1fr)!important; }
+  .hhero.solo .roadcard, .hhero.solo .hhelm, .hhero.solo .hhero-note{ grid-column:1!important; grid-row:auto!important; }
+  #journey .brief{ grid-template-columns:minmax(0,1fr)!important; }
+  #found .gave-grid{ grid-template-columns:minmax(0,1fr)!important; }
+}
+@media (max-width:600px){
+  .hintro{ font-size:1rem!important; line-height:1.55!important; margin-bottom:1rem!important; }
+  .hintro2{ display:none!important; }
+  .claim{ font-size:1.15rem!important; }
+  .roadcard .rcgo .lg{ display:none; } .roadcard .rcgo .sm{ display:inline; }
+}
+@media (max-width:900px){
+  .hhero.solo .roadcard{ order:1!important; } .hhero.solo .hhero-note{ order:2!important; } .hhero.solo .hhelm{ order:3!important; margin-top:1.4rem; }
+}
+@media (max-width:600px){
+  .ftrow span{ font-size:.5rem!important; letter-spacing:.06em!important; line-height:1.35; padding:0 .15rem; }
+}
+/* phones: the road card keeps the laptop layout, portrait left and words right, scaled down (Sam, 9 Oct 2026) */
+@media (max-width:760px){
+  .hhero.solo .roadcard{ min-height:0; }
+  .hhero.solo .roadcard > img{ display:block!important; position:absolute!important; inset:0; width:100%; height:100%; object-fit:cover; opacity:.9; aspect-ratio:auto!important; }
+  .hhero.solo .roadcard .rcover{ position:relative!important; display:grid!important; grid-template-columns:40% minmax(0,1fr)!important; column-gap:.85rem!important; align-items:start!important; padding:.9rem!important;
+    background:linear-gradient(90deg,rgba(13,15,18,.9),rgba(13,15,18,.55))!important; }
+  .hhero.solo .roadcard .rcpor{ width:auto!important; flex:none!important; align-self:start!important; }
+  .hhero.solo .roadcard .rctext{ display:flex!important; flex-direction:column; align-self:stretch!important; height:var(--porH,auto); gap:0!important; }
+  .hhero.solo .roadcard .rck{ font-size:.54rem!important; letter-spacing:.14em!important; margin:0 0 .55rem!important; }
+  .hhero.solo .roadcard .rct{ font-size:1.12rem!important; line-height:1.18!important; }
+  .hhero.solo .roadcard .rcvoice{ margin-top:auto!important; margin-bottom:.5rem; font-size:.5rem!important; letter-spacing:.08em!important; white-space:normal!important; }
+  .hhero.solo .roadcard .rcvoice .bars{ height:10px; }
+  .hhero.solo .roadcard .rcgo{ padding:.5rem .7rem!important; font-size:.56rem!important; letter-spacing:.06em!important; gap:.35rem; white-space:nowrap!important; align-self:flex-start; }
+  .hhero.solo .roadcard .rctag{ font-size:.42rem!important; padding:.2rem .3rem!important; letter-spacing:.06em!important; top:4px!important; }
+}
+@media (max-width:760px){
+  .hhero.solo .roadcard .rctext{ min-width:0!important; overflow:hidden; }
+  .hhero.solo .roadcard .rck, .hhero.solo .roadcard .rct{ white-space:normal!important; overflow-wrap:break-word; }
+  .hhero.solo .roadcard .rcover{ grid-template-columns:34% minmax(0,1fr)!important; }
+  .hhero.solo .roadcard .rct{ font-size:1rem!important; }
+  .hhero.solo .hhero-note{ display:none!important; }
+  .hhero.solo .hhelm{ margin-top:.9rem!important; }
+  .wrap:has(> .hhero) > .eyebrow{ margin-bottom:.4rem!important; }
+  .wrap:has(> .hhero) > h1{ font-size:1.7rem!important; margin-bottom:.3rem!important; }
+  .claim{ font-size:1.02rem!important; margin-bottom:.6rem!important; }
+  .hintro{ font-size:.92rem!important; line-height:1.5!important; margin-bottom:.9rem!important; }
+}

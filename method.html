@@ -20,7 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css?v=20260822015032">
-<link rel="stylesheet" href="home.css?v=20261009f">
+<link rel="stylesheet" href="home.css?v=20261010z">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -67,9 +67,11 @@
   <nav id="sitenav">
     <a href="/"><span class="k">01</span> Home</a>
     <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road</a>
-    <a href="/method.html" aria-current="page"><span class="k">03</span> The Method</a>
-    <a href="/databases.html"><span class="k">04</span> Databases</a>
-    <a href="/about.html"><span class="k">05</span> The Researcher</a>
+    <a href="/method.html" aria-current="page"><span class="k">03</span> The Method <span class="soon now">available now</span></a>
+    <a href="/balagula.html"><span class="k">04</span> Balagula <span class="soon">coming soon</span></a>
+    <a href="/databases.html"><span class="k">05</span> Databases</a>
+    <a href="/about.html"><span class="k">06</span> The Researcher</a>
+    <button class="navhelen" type="button" data-open="helen"><span class="k">&#9654;</span> Hear Helen</button>
   </nav>
   <div class="sidefoot">
     <button class="themetoggle" type="button">Light mode</button>
@@ -86,7 +88,7 @@
   <h1>How to do this yourself</h1>
   <p class="lede">Four steps, the hints I wish I&rsquo;d had, the walls I hit, and the mistakes I made along the way. No training, no subscription, and no trip to an archive. Almost all of it can be done from a kitchen table, for free.</p>
 
-  <figure class="pfd" id="top-diagram" aria-label="The method as a process flow: one card in, four steps, a family out, with a recycle loop and a list of leads set aside">
+  <figure class="pfd" id="top-diagram" aria-label="The method as a process flow: one card in, four steps, a family out, with every find added back to the matrix as the next search, and a list of leads set aside">
       <svg class="wide" viewBox="-34 0 954 395" role="group" aria-labelledby="mpfdw-t">
         <title id="mpfdw-t">One card in, then Normalize, Reconstruct, Correlate and Verify, then a family out. Every find goes back in as the next search; unconfirmed leads are set aside.</title>
         <defs>
@@ -134,11 +136,11 @@
           <path class="flow" d="M790,180 L810,180" marker-end="url(#mahw)"/>
           <text x="816" y="158" class="io">OUT</text>
           <text x="816" y="186" class="iot">a family</text>
-          <text x="816" y="208" class="ios">300+ records</text>
+          <text x="816" y="208" class="ios">300+ documents</text>
         </g>
         <g class="u u7">
           <path class="flow rec" d="M710,106 C710,22 170,22 170,100" marker-end="url(#mahw)"/>
-          <text x="440" y="34" text-anchor="middle" class="rl">Recycle: every find becomes the next search</text>
+          <text x="440" y="34" text-anchor="middle" class="rl">Add to the matrix: every find becomes the next search</text>
         </g>
         <a href="#mistakes" class="u u8">
           <path class="flow pur" d="M710,252 L710,292" marker-end="url(#mahwp)"/>
@@ -185,7 +187,7 @@
           <text x="46" y="300" class="num">2</text><text x="70" y="300" class="ttl">Reconstruct</text>
           <text x="46" y="326" class="dsc">arrest, ghetto, transport,</text>
           <text x="46" y="346" class="dsc">camp, ship</text>
-          <text x="46" y="372" class="ex">2 June 1944 &#183; Terez&#237;n</text>
+          <text x="46" y="372" class="ex">2 June 1944 &#183; Buchenwald</text>
         </a>
         <a href="#stage-correlate" class="u u4">
           <path class="flow" d="M150,392 L150,424" marker-end="url(#maht)"/>
@@ -207,7 +209,7 @@
           <path class="flow" d="M90,712 L90,752" marker-end="url(#maht)"/>
           <text x="30" y="780" class="io">OUT</text>
           <text x="30" y="806" class="iot">a family</text>
-          <text x="30" y="826" class="ios">300+ records</text>
+          <text x="30" y="826" class="ios">300+ documents</text>
         </g>
         <g class="u u7">
           <path class="flow rec" d="M274,650 C345,650 345,170 278,170" marker-end="url(#maht)"/>
@@ -255,10 +257,15 @@
     <span class="no">1a</span>
     <div>
       <h4>Write down every version of the name before you search</h4>
-      <p>Before searching anything. The surname as the family says it, as a German clerk would spell it, as a Hungarian registrar would, and as it comes back out of Cyrillic. Helman, Hellmann, Hilman, and in Russian and Ukrainian <strong>Gelman</strong>, because those alphabets have no H. Land&oacute;, Landa, Landau.</p>
-      <p>Keep the list beside you. Every database below is a name index, and a name index only returns what you type. This is where an ordinary search fails, and where most people stop.</p>
+      <p>Before searching anything. The surname as the family says it, as a German clerk would spell it, as a Hungarian registrar would, and as it comes back out of Cyrillic. Helman, Hellmann, Hilman, and in Soviet records <strong>Gelman</strong>, because Russian has no H. Land&oacute;, Landa, Landau.</p>
+      <p>Keep the list beside you. Almost every database is a name index, and a name index only returns what you type. This is where an ordinary search fails, and where most people stop.</p>
           <p class="todo">Do this: start a name matrix, one row per person and one column per language, and a birth-date matrix listing every date each record gives and its source. Then write the surname five ways on paper. As your family says it. As a German clerk would. As a Hungarian registrar would. Coming back out of Cyrillic, where H becomes G. And the mother&rsquo;s maiden name.</p>
     </div>
+    <figure class="stepex">
+      <span class="exk">From Helen&rsquo;s case</span>
+      <a class="exdoc" href="images/yv-gelman-rachov-list.jpg"><img src="images/crop-rachov-893.jpg" alt="A typed Russian list of the deported from the Rachov district, entry 893: Helen, written Gelman" width="1496" height="480" loading="lazy" decoding="async"><span class="exmk" style="left:4.0%;top:64.0%;width:7.5%;height:7.5%"><span class="exl">“Гелман”: Gelman, which is Helman. Cyrillic has no H</span></span><span class="exmk below" style="left:23.2%;top:64.0%;width:21.0%;height:7.5%"><span class="exl">“Гелена Захариашевна”: Helena, daughter of Zacharias</span></span><span class="exmk right true" style="left:58.5%;top:64.0%;width:7.5%;height:7.5%"><span class="exl">“13/04/1929”: her birthday</span></span></a>
+      <figcaption>Helen on a Russian list of the deported. Search only “Helman” and this record never appears.<span class="cite">Yad Vashem · Rachov district list, entry 893</span></figcaption>
+    </figure>
   </div>
   <div class="step alt">
     <span class="no">1b</span>
@@ -268,6 +275,11 @@
       <p>My grandmother&rsquo;s own birth record carries no surname for her at all. She is filed under Land&oacute;. Anyone searching Helman would never have found her.</p>
           <p class="todo">Do this: run every search twice, once under the father&rsquo;s surname and once under the mother&rsquo;s.</p>
     </div>
+    <figure class="stepex">
+      <span class="exk">From Helen&rsquo;s case</span>
+      <a class="exdoc" href="road/img/rec-birth-1929-entry.jpg"><img src="road/img/rec-birth-1929-entry.jpg" alt="Helen’s 1929 birth entry, handwritten, under her mother’s name Landó" width="1100" height="270" loading="lazy" decoding="async"><span class="exmk" style="left:20.7%;top:26.7%;width:14.1%;height:20.4%"><span class="exl">“Helena”: her first name, and no surname</span></span><span class="exmk right true below" style="left:44.1%;top:32.6%;width:36.4%;height:19.3%"><span class="exl">“Landó-ová Roži”: Roza Landó, her mother</span></span></a>
+      <figcaption>Her own birth entry, 1929. No Helman anywhere on the line: she is filed under her mother’s name.<span class="cite">Tiszabogdány civil register, 1929, entry 81</span></figcaption>
+    </figure>
   </div>
   <h2 class="hsec" id="stage-reconstruct"><span class="sk">Step 2</span>Reconstruct the road</h2>
   <p>Rebuild the road stage by stage: arrest, ghetto, transport, camp, liberation, displaced-persons camp, ship. Every stage had to make a document.</p>
@@ -280,6 +292,11 @@
       <p>Someone who cannot be found by name can still be found by where the system was obliged to record them.</p>
           <p class="todo">Do this: write out the stages in order for the person you want, check each date against your birth-date matrix, and search for the <em>stage</em> when the name fails. A transport list is easier to find than a person.</p>
     </div>
+    <figure class="stepex">
+      <span class="exk">From Helen&rsquo;s case</span>
+      <a class="exdoc" href="road/img/road/t/greencard-57101.jpg"><img src="road/img/road/t/greencard-57101.jpg" alt="Zacharias Helman’s Buchenwald labour card, number 57101" width="1600" height="1044" loading="lazy" decoding="async"><span class="exmk" style="left:7.5%;top:19.9%;width:55.0%;height:14.0%"><span class="exl">“Helman Zacharias”: Helen’s father, prisoner 57101</span></span><span class="exmk right below" style="left:63.4%;top:6.1%;width:25.6%;height:10.0%"><span class="exl">“23.7.44 Magd.”: sent to Magdeburg, 23 July 1944</span></span><span class="exmk right false" style="left:70.0%;top:54.9%;width:25.0%;height:35.4%"><span class="exl">“6.10.44 … Auschwitz”: sent back, 6 October</span></span></a>
+      <figcaption>One card, three stages of his road, each with a date. Every stage had to make a paper.<span class="cite">Arolsen Archives · Buchenwald card 57101, DocID 6081001</span></figcaption>
+    </figure>
   </div>
   <div class="step alt">
     <span class="no">2b</span>
@@ -289,6 +306,11 @@
       <p>This is how the second and third men in this case were found: not by searching for them, but by reading the lines above and below someone already known.</p>
           <p class="todo">Do this: when you find a record with a number on it, go and read the numbers either side of it.</p>
     </div>
+    <figure class="stepex">
+      <span class="exk">From Helen&rsquo;s case</span>
+      <a class="exdoc" href="images/roster-322-324-crop.jpg"><img src="images/roster-322-324-crop.jpg" alt="Three consecutive lines of the alphabetical Buchenwald roll, entries 322 to 324, the three Helmans" width="1646" height="202" loading="lazy" decoding="async"><span class="exmk" style="left:2.0%;top:21.0%;width:40.0%;height:46.0%"><span class="exl">322 · 323 · 324: three Helmans, one after another</span></span><span class="exmk right true below" style="left:51.0%;top:21.0%;width:32.0%;height:46.0%"><span class="exl">“Tisza Bogdan · Fuhrmann”: same village, same trade</span></span></a>
+      <figcaption>I knew one name. The lines either side held his two nephews: Lajos, Michal, Zacharias.<span class="cite">Arolsen Archives · roll of the 2 June 1944 arrivals</span></figcaption>
+    </figure>
   </div>
   <h2 class="hsec" id="stage-correlate"><span class="sk">Step 3</span>Correlate across archives, with AI</h2>
   <p>Cross-check across collections, languages and scripts. AI reads; you check.</p>
@@ -300,6 +322,11 @@
       <p>Link one individual across a dozen collections, languages and scripts at a scale that is not feasible by hand: camp records, civil registers, censuses, victim databases, cemetery transcriptions, directories, testimony. This is the step that makes the search possible from a desk, and the only step here that is new.</p>
           <p class="todo">Do this: paste what you have found into an AI assistant and ask it to find the contradictions and the gaps. Then go and check what it tells you.</p>
     </div>
+    <figure class="stepex">
+      <span class="exk">From Helen&rsquo;s case</span>
+      <a class="exdoc" href="road/img/rec-budapest-1945-michal.jpg"><img src="road/img/rec-budapest-1945-michal.jpg" alt="A Hungarian aid-office form from Budapest, June 1945, signed Helman Mátyás" width="1100" height="658" loading="lazy" decoding="async"><span class="exmk" style="left:0.0%;top:20.0%;width:40.0%;height:6.0%"><span class="exl">“Név” = Name: AI read the Hungarian</span></span><span class="exmk below" style="left:20.0%;top:42.0%;width:45.0%;height:5.0%"><span class="exl">“We request the issue of the following clothing”</span></span><span class="exmk right true" style="left:71.0%;top:66.0%;width:27.0%;height:14.0%"><span class="exl">“Helman Mátyás”: his signature, a new form of his name</span></span></a>
+      <figcaption>AI translated the form; I checked every word against the page. “Mátyás” went into his name matrix.<span class="cite">Budapest aid-office form, June 1945 · Yad Vashem</span></figcaption>
+    </figure>
   </div>
   <div class="step alt">
     <span class="no">3b</span>
@@ -309,6 +336,11 @@
       <p>Nearly everything recovered in this case came from following someone other than the person being looked for. If your grandmother is invisible, find her neighbours.</p>
           <p class="todo">Do this: search the village, not the person. Then read every name it returns.</p>
     </div>
+    <figure class="stepex">
+      <span class="exk">From Helen&rsquo;s case</span>
+      <a class="exdoc" href="road/img/rec-kiraly6-sperber-dachau.jpg"><img src="road/img/rec-kiraly6-sperber-dachau.jpg" alt="Dachau registration of Szerene Sperber, home address Budapest, Király utca 6" width="1023" height="894" loading="lazy" decoding="async"><span class="exmk below" style="left:8.0%;top:13.0%;width:65.0%;height:7.5%"><span class="exl">“SPERBER, Szerene”: her cousin, whom she lived with</span></span><span class="exmk true below" style="left:8.0%;top:22.2%;width:49.0%;height:6.0%"><span class="exl">“Budapest, Kiralyt 6”: the house Helen lived in</span></span><span class="exmk" style="left:8.0%;top:93.0%;width:54.0%;height:5.5%"><span class="exl">“Verhaftet am 23.10.44”: arrested 23 October 1944</span></span></a>
+      <figcaption>Helen left no record in Budapest in 1944. Her cousin’s card places her: the house, and the day Szerene was taken.<span class="cite">Arolsen Archives · Dachau registration, Szerene Sperber</span></figcaption>
+    </figure>
   </div>
   <h2 class="hsec" id="stage-verify"><span class="sk">Step 4</span>Verify against the original</h2>
   <p>Keep a finding only when the original document confirms it and independent sources agree.</p>
@@ -321,6 +353,11 @@
       <p>AI accelerates the search. It does not decide anything.</p>
           <p class="todo">Do this: never stop at the index. Open the register image and read the parents&rsquo; names yourself.</p>
     </div>
+    <figure class="stepex">
+      <span class="exk">From Helen&rsquo;s case</span>
+      <a class="exdoc" href="road/img/rec-prien-1946.jpg"><img src="road/img/rec-prien-1946.jpg" alt="Helen’s 1946 displaced persons registration card under the name Lando Helene" width="1100" height="724" loading="lazy" decoding="async"><span class="exmk false" style="left:3.5%;top:25.0%;width:17.0%;height:4.5%"><span class="exl">“20 April 1931”: wrong. Born 1929</span></span><span class="exmk false below" style="left:26.0%;top:25.0%;width:23.0%;height:4.5%"><span class="exl">“Kisvarda”: wrong. Her friend Ibi’s town</span></span><span class="exmk true below" style="left:18.0%;top:33.0%;width:23.0%;height:4.0%"><span class="exl">“Helmann, Zaharias”: her father. True</span></span><span class="exmk right true" style="left:59.0%;top:33.0%;width:16.0%;height:4.0%"><span class="exl">“Lando, Rosa”: her mother. True</span></span></a>
+      <figcaption>Wrong year, wrong town. The parents are right, and that is how I knew it was her.<span class="cite">Arolsen Archives · DP registration card, 17 December 1946</span></figcaption>
+    </figure>
   </div>
 
   <h2>Four rules that matter more than any database</h2>
@@ -377,7 +414,7 @@
       <div class="hic">
         <div>
           <h3>H becomes G</h3>
-          <p>Russian and Ukrainian have no letter H. A name written in Cyrillic and turned back into our alphabet comes out with a G: Helman becomes <strong>Gelman</strong>, and Helena, her name on paper, becomes Gelena. Search the Cyrillic spellings too, or you will miss every record made in Soviet times.</p>
+          <p>Russian has no letter H, so Soviet clerks wrote it as Г. A name written in Cyrillic and turned back into our alphabet comes out with a G: Helman becomes <strong>Gelman</strong>, and Helena, her name on paper, becomes Gelena. Search the Cyrillic spellings too, or you will miss every record made in Soviet times.</p>
           <p>The same list shows two more things. It gives a patronymic, a &ldquo;father&rsquo;s name&rdquo; (Zachariashevna: daughter of Zacharias). And it lists Helen as deported and lost, when she survived. Lists made after the war can be wrong too.</p>
           <p class="try">What to do: search your surname with G in place of H, and with Ch, Kh and Gh.</p>
         </div>
@@ -556,7 +593,7 @@
     </div>
     <div class="kindgrid">
       <div class="kc ex"><b>It takes patience, not money</b><p>Months, not days. Most of what I used is free and online.</p></div>
-      <div class="kc ex"><b>Photos are rare</b><p>Most people deported in 1944 were never registered, and film was scarce. When I started, I had no photo of Helen&rsquo;s parents, no grave and not one document.</p></div>
+      <div class="kc ex"><b>Photos are rare</b><p>Most people deported in 1944 were never registered, and film was scarce. When I started, I had no photo of Helen&rsquo;s parents, no grave and only one document: the prisoner card my mother found.</p></div>
       <div class="kc ex"><b>The records have mistakes</b><p>One card says &ldquo;Kremsdorf&rdquo;. No such place exists. A clerk heard &ldquo;Rehmsdorf&rdquo; and typed what he heard.</p></div>
       <div class="kc ex"><b>Some &ldquo;lost&rdquo; people lived</b><p>Helen said her cousins had all disappeared. Most of them survived. Some questions stay open, and that&rsquo;s fine: say so.</p></div>
     </div>
@@ -575,7 +612,7 @@
     <div class="kindgrid">
       <div class="kc"><b>Not knowing is normal</b><p>Many of us never knew our family&rsquo;s full story, and often our parents didn&rsquo;t either. The gaps are where the records come in.</p></div>
       <div class="kc"><b>You are not too late</b><p>A few years ago I couldn&rsquo;t have shown you any of this. Arolsen put its records online in 2019, and I only started digging in 2026.</p></div>
-      <div class="kc"><b>You will miss things. I did.</b><p>I read one camp list and moved on. When I went back to it, his nephew was right under him.</p></div>
+      <div class="kc"><b>You will miss things. I did.</b><p>I read one camp list and moved on. When I went back to it, his nephews were right above him.</p></div>
       <div class="kc"><b>You are allowed to stop</b><p>When the databases run dry, set that branch aside. Write to a person instead, or count what you have already proven.</p></div>
       <div class="kc"><b>Ask for help</b><p>No one holds the whole story. I had the name. A cousin had the relation.</p></div>
       <div class="kc"><b>It is heavy</b><p>You will read about the worst things that happened to people you love. Take breaks. Talk to someone.</p></div>
@@ -597,6 +634,7 @@
 
   <footer class="page">
     <p>This page is free to print, copy and hand to anyone.</p>
+    <p class="wheelnote">The wheel is a wagon wheel, my family&rsquo;s trade: Helen&rsquo;s father and her cousins were wagon drivers. Twelve spokes, for the twelve tribes.</p>
     <p class="place">O&lsquo;ahu, Hawai&lsquo;i</p>
   </footer>
 
@@ -614,6 +652,6 @@
 </dialog>
 
 <script src="theme.js?v=20261008w"></script>
-<script src="home.js?v=20261008y"></script>
+<script src="home.js?v=20261010y"></script>
 </body>
 </html>

@@ -4,13 +4,13 @@
    screen; "say" is for what I add live, after the recording, before I click on. Leave it '' to add nothing. */
 window.TALK = {
   who: [
-    { img: 'road/img/road/sam-hawaii-stanford.jpg', cap: 'Hawaii', h: 'Samantha Seligman-Grajewski', p: ['Engineering Remembrance'],
-      say: 'Hello, and thank you for coming. I’m Samantha Seligman-Grajewski. Engineering Remembrance is my project: recovering families from the records that were meant to erase them.' },
+    { img: 'road/img/road/sam-wedding-2025.jpg', cap: 'Hawaii, December 2025', h: 'Samantha Seligman-Grajewski', p: ['Engineering Remembrance', 'In this photo I’m holding onto something you can’t see. That’s how this research feels: so close. What is there?'],
+      say: 'Hello, and thank you for coming. I’m Samantha Seligman-Grajewski. This is my wedding day in Hawaii, last December. Look at my hand: I’m holding onto something, my husband, but you can’t see him. That’s how this whole research journey feels to me. So close, but what is there? That’s the mystery.' },
     { img: 'road/img/helen-sam-2010.jpg', cap: 'Helen and me, 2010', h: 'Why I do this',
       p: ['Both of my grandparents survived the Holocaust: Helen Landó Helmán and Tibi Katz.',
           'When I was born, Helen retired and lived with us part of every week to help raise me. I was the youngest, and she slept in my bed with me.'],
       say: 'This is personal. Both of my grandparents survived. Helen helped raise me: she lived with us part of every week, and she slept in my bed with me.' },
-    { img: 'road/img/road/sam-hawaii-stanford.jpg', cap: 'Hawaii', h: 'How I do this',
+    { img: 'road/img/road/sam-wedding-2025.jpg', cap: 'Hawaii, December 2025', h: 'How I do this',
       p: ['I research from Hawaii, the other side of the world from her hometown.',
           'I speak only English. AI helps me read the records; I check every one against the original.',
           'I was never trained in this. If I can learn it, you can too.'],

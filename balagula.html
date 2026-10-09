@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Balagula &middot; Engineering Remembrance</title>
+<meta name="description" content="The Balagula app, coming soon: one search hub for the digital Holocaust archives, with AI to help you read and translate the records, built on the Engineering Remembrance method.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Engineering Remembrance">
+<meta property="og:title" content="Balagula · Engineering Remembrance">
+<meta property="og:description" content="An app, coming soon: one search hub for the digital archives, with AI to help you read and translate what you find.">
+<meta property="og:url" content="https://engineeringremembrance.org/balagula.html">
+<meta property="og:image" content="https://engineeringremembrance.org/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Buchenwald intake photographs of three men of one family, 2 June 1944">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css?v=20260822015032">
+<link rel="stylesheet" href="home.css?v=20261010z">
+<script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
+
+</head>
+<body>
+
+<button class="sidetoggle" type="button" aria-label="Show menu">&#9776;</button>
+
+<aside class="sidebar">
+  <a class="brandwrap" href="/">
+    <svg class="wheel" viewBox="0 0 64 64" width="46" height="46" role="img" aria-label="Engineering Remembrance">
+      <circle class="rim" cx="32.0" cy="32.0" r="28.0" fill="none" stroke="currentColor" stroke-width="2.6"/>
+      <circle cx="32.0" cy="32.0" r="23.6" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+      <line x1="32.00" y1="25.40" x2="32.00" y2="8.40" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="32.00" cy="4.00" r="1.9"/>
+      <line x1="35.30" y1="26.28" x2="43.80" y2="11.56" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="46.00" cy="7.75" r="1.9"/>
+      <line x1="37.72" y1="28.70" x2="52.44" y2="20.20" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="56.25" cy="18.00" r="1.9"/>
+      <line x1="38.60" y1="32.00" x2="55.60" y2="32.00" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="60.00" cy="32.00" r="1.9"/>
+      <line x1="37.72" y1="35.30" x2="52.44" y2="43.80" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="56.25" cy="46.00" r="1.9"/>
+      <line x1="35.30" y1="37.72" x2="43.80" y2="52.44" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="46.00" cy="56.25" r="1.9"/>
+      <line x1="32.00" y1="38.60" x2="32.00" y2="55.60" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="32.00" cy="60.00" r="1.9"/>
+      <line x1="28.70" y1="37.72" x2="20.20" y2="52.44" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="18.00" cy="56.25" r="1.9"/>
+      <line x1="26.28" y1="35.30" x2="11.56" y2="43.80" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="7.75" cy="46.00" r="1.9"/>
+      <line x1="25.40" y1="32.00" x2="8.40" y2="32.00" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="4.00" cy="32.00" r="1.9"/>
+      <line x1="26.28" y1="28.70" x2="11.56" y2="20.20" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="7.75" cy="18.00" r="1.9"/>
+      <line x1="28.70" y1="26.28" x2="20.20" y2="11.56" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="18.00" cy="7.75" r="1.9"/>
+      <circle cx="32.0" cy="32.0" r="6.6" fill="none" stroke="currentColor" stroke-width="2.3"/>
+      <circle class="node" cx="32.0" cy="32.0" r="2.5"/>
+    </svg>
+    <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
+  <p class="tagline">Recovering families from the records that were meant to erase them.</p>
+<button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
+    <a href="/"><span class="k">01</span> Home</a>
+    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road</a>
+    <a href="/method.html"><span class="k">03</span> The Method <span class="soon now">available now</span></a>
+    <a href="/balagula.html" aria-current="page"><span class="k">04</span> Balagula <span class="soon">coming soon</span></a>
+    <a href="/databases.html"><span class="k">05</span> Databases</a>
+    <a href="/about.html"><span class="k">06</span> The Researcher</a>
+    <button class="navhelen" type="button" data-open="helen"><span class="k">&#9654;</span> Hear Helen</button>
+  </nav>
+  <div class="sidefoot">
+    <button class="themetoggle" type="button">Light mode</button>
+    <button class="sidehide" type="button">Hide menu &larr;</button>
+    <p>Samantha Seligman-Grajewski</p>
+    <p><a href="mailto:sgrajews@stanford.edu">sgrajews@stanford.edu</a></p>
+  </div>
+</aside>
+
+<main class="main">
+<div class="wrap">
+
+  <p class="eyebrow">An app, coming soon</p>
+  <h1>Balagula</h1>
+  <p class="lede">One search hub for the digital archives, with AI to help you read and translate what you find. Built on the Engineering Remembrance Method.</p>
+
+  <p>A <em>balagula</em>, in Yiddish, was a wagon driver: the man who knew every road between the villages. Helen&rsquo;s father and her cousins were wagon drivers. This app is named for them, and for the job it does: it knows the roads to the archives, and it takes you there.</p>
+
+  <p>It works like the wheel in my logo. Balagula is the hub, every archive is a spoke, and it all connects.</p>
+
+  <h2>What it does</h2>
+  <ol class="bala-steps">
+    <li>You give it a name and a town.</li>
+    <li>It tells you which archives to search, in what order, and takes you straight to each one.</li>
+    <li>It checks off what you find: every spelling of the name, birth dates, places.</li>
+    <li>It helps you read what you find. AI translates the record and reads the handwriting, and you check it against the original.</li>
+    <li>It will remember what you searched, where, and what you found, so nothing is lost and nothing is searched twice.</li>
+    <li>It sends you to each archive&rsquo;s own search, the way each archive allows. It never copies their records.</li>
+  </ol>
+
+  <p class="bala-note">Balagula finds the leads. Only you confirm them, against the original record.</p>
+
+  <p>It won&rsquo;t hand you a family tree. No honest tool can, for these records. It shows you where to look, and how to know when you&rsquo;ve found them.</p>
+
+  <h2>Who is building it</h2>
+  <p>My husband, Jake Grajewski, a software engineer, is building Balagula on the Engineering Remembrance Method: the same four steps I used to find Helen&rsquo;s family. It starts with the first hour of a search, the part where most people don&rsquo;t know where to begin. The method itself is free, and always will be.</p>
+
+  <h2>Be the first to try it</h2>
+  <p><span class="bala-soon">Coming soon</span></p>
+  <p>Want to try it before anyone else? <a href="mailto:sgrajews@stanford.edu?subject=Balagula">Email me</a> and I&rsquo;ll tell you when it&rsquo;s ready.</p>
+  <p>Until then, <a href="/method.html">the free method</a> walks you through the same steps by hand, and <a href="/databases.html">the databases</a> list every archive I used.</p>
+
+  <footer class="page">
+    <p class="wheelnote">The wheel is a wagon wheel, my family&rsquo;s trade: Helen&rsquo;s father and her cousins were wagon drivers. Twelve spokes, for the twelve tribes.</p>
+    <p class="place">O&lsquo;ahu, Hawai&lsquo;i</p>
+  </footer>
+
+</div>
+</main>
+
+<dialog id="helen" class="helen">
+  <button class="hclose" type="button" aria-label="Close">&times;</button>
+  <p class="hlabel">In her own voice</p>
+  <blockquote class="hquote">&ldquo;We all have stories to tell. You know, all of us have some kind of story to tell.&rdquo;</blockquote>
+  <p class="hattr">Helen Lando Helman, speaking at the Orange County High School of the Arts, about 2002</p>
+  <audio class="hear" controls preload="none" src="audio/helen-testimony.mp3">
+    <a href="audio/helen-testimony.mp3">Download the clip</a>
+  </audio>
+</dialog>
+
+<script src="theme.js?v=20261008w"></script>
+</body>
+</html>

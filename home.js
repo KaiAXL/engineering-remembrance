@@ -51,3 +51,12 @@
   }
   window.addEventListener('hashchange',fromHash); fromHash();
 })();
+
+/* the road card: its words are exactly as tall as Helen's portrait, so the label sits level with the photo's top and the button with its bottom (Sam, 9 Oct 2026) */
+(function(){
+  var card=document.querySelector('.hhero.solo .roadcard'); if(!card) return;
+  var img=card.querySelector('.rcpor img'), txt=card.querySelector('.rctext'); if(!img||!txt) return;
+  function fit(){
+    var h=img.getBoundingClientRect().height; if(h) card.style.setProperty('--porH',h+'px'); }
+  if(img.complete) fit(); img.addEventListener('load',fit); window.addEventListener('resize',fit);
+})();
