@@ -1,0 +1,1043 @@
+/* Helen's Road, web version (fork of the booth's road.css; the web changes are at the end). Dark, quiet, the records in the light.
+   Gold is Helen's colour: the wheel (Sam, 11 Sept 2026) and, because the wheel is her, her own voice. Nothing else. */
+:root{
+  --ink:#0d0f12; --ink2:#15181d; --cream:#f3ecdf; --cream-dim:#bdb3a2; --cream-faint:#787d86;
+  --red:#cf4a3c; --cousin:#8fb0c6; --david:#a99cc8; --gold:#cf9f63;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",Consolas,"Courier New",monospace;
+  --ease:cubic-bezier(.22,.7,.2,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ink);color:var(--cream);overflow:hidden;font-family:var(--serif)}
+body.blank #ui,body.blank #map,body.blank .vignette{opacity:0;transition:opacity .6s}
+#map{position:fixed;inset:0;background:#0b0f12;z-index:0;isolation:isolate}
+/* the map's border canvases are GPU layers; without its own layer the UI can be composited under them */
+#ui{position:fixed;inset:0;z-index:10;pointer-events:none;transform:translateZ(0);will-change:transform}
+.vignette{z-index:5!important}
+
+/* ---- the map ---- */
+.leaflet-container{background:#0b0f12;font-family:var(--mono)}
+.leaflet-tile-pane .street{filter:sepia(.08) brightness(1.6) contrast(1.12);transition:filter 2.4s}
+body.night .leaflet-tile-pane .street{filter:sepia(.05) brightness(1.2) contrast(1.1)}
+.leaflet-tile-pane .relief{filter:grayscale(1) sepia(.08) brightness(.36) contrast(1.5);transition:filter 2.4s}
+body.night .leaflet-tile-pane .relief{filter:grayscale(1) sepia(.05) brightness(.17) contrast(1.6)}
+body.evidence .leaflet-tile-pane .relief{filter:grayscale(1) sepia(.08) brightness(.26) contrast(1.5)}
+.tiles-esri .leaflet-labels-pane{filter:sepia(.1) brightness(1.25);opacity:.8;transition:opacity 1.2s}
+
+body.night .leaflet-labels-pane{opacity:.35}
+
+.tiles-osm .leaflet-tile-pane{filter:grayscale(1) invert(1) sepia(.05) brightness(.95) contrast(.92)}
+.leaflet-control-attribution{background:rgba(13,15,18,.55)!important;color:var(--cream-faint)!important;font:9.5px/1.4 var(--mono)!important;max-width:60vw}
+.leaflet-control-attribution a{color:var(--cream-dim)!important}
+.vignette{position:fixed;inset:0;pointer-events:none;z-index:400;
+  background:radial-gradient(ellipse 75% 70% at 40% 42%,transparent 40%,rgba(7,8,10,.5) 78%,rgba(7,8,10,.88) 100%)}
+
+/* borders of the period, crossfading */
+.era-pane{opacity:0;transition:opacity 1.6s ease}
+.era-pane.on{opacity:1}
+body.night .era-pane.on{opacity:.4}
+.plabel span{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font:600 10.5px/1 var(--mono);letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(243,236,223,.72);text-shadow:0 0 6px #000,0 0 2px #000}
+body.zoomed-in .plabel,body.zoomed-in .place,body.far .plabel{display:none}
+.place i{position:absolute;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:rgba(243,236,223,.7)}
+.place span{position:absolute;left:6px;top:-7px;white-space:nowrap;font:500 11px/1.2 var(--serif);color:rgba(243,236,223,.82);text-shadow:0 0 5px #000,0 0 2px #000}
+.place em{font:400 9.5px/1 var(--mono);font-style:normal;color:rgba(243,236,223,.45);margin-left:4px;letter-spacing:.04em}
+body.mid .place{display:none}
+body.night .place span{color:rgba(243,236,223,.35)}body.night .place i{opacity:.35}
+body.night .plabel span{color:rgba(243,236,223,.35)}
+
+.route{transition:opacity 1.6s}
+body.night .route{opacity:.16!important}
+body.evidence .route{opacity:.42!important}
+
+/* ---- the wheel, and the others on the road ---- */
+.wheel-mk{color:var(--gold);filter:drop-shadow(0 0 10px rgba(207,159,99,.55));transition:opacity .9s,filter .9s}
+.wheel-mk svg{display:block;transform-origin:50% 50%}
+.wheel-mk.waiting{opacity:.32;filter:none}
+.wheel-mk.gone{opacity:0}
+.wheel-tag{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:4px;white-space:nowrap;
+  font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);opacity:.9}
+.wheel-mk.waiting .wheel-tag{opacity:0}
+.walker{width:12px;height:12px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px rgba(0,0,0,.45),0 0 16px currentColor}
+.walker-train{filter:drop-shadow(0 0 8px currentColor) drop-shadow(0 1px 2px #000)}
+.walker-train svg{display:block}
+.walker-tag{position:absolute;left:30px;top:-4px;white-space:nowrap;font:600 11px/1.3 var(--mono);letter-spacing:.06em;text-shadow:0 1px 3px #000,0 0 8px #000}
+
+.ring{width:64px;height:64px;border-radius:50%;border:2px solid var(--cream);opacity:0;animation:ring 2.6s var(--ease) infinite}
+.ring.red{border-color:var(--red)}
+@keyframes ring{0%{transform:scale(.25);opacity:.95}100%{transform:scale(1.35);opacity:0}}
+.here{position:absolute;left:50%;top:-30px;transform:translateX(-50%);white-space:nowrap;font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cream);text-shadow:0 1px 4px #000}
+.stamp{position:relative;width:16px;height:16px}
+.stamp i{position:absolute;inset:0;border:2px solid var(--cream);transform:rotate(45deg);box-shadow:0 0 18px rgba(243,236,223,.6);animation:stamp .9s var(--ease) both}
+.stamp span{position:absolute;left:26px;top:-2px;white-space:nowrap;font:600 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-shadow:0 1px 4px #000,0 0 10px #000}
+@keyframes stamp{from{transform:rotate(45deg) scale(3);opacity:0}to{transform:rotate(45deg) scale(1);opacity:1}}
+
+/* ---- lights ---- */
+.light{position:relative;width:14px;height:14px}
+.light i{position:absolute;inset:0;border-radius:50%;background:#fff8ea;
+  box-shadow:0 0 6px 2px #fff3d6,0 0 22px 8px rgba(255,236,196,.55),0 0 60px 22px rgba(255,226,170,.18);
+  transform:scale(0);animation:ignite 1.8s var(--ease) forwards, breathe 4.5s ease-in-out 1.8s infinite}
+.light.small i{inset:3px}
+.light.area i{inset:-26px;background:radial-gradient(circle,rgba(255,240,210,.55) 0%,rgba(255,230,190,.18) 40%,transparent 70%);box-shadow:none}
+.light .lbl{position:absolute;left:22px;top:-3px;white-space:nowrap;opacity:0;animation:fadein 1.4s ease .9s forwards;
+  font:500 16px/1.25 var(--serif);color:var(--cream);text-shadow:0 1px 4px #000,0 0 12px #000}
+.light .lbl small{display:block;font:500 10.5px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cream-dim)}
+.light.left .lbl{left:auto;right:22px;text-align:right}
+.light.area .lbl{top:18px}
+.light.old .lbl{opacity:0!important;animation:none;transition:opacity 1s}
+.light.old i{filter:brightness(.7)}
+@keyframes ignite{0%{transform:scale(0);opacity:0}35%{transform:scale(1.9);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.72}}
+@keyframes fadein{to{opacity:1}}
+.thread{stroke-dasharray:6 8;animation:march 30s linear infinite}
+@keyframes march{to{stroke-dashoffset:-600}}
+
+/* ---- chrome ---- */
+.brand{position:fixed;top:22px;left:28px;z-index:600;display:flex;align-items:center;gap:12px;color:var(--gold)}
+.brand b{display:block;font:500 20px/1.1 var(--serif);color:var(--cream)}
+.brand small{display:block;font:500 10.5px/1.3 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim);margin-top:3px}
+.year{position:fixed;top:12px;right:30px;z-index:600;text-align:right}
+.year .n{font:300 clamp(48px,6vw,104px)/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.year .k{font:500 11px/1.2 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);margin-top:2px}
+.year .era{display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-top:10px}
+.year .era span{font:500 10.5px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cream-faint)}
+.year .era span:first-child{color:var(--cream-dim)}
+.year .era b{color:var(--cream);font-weight:600}
+
+/* Sam's caption */
+.cap{position:fixed;left:28px;bottom:86px;z-index:600;width:min(46vw,700px);padding:22px 26px 20px;border-radius:6px;
+  background:linear-gradient(180deg,rgba(13,15,18,.8),rgba(13,15,18,.92));backdrop-filter:blur(6px);
+  border:1px solid rgba(243,236,223,.08);box-shadow:0 20px 60px rgba(0,0,0,.5);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.cap.out{opacity:0;transform:translateY(14px)}
+.cap.dim{opacity:.38}
+body.has-voice .cap.dim{opacity:.1}
+.cap .k{font:600 11px/1.2 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);margin:0 0 10px;display:flex;gap:12px;align-items:center}
+.cap .k .dot{width:6px;height:6px;border-radius:50%;background:var(--red);display:none}
+.cap .k .dot.on{display:inline-block;animation:breathe 1.6s infinite}
+.cap h2{font:400 clamp(26px,2.5vw,40px)/1.12 var(--serif);margin:0 0 12px}
+.cap p{font:400 clamp(16px,1.25vw,21px)/1.5 var(--serif);margin:0}
+.cap .w{opacity:.38;transition:opacity .35s}
+.cap .w.s,.cap p.static .w{opacity:1}
+.cap blockquote{margin:0;font:italic 400 clamp(24px,2.3vw,36px)/1.3 var(--serif)}
+.cap .lesson{font:italic 500 clamp(17px,1.35vw,23px)/1.4 var(--serif);color:var(--cream);margin-top:12px;padding-left:14px;border-left:2px solid var(--cream-dim)}
+.cap .lesson:empty,.cap .rnote:empty,.cap .attr:empty{display:none}
+.cap .rnote{font:400 11.5px/1.5 var(--mono);color:var(--cream-faint);margin-top:12px}
+.cap .attr{font:500 11.5px/1.4 var(--mono);letter-spacing:.04em;color:var(--cream-dim);margin-top:10px}
+
+/* Helen's voice */
+.voice{position:fixed;left:28px;top:96px;z-index:610;width:min(46vw,700px);padding:20px 26px 18px;border-radius:6px;
+  background:linear-gradient(180deg,rgb(21,24,29),rgb(13,15,18));border:1px solid rgba(207,159,99,.22);
+  box-shadow:0 20px 60px rgba(0,0,0,.55);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.voice.out{opacity:0;transform:translateY(-10px);pointer-events:none}
+.voice .vk{display:flex;align-items:center;gap:10px;font:600 11px/1.2 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.voice .bars{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
+.voice .bars i{width:2px;height:3px;background:var(--gold);border-radius:1px}
+.voice.playing .bars i{animation:bar .9s ease-in-out infinite}
+.voice.playing .bars i:nth-child(2){animation-delay:.15s}.voice.playing .bars i:nth-child(3){animation-delay:.3s}.voice.playing .bars i:nth-child(4){animation-delay:.45s}
+@keyframes bar{0%,100%{height:3px}50%{height:12px}}
+.voice blockquote{margin:0;font:italic 400 clamp(19px,1.65vw,28px)/1.42 var(--serif)}
+.voice blockquote .w{opacity:.33;transition:opacity .3s}
+.voice blockquote .w.s{opacity:1}
+.voice .vnote{font:400 11.5px/1.5 var(--mono);color:var(--cream-faint);margin-top:10px}
+.voice .vnote:empty{display:none}
+.witness{position:fixed;right:28px;top:calc(min(6vw,104px) + 52px);z-index:620;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(-6px);transition:opacity .8s,transform .8s;
+  font:600 10.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--cream);padding:8px 14px;border-radius:999px;background:rgba(13,15,18,.85);border:1px solid rgba(243,236,223,.18)}
+.witness i{width:34px;height:1px;background:linear-gradient(90deg,var(--gold),var(--cream))}
+.witness span:first-child{color:var(--gold)}
+.witness.on{opacity:1;transform:none}
+
+/* the documents and the magnifier */
+.doc{position:fixed;right:28px;top:calc(min(6vw,104px) + 92px);bottom:86px;z-index:600;width:min(40vw,640px);display:flex;flex-direction:column;justify-content:center;gap:10px;pointer-events:none}
+.doc.row{width:min(44vw,720px)}
+/* with her words open on the left, the records keep clear of them */
+body.has-voice .doc{width:min(40vw,640px,calc(100vw - min(46vw,700px) - 80px))}
+body.has-voice .doc.row{width:min(44vw,720px,calc(100vw - min(46vw,700px) - 80px))}
+.doc::before{content:'';position:absolute;inset:-60px -28px -50px -70px;z-index:-1;opacity:0;transition:opacity 1s;
+  background:radial-gradient(ellipse 70% 62% at 55% 50%,rgba(10,11,14,.86),rgba(10,11,14,.55) 55%,rgba(10,11,14,0) 80%)}
+.doc.in::before{opacity:1}
+.cap,.voice{box-shadow:0 0 0 1px rgba(243,236,223,.06),0 30px 80px 20px rgba(7,8,10,.7)}
+.doc .dk{font:600 10.5px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);opacity:0;transition:opacity .8s}
+.doc .dk:empty{display:none}
+.doc.in .dk{opacity:1}
+.doc .figs{display:flex;flex-direction:column;gap:12px;min-height:0}
+.doc.row .figs{flex-direction:row;align-items:center}
+.doc figure{margin:0;display:flex;flex-direction:column;min-height:0;min-width:0;flex:0 1 auto;
+  opacity:0;transform:translateY(16px) scale(.985);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.doc.row figure{flex:1 1 0}
+.doc.in figure{opacity:1;transform:none}
+.doc.in figure:nth-child(2){transition-delay:.45s}.doc.in figure:nth-child(3){transition-delay:.9s}
+.doc .frame{position:relative;overflow:hidden;border-radius:3px;background:#efe7d6;box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06)}
+.doc img{display:block;width:auto;max-width:100%;height:auto;max-height:50vh;background:#efe7d6}
+.doc .frame{align-self:flex-start;max-width:100%}
+.doc.row .frame{align-self:center}
+.doc.many img{max-height:25vh}
+.doc .box{position:absolute;border:2px solid var(--cream);border-radius:3px;box-shadow:0 0 0 1px rgba(13,15,18,.9),0 0 14px 2px rgba(243,236,223,.7),inset 0 0 0 1px rgba(13,15,18,.6);
+  opacity:0;transition:opacity .5s,left .8s var(--ease),top .8s var(--ease),width .8s var(--ease),height .8s var(--ease)}
+.doc .box.on{opacity:1}
+.doc figcaption{font:400 12px/1.45 var(--mono);color:var(--cream-dim);margin-top:7px;max-width:64ch}
+.doc figcaption b{color:var(--cream);font-weight:600}
+.doc .reader{display:flex;align-items:center;gap:16px;padding:12px 14px;border-radius:6px;background:rgba(13,15,18,.92);border:1px solid rgba(243,236,223,.28);
+  box-shadow:0 14px 40px rgba(0,0,0,.6);opacity:0;transform:translateY(8px);transition:opacity .6s,transform .6s}
+.doc .reader.on{opacity:1;transform:none}
+.doc .reader.rest{opacity:0}
+.doc .crop{flex:none;border-radius:2px;background-color:#efe7d6;background-repeat:no-repeat;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.doc .rt{min-width:0;flex:1 1 180px}
+.doc .reader.stack{flex-direction:column;align-items:flex-start;gap:10px}
+.doc .reader.stack .rt{flex:none}
+.doc .rt b{display:block;font:500 clamp(15px,1.15vw,19px)/1.3 var(--serif);color:var(--cream)}
+.doc .rt span{display:block;font:400 11.5px/1.4 var(--mono);color:var(--cream-dim);margin-top:4px;letter-spacing:.04em}
+
+/* the road along the bottom */
+.road{position:fixed;left:28px;right:150px;bottom:28px;z-index:600;height:34px}
+.road .line{position:absolute;left:0;right:0;top:12px;height:1px;background:rgba(243,236,223,.18)}
+.road .done{position:absolute;left:0;top:12px;height:1px;background:var(--cream);transition:width 1.4s var(--ease)}
+.road .tick{position:absolute;top:8px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:var(--ink);border:1px solid rgba(243,236,223,.4)}
+.road .tick.past{background:var(--cream-dim);border-color:var(--cream-dim)}
+.road .tick.red{border-color:var(--red)}.road .tick.red.past{background:var(--red)}
+.road .tick.cous{border-color:var(--cousin)}.road .tick.cous.past{background:var(--cousin)}
+.road .tick.found{border-radius:1px;transform:rotate(45deg) scale(.85)}
+.road .tick.night{border-color:#fff3d6}
+.road .tick.now{background:var(--gold);border-color:var(--gold);box-shadow:0 0 12px var(--gold)}
+.road .lab{position:absolute;top:22px;transform:translateX(-50%);font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--cream-faint);white-space:nowrap}
+.road .wh{position:absolute;top:-1px;margin-left:-13px;color:var(--gold);transition:left 1.4s var(--ease)}
+
+.credit{position:fixed;left:28px;bottom:6px;z-index:600;font:400 9.5px/1 var(--mono);color:var(--cream-faint)}
+
+/* ---- the opening card ---- */
+.intro{position:fixed;inset:0;z-index:900;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 45%,rgba(21,24,29,.7),rgba(7,8,10,.96) 70%);transition:opacity 1.6s var(--ease)}
+.intro.out{opacity:0;pointer-events:none}
+.intro[hidden]{display:none}
+.intro{grid-template-columns:auto auto;gap:clamp(28px,4vw,72px);align-content:center;justify-content:center}
+.intro .in{max-width:min(860px,60vw);text-align:center}
+.intro .face{margin:0;width:clamp(180px,20vw,320px);opacity:0;transition:opacity 2.2s var(--ease)}
+.intro .face img{display:block;width:100%;border-radius:4px;filter:grayscale(.25) sepia(.15);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.intro .face figcaption{font:500 10.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cream-faint);margin-top:10px;text-align:center}
+.intro .promise{font:500 11.5px/1.6 var(--mono);letter-spacing:.06em;color:var(--cream-dim);margin:22px auto 0;max-width:520px;opacity:0;transition:opacity 1.6s}
+@media (max-width:760px){.intro{grid-template-columns:1fr}.intro .face{width:150px;justify-self:center}.intro .in{max-width:90vw}}
+.intro .wheelbig{color:var(--gold);display:inline-block;margin-bottom:26px}
+.intro .wheelbig svg{animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.intro blockquote{margin:0;font:italic 300 clamp(34px,4vw,64px)/1.2 var(--serif)}
+.intro blockquote .ln{display:block;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
+.intro .on{opacity:1!important;transform:none!important}
+.intro .attr{font:500 12.5px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);margin-top:22px;opacity:0;transition:opacity 1.2s}
+.intro .sub{font:400 clamp(20px,1.8vw,28px)/1.4 var(--serif);color:var(--cream-dim);margin-top:44px;opacity:0;transition:opacity 1.6s}
+.intro .who{font:500 12px/1.7 var(--mono);letter-spacing:.1em;color:var(--cream-faint);margin-top:18px;opacity:0;transition:opacity 1.6s}
+.intro .sig{margin-top:40px;opacity:0;transition:opacity 2s}
+.intro .sig.on{opacity:.8!important}
+.intro .sig img{height:52px;filter:invert(1) sepia(.3) brightness(1.1)}
+.intro .sig div{font:500 10.5px/1.4 var(--mono);letter-spacing:.1em;color:var(--cream-faint);margin-top:6px}
+
+@media (prefers-reduced-motion:reduce){
+  .ring,.light i,.intro .wheelbig svg,.thread,.stamp i,.voice.playing .bars i{animation:none!important}
+  .light i{transform:none}.light .lbl{opacity:1;animation:none}
+}
+
+/* the evidence board */
+.pin{position:absolute;transform:translate(-50%,-50%) scale(.6);opacity:0;transition:opacity .7s,transform .7s var(--ease);display:flex;flex-direction:column;align-items:center;gap:4px}
+.pin.set{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.pin .ph{width:74px;height:52px;border-radius:2px;overflow:hidden;background:#efe7d6;box-shadow:0 6px 18px rgba(0,0,0,.7),0 0 0 2px #e9dcc0;position:relative}
+.pin .ph::after{content:'';position:absolute;left:50%;top:-4px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:#cfc3a8;box-shadow:0 1px 3px #000}
+.pin .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.pin .glyph{display:grid;place-items:center;height:100%;font:600 12px/1 var(--mono);letter-spacing:.2em;color:#24282f}
+.pin span{white-space:nowrap;font:600 9.5px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cream);text-shadow:0 1px 3px #000,0 0 8px #000}
+.clue{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font:italic 400 12.5px/1.2 var(--serif);color:#efe3c8;background:rgba(13,15,18,.82);
+  padding:3px 8px;border-radius:999px;border:1px solid rgba(233,220,192,.25);opacity:0;transition:opacity .8s .3s}
+.clue.set{opacity:1}
+body.zoomed-in .pin span{display:none}
+.thread.old{opacity:.12!important;transition:opacity 1.2s}
+
+body.boardview .pin{transform:translate(-50%,-50%) scale(.82)}
+body.boardview .pin span{font-size:8.5px}
+body.boardview .plabel,body.boardview .place{opacity:.35}
+
+
+/* drawn documents (process flow, family tree, purge list) */
+.doc .frame.drawn{background:rgba(13,15,18,.92);border:1px solid rgba(243,236,223,.18);padding:14px;width:100%;align-self:stretch}
+.doc figure.drawn{width:100%}
+.doc.flowdoc{left:calc(min(34vw,520px) + 52px);right:28px;width:auto;top:calc(min(6vw,104px) + 84px);bottom:86px;align-items:center}
+body.drawn-on .cap{width:min(34vw,520px)}
+body.drawn-on .cap h2{font-size:clamp(22px,2.1vw,34px)}
+.doc.flowdoc .figs,.doc.flowdoc figure{height:100%;width:auto;max-width:min(100%,1100px);align-items:center}
+.doc.flowdoc .frame.drawn{height:100%;width:auto;display:flex;align-items:center;justify-content:center}
+.doc.flowdoc .frame.drawn>svg{height:100%;width:auto;max-width:100%}
+.doc.flowdoc .frame.drawn>.purgelist{overflow:hidden}
+.doc.flowdoc figcaption{text-align:center;max-width:none}
+/* how sure: the legend for the line styles */
+.legend{position:fixed;right:30px;bottom:72px;z-index:600;display:none;flex-direction:column;gap:3px;padding:8px 12px;border-radius:4px;background:rgba(13,15,18,.72);
+  font:500 9.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cream-dim)}
+.legend b{font-weight:600;color:var(--cream);letter-spacing:.16em;margin-bottom:2px}
+.legend span{display:flex;align-items:center;gap:8px}
+body.show-legend .legend{display:flex}
+body.has-doc .legend{display:none}
+/* the method at work (part 2) */
+.pfd{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:620;display:none;flex-direction:column;align-items:center;padding:6px 10px 5px;border-radius:6px;
+  background:rgba(13,15,18,.86);border:1px solid rgba(243,236,223,.14);font:500 10px/1.2 var(--mono);color:var(--cream-faint);max-width:46vw}
+body.pfd-on .pfd{display:flex}
+.pfd .pk{letter-spacing:.2em;text-transform:uppercase;font-size:9px;margin-bottom:5px;color:var(--cream-dim)}
+.pfd .pr{display:flex;align-items:center;white-space:nowrap}
+.pfd .u{padding:3px 6px;border:1px solid rgba(243,236,223,.22);border-radius:3px;letter-spacing:.04em;transition:all .5s}
+.pfd .u em{font-style:normal;font-weight:600;margin-right:4px}
+.pfd .u.lit,.pfd .purge.lit{color:var(--ink);background:var(--cream);border-color:var(--cream)}
+.pfd .arr{width:12px;height:1px;background:rgba(243,236,223,.45);position:relative}
+.pfd .arr::after{content:'';position:absolute;right:-1px;top:-3px;border:3.5px solid transparent;border-left:5px solid rgba(243,236,223,.55)}
+.pfd .rec{display:none}
+.pfd .rl{font-size:9px;margin-top:-1px;display:flex;gap:12px;align-items:center;width:100%;justify-content:space-between}
+.pfd .purge{padding:2px 6px;border:1px dashed rgba(243,236,223,.3);border-radius:3px;font-size:9px}
+.pfd .cnt{font-size:9px}
+.pfd .cnt b{color:var(--cream);font-size:11px}
+
+/* the purge list */
+.doc .frame.drawn.list{flex-direction:column;align-items:stretch;justify-content:center;overflow:hidden}
+.purgelist{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.rj{position:relative;padding:8px 10px 8px;border:1px solid rgba(243,236,223,.16);border-radius:4px;background:rgba(243,236,223,.03);
+  opacity:0;transform:translateY(8px);animation:rjin .7s var(--ease) forwards;animation-delay:calc(.25s + var(--i) * .35s)}
+@keyframes rjin{to{opacity:1;transform:none}}
+.rj b{display:block;font:500 clamp(13px,min(1.15vw,2vh),18px)/1.22 var(--serif);color:var(--cream);margin-bottom:4px;padding-right:70px}
+.rj p{margin:0 0 3px;font:400 clamp(11px,min(.95vw,1.6vh),15px)/1.35 var(--serif);color:var(--cream-dim)}
+.rj p.x em{font-style:normal;color:var(--red);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:9.5px;margin-right:4px}
+.rj p.l{font:italic 400 clamp(11.5px,min(1vw,1.7vh),15px)/1.3 var(--serif);color:var(--cream);margin:5px 0 0}
+.rj .st{position:absolute;right:8px;top:8px;transform:rotate(-8deg);font:700 9.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--red);
+  border:1.5px solid var(--red);padding:3px 5px;border-radius:2px;opacity:.85}
+.rjn{margin:10px 2px 0;font:italic 400 13px/1.4 var(--serif);color:var(--cream-dim)}
+
+body.drawn-on .pin,body.drawn-on .clue,body.drawn-on .string{opacity:0!important}
+body.far .pin span,body.far .clue{display:none}
+body.far .pin .ph{width:44px;height:31px}
+
+/* ================= the web version ================= */
+/* the panels take the pointer; the map underneath stays still */
+.brand,.ctl,.road .tick,.intro,.endcard,.cap,.voice,.doc .frame{pointer-events:auto}
+.brand{text-decoration:none}
+.brand:hover b{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.cap,.voice{user-select:text}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+button{font:inherit;color:inherit}
+.credit:empty{display:none}
+
+/* the controls, bottom right */
+.ctl{position:fixed;right:24px;bottom:16px;z-index:700;display:flex;align-items:center;gap:4px;padding:4px;border-radius:999px;
+  background:rgba(13,15,18,.86);border:1px solid rgba(243,236,223,.16);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.ctl button{display:grid;place-items:center;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--cream);cursor:pointer;transition:background .2s}
+.ctl button:hover{background:rgba(243,236,223,.12)}
+.ctl button svg{width:18px;height:18px}
+.ctl button.main{background:var(--cream);color:var(--ink)}
+.ctl button.main:hover{background:#fff}
+.ctl button.txt{width:auto;padding:0 12px;border-radius:999px;font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim)}
+.ctl .cnt{min-width:58px;text-align:center;font:500 11px/1 var(--mono);letter-spacing:.06em;color:var(--cream-dim);font-variant-numeric:tabular-nums}
+body.at-intro .ctl{opacity:0;pointer-events:none}
+.road{right:380px}
+.road .tick{padding:0;cursor:pointer}
+.road .tick:hover{border-color:var(--cream);transform:scale(1.4)}
+.road .tick.found:hover{transform:rotate(45deg) scale(1.2)}
+#ui>.leaflet-control-attribution{position:fixed;left:0;bottom:0;z-index:650;margin:0;padding:1px 6px;pointer-events:auto;border-radius:0 4px 0 0;
+  max-width:calc(100vw - 420px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.legend{bottom:76px}
+
+/* a record that is part of the story but not yet cleared for the web */
+.doc .frame.held{display:flex;flex-direction:column;gap:6px;justify-content:center;min-height:120px;min-width:min(100%,320px);padding:18px 20px;
+  background:repeating-linear-gradient(135deg,rgba(243,236,223,.04) 0 8px,rgba(243,236,223,.07) 8px 16px);border:1px dashed rgba(243,236,223,.3);box-shadow:none}
+.doc .frame.held b{font:500 16px/1.3 var(--serif);color:var(--cream)}
+.doc .frame.held span{font:400 11px/1.45 var(--mono);color:var(--cream-dim)}
+.doc button.frame{display:block;padding:0;border:0;font:inherit;color:inherit;cursor:zoom-in;text-align:left}
+
+/* the opening card */
+.intro{overflow:auto}
+.intro .title{font:500 13px/1 var(--mono);letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin:0 0 22px}
+.intro .go{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:34px;transition:opacity .8s}
+.intro .go button{cursor:pointer;border-radius:999px;font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:15px 24px;transition:background .2s,color .2s}
+.intro .go .play{display:inline-flex;align-items:center;gap:10px;background:var(--cream);color:var(--ink);border:1px solid var(--cream)}
+.intro .go .play svg{width:16px;height:16px}
+.intro .go .play:hover{background:#fff}
+.intro .go .quiet{background:transparent;color:var(--cream-dim);border:1px solid rgba(243,236,223,.3)}
+.intro .go .quiet:hover{color:var(--cream);border-color:var(--cream)}
+.intro .help{font:400 11px/1.6 var(--mono);color:var(--cream-faint);margin-top:14px;transition:opacity .8s}
+.intro.started .help{opacity:.6}
+.intro .sub{margin-top:30px}
+
+/* the end */
+.endcard{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:800;text-align:center;padding:26px 30px;border-radius:8px;max-width:calc(100vw - 32px);
+  background:rgba(13,15,18,.94);border:1px solid rgba(243,236,223,.18);box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.endcard[hidden]{display:none}
+.endcard .ek{margin:0 0 16px;font:600 11px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.endcard .eb{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.endcard button,.endcard a{border-radius:999px;padding:12px 18px;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+  color:var(--cream);background:transparent;border:1px solid rgba(243,236,223,.35)}
+.endcard button{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.endcard a:hover{border-color:var(--cream)}
+body.at-end .cap{opacity:.25}
+
+/* sources and credits */
+dialog.credits{max-width:min(760px,calc(100vw - 32px));max-height:calc(100vh - 48px);padding:0;border:1px solid rgba(243,236,223,.2);border-radius:8px;background:#121419;color:var(--cream);box-shadow:0 30px 90px rgba(0,0,0,.8)}
+dialog.credits::backdrop{background:rgba(7,8,10,.72)}
+dialog.credits .cin{padding:26px 30px 24px;overflow:auto;max-height:calc(100vh - 50px)}
+dialog.credits h2{font:400 28px/1.15 var(--serif);margin:0 0 6px}
+dialog.credits h3{font:600 11px/1.2 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:22px 0 8px}
+dialog.credits p,dialog.credits li{font:400 15px/1.5 var(--serif);color:var(--cream-dim);margin:0 0 8px}
+dialog.credits ul{margin:0;padding-left:18px}
+dialog.credits a{color:var(--cream)}
+dialog.credits .x{position:sticky;top:0;float:right;margin:-8px -10px 0 0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(243,236,223,.3);background:#121419;color:var(--cream);cursor:pointer;font:400 20px/1 var(--serif)}
+
+/* ---- phones and narrow windows: the panels stack, the map sits between them ---- */
+@media (max-width:759px){
+  .brand{top:10px;left:12px;gap:8px}
+  .brand svg{width:26px;height:26px}
+  .brand b{font-size:16px}
+  .brand small{display:none}
+  .year{top:6px;right:12px}
+  .year .n{font-size:34px}
+  .year .k{font-size:9px;letter-spacing:.14em}
+  .year .era{margin-top:4px}.year .era span{font-size:8.5px}
+  .vignette{background:radial-gradient(ellipse 90% 60% at 50% 40%,transparent 45%,rgba(7,8,10,.55) 85%,rgba(7,8,10,.85) 100%)}
+
+  .ctl{left:50%;right:auto;transform:translateX(-50%);bottom:14px;gap:2px}
+  .ctl button{width:40px;height:40px}
+  .ctl .cnt{min-width:50px;font-size:10.5px}
+  .road{left:16px;right:16px;bottom:62px;height:14px}
+  .road .lab{display:none}
+  .road .tick{width:7px;height:7px;margin-left:-3.5px;top:9px}
+  .road .wh{display:none}
+
+  .cap{left:8px;right:8px;width:auto;bottom:84px;max-height:40vh;overflow:auto;padding:14px 16px 14px;border-radius:6px}
+  body.drawn-on .cap{width:auto}
+  .cap .k{font-size:9.5px;margin-bottom:6px}
+  .cap h2,body.drawn-on .cap h2{font-size:21px;margin-bottom:6px}
+  .cap p{font-size:15px;line-height:1.45}
+  .cap blockquote{font-size:20px}
+  .cap .lesson{font-size:15px;margin-top:8px}
+  .cap .rnote,.cap .attr{font-size:10.5px;margin-top:8px}
+
+  .voice{left:8px;right:8px;width:auto;top:auto;bottom:84px;max-height:44vh;overflow:auto;padding:14px 16px}
+  .voice blockquote{font-size:17px}
+  .witness,.pfd,.legend{display:none!important}
+
+  .doc,.doc.row,body.has-voice .doc,body.has-voice .doc.row{left:8px;right:8px;width:auto;top:56px;bottom:auto;max-height:36vh;justify-content:flex-start;gap:6px}
+  .doc .dk{display:none}
+  .doc::before{inset:-30px -8px}
+  .doc .figs{gap:6px}
+  .doc img{max-height:21vh;margin:0 auto}
+  .doc.many img{max-height:11vh}
+  .doc.many .figs{flex-direction:row}
+  .doc.row img{max-height:16vh}
+  .doc .frame{align-self:center}
+  .doc figcaption{font-size:10px;line-height:1.35;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .doc .frame.held{min-height:70px;padding:10px 12px}
+  .doc .reader{padding:8px 10px;gap:10px}
+  .doc .rt b{font-size:14px}
+  .doc .rt span{font-size:10px}
+  .doc.flowdoc{left:8px;right:8px;top:56px;bottom:auto;height:36vh}
+  .doc.flowdoc figcaption{display:none}
+  .purgelist{grid-template-columns:1fr 1fr}
+  .rj p.x{display:none}
+
+  #ui>.leaflet-control-attribution{font-size:8px!important;max-width:100vw}
+
+  .light .lbl{font-size:13px}
+  .walker-tag,.stamp span{font-size:9.5px}
+
+  .intro{grid-template-columns:1fr;align-content:start;padding:24px 16px 32px;gap:14px}
+  .intro .face{width:110px;justify-self:center}
+  .intro .face figcaption{font-size:9px}
+  .intro .in{max-width:100%}
+  .intro .wheelbig{margin-bottom:12px}.intro .wheelbig svg{width:52px;height:52px}
+  .intro .title{margin-bottom:14px}
+  .intro blockquote{font-size:26px}
+  .intro .attr{font-size:10.5px;margin-top:14px}
+  .intro .sub{font-size:17px;margin-top:18px}
+  .intro .go{margin-top:22px}
+  .intro .promise{font-size:10.5px}
+  .intro .sig{margin-top:22px}.intro .sig img{height:36px}
+}
+@media (max-width:759px) and (max-height:700px){
+  .cap{max-height:34vh}
+  .doc,.doc.row{max-height:32vh}
+  .doc img{max-height:18vh}
+}
+
+/* "Hear Helen": the sound button while the sound is off */
+.ctl button.hear{width:auto;gap:8px;padding:0 14px 0 11px;display:inline-flex;align-items:center;border-radius:999px;background:var(--gold);color:var(--ink);
+  font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.ctl button.hear:hover{background:#e0b67e}
+.intro .go .play{background:var(--gold);border-color:var(--gold)}
+.intro .go .play:hover{background:#e0b67e}
+
+/* a record, enlarged */
+.lightbox{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(7,8,10,.92);pointer-events:auto}
+.lightbox[hidden]{display:none}
+.lightbox .lbin{display:flex;flex-direction:column;gap:10px;max-width:min(1400px,100%);max-height:100%;min-height:0}
+.lightbox .lbimg{min-height:0;overflow:auto;border-radius:3px;background:#efe7d6;cursor:zoom-in;-webkit-overflow-scrolling:touch}
+.lightbox .lbimg img{display:block;max-width:100%;max-height:calc(100vh - 170px);margin:0 auto}
+.lightbox .lbimg.zoom{cursor:zoom-out}
+.lightbox .lbimg.zoom img{max-width:none;max-height:none}
+.lightbox p{margin:0;font:400 13px/1.5 var(--mono);color:var(--cream-dim);max-width:90ch}
+.lightbox .lbb{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.lightbox .lbh{font:400 11px/1.4 var(--mono);color:var(--cream-faint);margin-right:auto}
+.lightbox a,.lightbox button{border-radius:999px;padding:10px 16px;font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+  color:var(--cream);background:transparent;border:1px solid rgba(243,236,223,.35)}
+.lightbox button{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+@media (max-width:759px){
+  .lightbox{padding:10px}
+  .lightbox .lbimg img{max-height:calc(100vh - 200px)}
+  .lightbox p{font-size:11px}
+  .ctl button.hear{padding:0 12px 0 9px}
+  .ctl button.hear span{font-size:9.5px}
+}
+
+/* ?still=1: the whole road at once, for the picture shown when the page can't run */
+body.still #ui>*:not(.brand):not(.legend){display:none!important}
+body.still .legend{display:flex}
+body.still .leaflet-control-attribution{display:none}
+
+/* the opening card images carry width/height for layout; their CSS size wins */
+.intro .face img{height:auto}
+.intro .sig img{width:auto;max-width:100%}
+.ctl button.hear{white-space:nowrap}
+/* the Start button (Sam, 8 Oct 2026): nothing plays until it is pressed */
+.intro .go .play{font-size:14px;padding:17px 34px}
+.intro .help .quiet{background:none;border:0;padding:0;font:inherit;color:var(--cream-dim);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.intro .help .quiet:hover{color:var(--cream)}
+/* the 'How sure' key is not shown on the web (Sam, 8 Oct 2026); the routes keep their line styles */
+.legend{display:none!important}
+/* a label above its light, ending at the dot (the closing scene, so phone labels stay on screen) */
+.light.up .lbl{top:auto;bottom:20px;right:-4px}
+@media (max-width:700px){.light .lbl small{white-space:normal;width:10.5em}}
+/* the record's highlights (Sam, 8 Oct 2026, after the workshop version): the sheet is exactly the image,
+   so a box is always on its field; each box keeps its meaning written on the record */
+.doc .frame{overflow:visible}
+.doc .frame .sheet{position:relative;display:block;line-height:0}
+.doc .frame .sheet img{border-radius:3px}
+.doc .box{display:none}
+.mk{position:absolute;border:2.5px solid var(--gold);border-radius:3px;opacity:0;transform:scale(1.18);
+  box-shadow:0 0 0 1px rgba(13,15,18,.55),0 0 16px rgba(207,159,99,.55);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.mk.on{opacity:1;transform:none}
+.mk:not(.now).on{box-shadow:0 0 0 1px rgba(13,15,18,.4);border-color:rgba(207,159,99,.75)}
+.mk .tag{position:absolute;left:-2px;bottom:calc(100% + 5px);white-space:nowrap;padding:4px 7px;border-radius:3px;
+  background:var(--gold);color:#121419;font:600 11.5px/1.15 var(--mono);letter-spacing:.02em;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.mk.below .tag{bottom:auto;top:calc(100% + 5px)}
+.mk.right .tag{left:auto;right:-2px}
+.mk:not(.now) .tag{opacity:.82}
+.mk.true{border-color:#7fc28a;box-shadow:0 0 16px rgba(127,194,138,.55)}
+.mk.true .tag{background:#7fc28a}
+.mk.false{border-color:#e06a57;box-shadow:0 0 16px rgba(224,106,87,.6)}
+.mk.false .tag{background:#e06a57;color:#fff}
+.mk.false::after{content:"";position:absolute;left:-3px;right:-3px;top:50%;height:2.5px;background:#e06a57;transform:scaleX(0);transform-origin:left;transition:transform .7s .4s var(--ease)}
+.mk.false.on::after{transform:scaleX(1)}
+@media (max-width:759px){ .mk .tag{font-size:9.5px;padding:3px 5px} .mk{border-width:2px} }
+@media (prefers-reduced-motion:reduce){ .mk{transition:opacity .3s;transform:none} }
+/* readable captions (Sam, 8 Oct 2026): the box stays solid while Helen speaks; only the words step back */
+.cap{background:linear-gradient(180deg,rgba(17,19,24,.97),rgba(13,15,18,.98))}
+.cap.dim{opacity:1}
+.cap.dim h2,.cap.dim p,.cap.dim .k{opacity:.5;transition:opacity .7s}
+.cap .w{opacity:.62}
+.cap p{color:var(--cream)}
+.year .mo{font:600 12px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--gold);min-height:12px;margin-bottom:4px}
+.year .mo:empty{visibility:hidden}
+.walker-ship{color:var(--gold);filter:drop-shadow(0 0 8px rgba(207,159,99,.6)) drop-shadow(0 1px 2px #000)}
+/* side-by-side records: only the field being explained keeps its label, so the labels never pile up */
+.doc.row .mk:not(.now) .tag,.doc.many .mk:not(.now) .tag{opacity:0;transition:opacity .4s}
+/* a yellow-star house (Budapest, 1944) */
+.light.star b{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);font:400 24px/1 sans-serif;color:#f5c518;text-shadow:0 0 10px rgba(245,197,24,.7),0 1px 2px #000;animation:fadein 1s ease forwards}
+/* Sam, 8 Oct 2026: my words never fade when Helen speaks; both stay strong */
+.cap.dim,.cap.dim h2,.cap.dim p,.cap.dim .k{opacity:1!important}
+/* the start and end of a road: the destination stands out (red for her family's roads, gold for hers) */
+.endlbl{position:absolute;transform:translate(-50%,calc(-100% - 12px));white-space:nowrap;padding:5px 9px 5px;border-radius:3px;
+  font:600 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;box-shadow:0 4px 16px rgba(0,0,0,.6);animation:fadein .8s ease forwards}
+.endlbl span{font-weight:500;opacity:.75;text-transform:lowercase;letter-spacing:.04em}
+.endlbl.from{background:rgba(13,15,18,.9);color:var(--cream);border:1px solid rgba(243,236,223,.55)}
+.endlbl.to.other{background:#cf4a3c;color:#fff;font-size:15px}
+.endlbl.to.helen{background:var(--gold);color:#121419;font-size:15px}
+.endlbl.from.helen{border-color:var(--gold)}
+@media (max-width:759px){ .endlbl{font-size:10.5px;padding:4px 6px} .endlbl.to.other,.endlbl.to.helen{font-size:11.5px} }
+/* water and land (Sam, 8 Oct 2026): the sea a dark blue, the land charcoal with its relief showing */
+#map,.leaflet-container{background:#0a1a2b}
+.leaflet-relief-pane{mix-blend-mode:multiply;opacity:.85}
+.leaflet-relief-pane .relief{filter:grayscale(1) brightness(1.3) contrast(1.9)}
+body.night .leaflet-relief-pane{opacity:.5}
+/* water and land (Sam, 8 Oct 2026): the sea a dark blue, the land charcoal with its relief showing */
+#map,.leaflet-container{background:#0a1a2b}
+.leaflet-relief-pane{mix-blend-mode:multiply;opacity:.85}
+.leaflet-relief-pane .relief{filter:grayscale(1) brightness(1.3) contrast(1.9)}
+body.night .leaflet-relief-pane{opacity:.5}
+/* Sam, 8 Oct 2026: the pulsing place marker in red; Helen's age in gold (her colour) */
+.stamp i{background:var(--red)!important;box-shadow:0 0 12px rgba(207,74,60,.8)!important}
+.year .k{color:var(--gold)}
+/* the wheel on the timeline, bigger (Sam, 8 Oct 2026) */
+.road .wh{top:-8px;margin-left:-20px;filter:drop-shadow(0 0 8px rgba(207,159,99,.55))}
+@media (max-width:759px){ .road .wh{display:block;top:-4px;margin-left:-14px} .road .wh svg{width:28px;height:28px} }
+/* opening card without the photograph (Sam, 8 Oct 2026); her father's signature under the button */
+.intro{grid-template-columns:auto}
+.intro .in{max-width:min(860px,88vw)}
+.intro .sig{margin-top:34px}
+.intro .sig div{font:400 11px/1.4 var(--mono);color:var(--cream-faint);margin-top:6px}
+.intro.started blockquote .w{opacity:.4;transition:opacity .3s}
+.intro.started blockquote .w.s{opacity:1}
+/* the museum look (Sam, 8 Oct 2026): no blue. A deep neutral black sea, the land lifted a step, relief as soft
+   shading, and the frame's edges falling away like a projected film */
+#map,.leaflet-container{background:#08090b}
+.leaflet-relief-pane{mix-blend-mode:multiply;opacity:.6}
+.leaflet-relief-pane .relief{filter:grayscale(1) brightness(1.35) contrast(1.7)}
+body.night .leaflet-relief-pane{opacity:.35}
+.vignette{background:radial-gradient(ellipse 78% 72% at 52% 48%,transparent 52%,rgba(4,5,6,.55) 82%,rgba(3,3,4,.9) 100%)!important}
+/* street maps: dark, but water still reads as water and parks as parks, muted (Sam, 8 Oct 2026) */
+.tiles-osm .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) saturate(.38) brightness(.68) contrast(1.02)!important}
+/* what the record is, in plain words, above it (Sam, 8 Oct 2026) */
+.doc .rk{font:600 11px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 7px}
+@media (max-width:759px){ .doc .rk{font-size:9px;margin-bottom:4px} }
+.light.star b{font-size:0;width:30px;height:30px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px rgba(245,197,24,.75)) drop-shadow(0 1px 2px #000)}
+.light.star b svg{display:block}
+.light.star .lbl{left:auto;right:30px}
+/* relief as the land (replaces the multiply blend above) */
+.leaflet-relief-pane{mix-blend-mode:normal!important;opacity:1!important}
+.leaflet-relief-pane .relief{filter:grayscale(1) brightness(.44) contrast(1.5)!important}
+body.night .leaflet-relief-pane .relief{filter:grayscale(1) brightness(.26) contrast(1.6)!important}
+/* destinations as film titles, not tags (Sam, 8 Oct 2026: "no to and from"; "improve and impress me") */
+.endlbl{transform:translate(-50%,calc(-100% - 16px));padding:0 0 6px;border-radius:0;background:none!important;border:0!important;box-shadow:none;
+  font:400 24px/1 var(--serif)!important;letter-spacing:.01em;text-transform:none;color:var(--cream)!important;
+  text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.9);opacity:0;animation:endIn 1.6s var(--ease) .2s forwards}
+.endlbl span{display:none}
+.endlbl::after{content:"";position:absolute;left:50%;bottom:0;height:1.5px;width:0;background:var(--red);transform:translateX(-50%);
+  box-shadow:0 0 8px rgba(207,74,60,.7);animation:endRule 1.2s var(--ease) .9s forwards}
+.endlbl.helen{color:#f0d7b0!important}
+.endlbl.helen::after{background:var(--gold);box-shadow:0 0 8px rgba(207,159,99,.7)}
+.endlbl.from{display:none}
+@keyframes endIn{from{opacity:0;transform:translate(-50%,calc(-100% - 6px))}to{opacity:1;transform:translate(-50%,calc(-100% - 16px))}}
+@keyframes endRule{to{width:100%}}
+@media (max-width:759px){ .endlbl{font-size:17px!important} }
+@media (prefers-reduced-motion:reduce){ .endlbl{animation:none;opacity:1} .endlbl::after{animation:none;width:100%} }
+.doc.row .rk{white-space:nowrap}
+/* three tones to choose from (?tone=a|b|c); the default follows Sam's pick */
+body.tone-a .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.6) brightness(.36) contrast(1.5)!important}
+body.tone-a #map,body.tone-a .leaflet-container{background:#0b0a08}
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.18) brightness(.3) contrast(1.6)!important}
+body.tone-c .leaflet-relief-pane .relief{filter:grayscale(1) brightness(.22) contrast(1.85)!important}
+body.tone-c .leaflet-sea-pane path{fill:#040405!important}
+body.night .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.15) brightness(.18) contrast(1.7)!important}
+/* modern but historical (Sam, 8 Oct 2026): dark because the history is dark. Gold words in a lighter gold so
+   they read; record labels inverted to dark plates with gold lettering, like museum captions */
+:root{--gold-text:#e9c995}
+.year .k,.year .mo,.voice .vk,.doc .rk,.wheel-tag,.endlbl.helen{color:var(--gold-text)!important}
+.mk .tag{background:rgba(12,13,16,.94)!important;color:var(--gold-text)!important;border:1px solid rgba(207,159,99,.85);
+  font-weight:500!important;letter-spacing:.03em;box-shadow:0 6px 18px rgba(0,0,0,.6)!important}
+.mk.true .tag{color:#a8dcb0!important;border-color:#7fc28a}
+.mk.false .tag{color:#ffb4a6!important;border-color:#e06a57}
+.intro .go .play{background:var(--gold-text)!important;border-color:var(--gold-text)!important}
+/* what the record is: its name, in the serif, larger (Sam, 8 Oct 2026) */
+.doc .rk{font:italic 400 clamp(17px,1.35vw,22px)/1.2 var(--serif)!important;letter-spacing:0!important;text-transform:none!important;color:var(--cream)!important;margin:0 0 9px!important;padding-left:10px;border-left:2px solid var(--red)}
+@media (max-width:759px){ .doc .rk{font-size:14px!important;margin-bottom:5px!important} }
+.doc .rk{font:500 clamp(20px,1.6vw,27px)/1.15 var(--serif)!important;font-style:normal!important;color:#fbf6ec!important;
+  display:inline-block;align-self:flex-start;background:rgba(10,11,13,.92);padding:7px 14px 8px 12px!important;border-left:3px solid var(--red)!important;
+  border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,.55);margin:0 0 10px!important}
+@media (max-width:759px){ .doc .rk{font-size:15px!important;padding:4px 9px 5px 8px!important} }
+.doc figure{overflow:hidden}
+.doc .frame .sheet img{width:auto;max-width:100%}
+/* water reads as water at night: deep slate, a little cooler than the land (Sam, 8 Oct 2026) */
+.leaflet-sea-pane{filter:drop-shadow(0 0 1.5px rgba(150,170,180,.25))}
+body.tone-c .leaflet-sea-pane path{fill:#0c1318!important}
+/* the pulse: cream around Helen, red where her family is (Sam, 8 Oct 2026) */
+.ring{border-color:var(--cream)}
+.ring.red{border-color:var(--red)}
+/* her village, the clearest name on the map; Rahó only close in (Sam, 8 Oct 2026) */
+.place.home span{left:22px;top:-11px;font:500 16px/1.15 var(--serif);color:#fbf6ec;letter-spacing:.01em;
+  text-shadow:0 0 6px #000,0 0 12px #000,0 0 2px #000;padding:1px 2px}
+.place.home em{display:block;font-size:10.5px;margin:2px 0 0;color:rgba(243,236,223,.7)}
+.place.home i{width:6px;height:6px;margin:-3px 0 0 -3px;background:#fbf6ec}
+.place.minor{display:none}
+body.zoomed-in .place.minor{display:block}
+@media (max-width:759px){ .place.home span{font-size:13px} }
+/* back to the cool blue-black Sam chose first (8 Oct 2026): no warmth, a faint blue cast, relief kept */
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.35) hue-rotate(178deg) saturate(1.4) brightness(.3) contrast(1.55)!important}
+body.night .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.35) hue-rotate(178deg) saturate(1.3) brightness(.19) contrast(1.65)!important}
+/* land: near-neutral charcoal, a hair cool, lifted; sea: near-black. Clear separation (Sam, 8 Oct 2026) */
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.2) hue-rotate(178deg) saturate(.55) brightness(.4) contrast(1.45)!important}
+body.night .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.2) hue-rotate(178deg) saturate(.5) brightness(.25) contrast(1.6)!important}
+.leaflet-sea-pane path{fill:#06080a!important;fill-opacity:.97!important}
+/* depth (Sam, 8 Oct 2026): the land a step darker, its hills stronger, and the sea casting a soft shadow
+   onto every coast, so the land sits up like a relief model under gallery light */
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.2) hue-rotate(178deg) saturate(.55) brightness(.33) contrast(1.75)!important}
+.leaflet-sea-pane{filter:drop-shadow(0 0 9px rgba(0,0,0,.95)) drop-shadow(0 0 3px rgba(0,0,0,.9))!important}
+/* the title top left in gold (Sam, 8 Oct 2026) */
+.brand b,.brand strong,.brand .t,.brand h1{color:var(--gold-text)!important}
+/* her village all in gold (Sam, 8 Oct 2026) */
+.place.home span,.place.home em{color:var(--gold-text)!important}
+.place.home i{background:var(--gold-text)!important;box-shadow:0 0 8px rgba(233,201,149,.7)}
+/* a label set to the left of its dot, where the right side is taken */
+.place.lft span{left:auto;right:6px;text-align:right}
+/* every city in gold, readable on the relief (Sam, 8 Oct 2026); her village stays the largest */
+.place span{color:var(--gold-text)!important;font-size:12px!important;text-shadow:0 0 6px #000,0 0 10px #000,0 0 2px #000!important}
+.place em{color:rgba(233,201,149,.62)!important}
+.place i{background:var(--gold-text)!important}
+.place.home span{font-size:16px!important}
+body.night .place span{color:rgba(233,201,149,.45)!important}
+.leaflet-coastglow-pane{filter:blur(3px)}
+body.night .leaflet-coast-pane,body.night .leaflet-coastglow-pane{opacity:.5}
+/* zoomed out, keep only the period names, so the cluster around her village stays readable */
+body.mid .place:not(.home) em{display:none}
+/* only the city the stop is about is gold and larger; the rest quiet cream (Sam, 8 Oct 2026; replaces "all gold") */
+.place span{color:rgba(243,236,223,.82)!important;font-size:11.5px!important}
+.place em{color:rgba(243,236,223,.45)!important}
+.place i{background:rgba(243,236,223,.7)!important;box-shadow:none!important}
+.place.home span{font-size:12.5px!important;color:rgba(243,236,223,.9)!important;left:6px;top:-8px}
+.place.home em{display:inline;margin-left:4px}
+.place.cur span{color:var(--gold-text)!important;font-size:17px!important;left:20px!important;top:-11px!important;transition:font-size .6s,color .6s}
+.place.cur em{color:rgba(233,201,149,.75)!important;display:inline!important}
+.place.cur i{background:var(--gold-text)!important;box-shadow:0 0 8px rgba(233,201,149,.7)!important}
+.place.cur{z-index:1000!important}
+/* the four tones on the comparison page (_tools/compare.html) */
+body.tone-a .leaflet-sea-pane path{fill:#0c0a07!important}
+body.tone-c .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.35) hue-rotate(178deg) saturate(1.1) brightness(.32) contrast(1.6)!important}
+body.tone-c .leaflet-sea-pane path{fill:#05080c!important}
+body.tone-d .leaflet-relief-pane .relief{filter:grayscale(1) brightness(.36) contrast(1.6)!important}
+body.tone-d .leaflet-sea-pane path{fill:#0b1826!important}
+/* the coast fades into the water instead of glowing (Sam, 8 Oct 2026); borders a step quieter */
+.leaflet-coastglow-pane{filter:blur(7px)!important}
+.leaflet-sea-pane{filter:none!important}
+.era-pane path{stroke-opacity:.42}
+/* B with a touch of warmth, like an aged print (Sam, 8 Oct 2026): the final tone */
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.28) saturate(.75) brightness(.33) contrast(1.75)!important}
+body.tone-b.night .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.25) saturate(.7) brightness(.22) contrast(1.7)!important}
+body.tone-b .leaflet-sea-pane path{fill:#080807!important}
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.14) saturate(.7) brightness(.33) contrast(1.75)!important}
+body.tone-b.night .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.12) saturate(.65) brightness(.22) contrast(1.7)!important}
+/* final: plain B, as on the comparison page (Sam, 8 Oct 2026: "too much warmth, B is better") */
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.2) hue-rotate(178deg) saturate(.55) brightness(.33) contrast(1.75)!important}
+body.tone-b.night .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.2) hue-rotate(178deg) saturate(.5) brightness(.25) contrast(1.6)!important}
+body.tone-b .leaflet-sea-pane path{fill:#06080a!important}
+/* B with the slightest trace of warmth (Sam, 8 Oct 2026, after trying more and rejecting it) */
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.07) saturate(.6) brightness(.33) contrast(1.75)!important}
+body.tone-b.night .leaflet-relief-pane .relief{filter:grayscale(1) sepia(.06) saturate(.55) brightness(.25) contrast(1.6)!important}
+/* the map fully neutral (Sam: "still reading brown"); the records keep a faint aged-paper warmth ("feels historical") */
+body.tone-b .leaflet-relief-pane .relief{filter:grayscale(1) brightness(.33) contrast(1.75)!important}
+body.tone-b.night .leaflet-relief-pane .relief{filter:grayscale(1) brightness(.24) contrast(1.65)!important}
+.vignette{background:radial-gradient(ellipse 78% 72% at 52% 48%,transparent 52%,rgba(4,5,6,.55) 82%,rgba(3,4,5,.9) 100%)!important}
+.doc .frame .sheet img{filter:sepia(.18) saturate(.95) contrast(1.02)}
+.starhouse{opacity:0;animation:fadein .8s ease forwards;filter:drop-shadow(0 0 4px rgba(245,197,24,.55)) drop-shadow(0 1px 1px #000)}
+/* only the borders of the period are drawn; the coast is the sea's edge, fading softly onto the land */
+.leaflet-sea-pane{filter:drop-shadow(0 0 1px rgba(215,218,222,.35)) drop-shadow(0 0 7px rgba(215,218,222,.12))!important}
+/* the roads, thicker and brighter, with a dark edge so they read on the relief (Sam, 8 Oct 2026) */
+path.route{filter:drop-shadow(0 0 1.5px rgba(0,0,0,.95)) drop-shadow(0 0 6px rgba(0,0,0,.6))}
+/* no magnifier: each part of the record is already labelled on it (Sam, 8 Oct 2026) */
+#dR,.doc .reader{display:none!important}
+/* record titles in the same panel as the captions, so the two sides match (Sam, 8 Oct 2026) */
+.doc .rk{background:linear-gradient(180deg,rgba(17,19,24,.97),rgba(13,15,18,.98))!important;border:1px solid rgba(243,236,223,.08)!important;
+  border-left:1px solid rgba(243,236,223,.08)!important;border-radius:6px!important;padding:9px 16px 10px!important;
+  box-shadow:0 0 0 1px rgba(243,236,223,.06),0 20px 50px rgba(0,0,0,.5)!important;font-size:clamp(20px,1.7vw,28px)!important}
+/* the title top left back to white (Sam, 8 Oct 2026) */
+.brand b{color:var(--cream)!important}
+/* record titles: the caption panel with a gold bar on the left (Sam, 8 Oct 2026) */
+.doc .rk{border-left:3px solid var(--gold)!important;padding-left:14px!important}
+/* city street maps much quieter (Sam, 8 Oct 2026: "more muted, too hard to read") */
+.tiles-osm .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) saturate(.18) brightness(.53) contrast(1.03)!important}
+/* a group title above the records; the Buchenwald stop gets a wider panel so the men are larger (Sam) */
+.doc .dk.titled{opacity:1;font:inherit;letter-spacing:0;text-transform:none;color:inherit}
+.doc .dk.titled .rk{display:inline-block}
+.doc.wide{width:min(56vw,980px)}
+@media (max-width:759px){ .doc.wide{width:auto} }
+/* the town being talked about is gold, on its title too (Sam, 8 Oct 2026) */
+.endlbl,.endlbl.helen{color:var(--gold-text)!important}
+/* every panel with the same gold bar on its left (Sam, 8 Oct 2026) */
+.cap,.voice,.doc .rk{border-left:3px solid var(--gold)!important}
+/* every part that has been taught stays up (Sam, 8 Oct 2026) */
+.doc.row .mk:not(.now) .tag,.doc.many .mk:not(.now) .tag,.mk:not(.now) .tag{opacity:1!important}
+.mk:not(.now) .tag{filter:brightness(.82)}
+/* when the title names the town, its small label steps aside (Sam: Indersdorf and Prien twice) */
+.place.titled span{display:none}
+/* phones: the controls fit (Credits was cut off); Hear Helen shows its icon only */
+@media (max-width:430px){ .ctl button.hear span{display:none} .ctl button.hear{padding:0 10px} .ctl{gap:4px!important} }
+.walker-ship svg{width:44px;height:26px}
+/* side-by-side records line up: same top, each image left-aligned under its title (Sam: "alignment off") */
+.doc.row .figs{align-items:flex-start!important}
+.doc.row .frame{align-self:flex-start!important}
+.doc.row figure{justify-content:flex-start}
+.road .wh svg{transition:transform 1.4s var(--ease);transform-origin:50% 50%}
+/* a record drawn small: only the label being explained shows, so the labels never pile over it */
+.doc figure.small .mk:not(.now) .tag{opacity:0!important}
+/* the Buchenwald strip: what the lit boxes have in common, said once under the picture (no tags on the faces) */
+.grpnote{margin-top:12px;min-height:2.6em;padding:10px 14px;border-left:3px solid var(--gold);border-radius:6px;
+  background:linear-gradient(180deg,rgba(17,19,24,.97),rgba(13,15,18,.98));font:400 clamp(16px,1.25vw,21px)/1.35 var(--serif);color:var(--cream);opacity:0;transition:opacity .6s}
+.grpnote.on{opacity:1}
+.grpnote b{color:var(--gold-text);font-weight:500}
+.grpnote em{font-style:normal;color:#ffb4a6}
+/* destination titles: white, bold and big (Sam, 8 Oct 2026) */
+.endlbl,.endlbl.helen{color:#fbf6ec!important;font-weight:600!important;font-size:30px!important}
+@media (max-width:759px){ .endlbl{font-size:20px!important} }
+.mk.side-r .tag{left:calc(100% + 6px)!important;right:auto!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)}
+.mk.side-l .tag{right:calc(100% + 6px)!important;left:auto!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)}
+.mk.side-r.below .tag,.mk.side-l.below .tag{top:100%!important;transform:none}
+/* records come up right away, with a short fade (Sam, 8 Oct 2026) */
+.doc figure{transition:opacity .45s var(--ease),transform .45s var(--ease)!important}
+.doc.in figure:nth-child(2){transition-delay:.12s!important}.doc.in figure:nth-child(3){transition-delay:.24s!important}
+/* the rarity line in red (Sam) */
+.cap .lesson.rare{color:#ff9f93;border-left-color:var(--red)}
+/* the train a little bigger; footprints for the walked stretches (Sam, 8 Oct 2026) */
+.walker-train svg{transform:scale(1.45);transform-origin:50% 50%}
+.walker-feet{color:var(--cream);filter:drop-shadow(0 0 6px rgba(0,0,0,.9)) drop-shadow(0 1px 2px #000)}
+.walker-feet svg{display:block}
+/* the two roads meet (Budapest, June 1945) */
+.meet{position:absolute;left:0;top:0;pointer-events:none}
+.meet i{position:absolute;left:-14px;top:-14px;width:28px;height:28px;border-radius:50%;border:2.5px solid var(--gold);opacity:0;animation:meetRing 2.4s var(--ease) forwards}
+.meet i.m2{border-color:#9fc6df;animation-delay:.35s}
+.meet i.m3{animation-delay:.7s;border-color:#fbf6ec}
+.meet b{position:absolute;left:-36px;top:-36px;width:72px;height:72px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,236,200,.85) 0%,rgba(230,182,110,.45) 30%,rgba(159,198,223,.2) 55%,transparent 72%);opacity:0;animation:meetGlow 3s ease 1s forwards}
+.meet span{position:absolute;left:34px;top:22px;white-space:nowrap;font:italic 500 22px/1 var(--serif);color:#fbf6ec;text-shadow:0 2px 12px #000,0 0 3px #000;opacity:0;animation:fadein 1.2s ease 1.6s forwards}
+@keyframes meetRing{0%{opacity:0;transform:scale(.4)}15%{opacity:1}100%{opacity:0;transform:scale(5.5)}}
+@keyframes meetGlow{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.15)}100%{opacity:.8;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){ .meet i{display:none} .meet b,.meet span{animation:none;opacity:1} }
+/* the travellers' name rides on a dark plate, and steps aside on arrival, where the title names the place (Sam: "fix") */
+.walker-tag{background:rgba(10,11,13,.88);padding:2px 6px;border-radius:3px;box-shadow:0 2px 8px rgba(0,0,0,.6);transition:opacity .8s}
+.arrived .walker-tag{opacity:0}
+/* records as big as the screen allows (Sam, 8 Oct 2026) */
+.doc{width:min(50vw,980px)!important;right:20px!important}
+.doc.wide{width:min(58vw,1100px)!important}
+.doc img,.doc .frame .sheet img{max-height:66vh}
+.doc.many img,.doc.many .frame .sheet img{max-height:34vh}
+.doc .figs{gap:8px}
+.doc figcaption{margin-top:5px}
+@media (max-width:759px){ .doc{width:auto!important} }
+/* same height side by side; labels never clipped by the frame */
+.doc figure{overflow:visible!important}
+.doc.row .frame,.doc.row .frame .sheet{width:100%}
+.doc.row .frame .sheet img{width:100%!important;height:auto;max-height:none}
+body.voice-br .voice{left:auto!important;right:28px;top:auto!important;bottom:86px;width:min(40vw,620px)}
+@media (max-width:759px){ body.voice-br .voice{right:8px;left:8px!important;width:auto} }
+.doc.row .frame .sheet img{width:auto!important;max-width:100%}
+.doc.row figure{flex:0 0 auto!important}
+.doc.row .frame,.doc.row .frame .sheet{width:auto!important}
+.doc.row .frame .sheet img{max-width:none!important}
+/* a caption never makes its record's column wider than the record */
+.doc.row figcaption,.doc.row .rk{width:0;min-width:100%;box-sizing:border-box}
+.doc.row .rk{white-space:normal!important}
+/* travellers' names readable at any size (Sam): clear of the larger train, light text on a solid plate */
+.walker-tag{left:40px!important;top:-6px!important;font:600 12.5px/1.3 var(--mono)!important;color:#fbf6ec!important;
+  background:rgba(10,11,13,.95)!important;border-left:3px solid currentColor;padding:3px 8px!important;text-shadow:none!important;z-index:5}
+.walker-feet .walker-tag{left:30px!important}
+body.zoom-on #dR,body.zoom-on .doc .reader{display:flex!important}
+body.zoom-on .doc .reader .rt b{font-size:22px}
+/* records back to their earlier size; only the Budapest forms and the Buchenwald strip get the wide panel (Sam) */
+.doc{width:min(40vw,700px)!important;right:28px!important}
+.doc.wide{width:min(56vw,1000px)!important}
+.doc img,.doc .frame .sheet img{max-height:52vh}
+/* the colour key, under records that use green or red */
+.mkkey{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px;font:500 11px/1.3 var(--mono);color:var(--cream-dim)}
+.mkkey span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;border:2px solid}
+.mkkey .t::before{border-color:#7fc28a}.mkkey .f::before{border-color:#e06a57}.mkkey .g::before{border-color:var(--gold)}
+/* labels wrap inside their own record and never run under the next one (Sam: "things getting cut off") */
+.mk .tag{white-space:normal!important;width:max-content;max-width:min(300px,calc(var(--fw,300px) - 8px))}
+.doc figure:has(.mk.now){z-index:3;position:relative}
+.doc figure{position:relative}
+/* numbered boxes on the record; their meanings listed under it (no labels over the record, nothing overlaps) */
+.mk .tag{display:none!important}
+.mk .num{position:absolute;left:-10px;top:-10px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;
+  background:var(--gold);color:#121419;font:700 11px/1 var(--mono);box-shadow:0 2px 6px rgba(0,0,0,.6)}
+.mk.true .num{background:#7fc28a}.mk.false .num{background:#e06a57;color:#fff}
+.mklist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.mklist li{display:none;align-items:flex-start;gap:8px;font:400 clamp(13px,1vw,15px)/1.35 var(--serif);color:var(--cream-dim)}
+.mklist li.on{display:flex;animation:fadein .5s ease}
+.mklist li.now{color:var(--cream)}
+.mklist li b{flex:0 0 auto;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#121419;font:700 10px/1 var(--mono);margin-top:1px}
+.mklist li.true b{background:#7fc28a}.mklist li.false b{background:#e06a57;color:#fff}
+.mklist li.false span{color:#ffb4a6}
+.doc.row .mklist{width:0;min-width:100%}
+/* one list for the panel, two columns, a fixed height; records shrink to leave room for it */
+.doc .mklist{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;row-gap:4px;max-height:9.5em;overflow:auto;width:auto!important;min-width:0!important;margin-top:10px}
+.doc .mklist li{display:flex;opacity:.0;transition:opacity .4s}
+.doc .mklist li.on{opacity:.75}
+.doc .mklist li.now{opacity:1}
+.mk .num{min-width:20px;width:auto;padding:0 4px;border-radius:10px}
+.mklist li b{min-width:18px;width:auto;padding:0 3px;border-radius:9px}
+.mkkey{flex-wrap:nowrap;font-size:10.5px}
+@media (max-width:900px){ .doc .mklist{grid-template-columns:1fr;max-height:4.2em} .mkkey{display:none} }
+/* wide panels start higher, under the year, so nothing runs off the bottom */
+.doc.wide{top:150px!important;bottom:96px!important;justify-content:flex-start!important}
+/* the list, key and note always run full width under the records, never as a side column */
+.doc.row .figs{flex-wrap:wrap}
+.doc .figs>.mklist,.doc .figs>.mkkey,.doc .figs>.grpnote{flex:1 0 100%;width:100%!important;order:9}
+.doc .figs>.mkkey{order:10}
+/* her own letters, in gold (Sam) */
+.cap .lesson.letter{color:var(--gold-text);border-left-color:var(--gold)}
+/* on this stop Helen's words sit just above my caption, both on the left, so the map stays open (Sam) */
+body.voice-br .voice{left:28px!important;right:auto!important;top:auto!important;bottom:calc(var(--capH,300px) + 98px)!important;width:min(46vw,700px)!important}
+@media (max-width:759px){ body.voice-br .voice{left:8px!important;right:8px!important;width:auto!important} }
+/* a pin: only the number, set just above a head, never over a face */
+.mk.headpin{border:0!important;box-shadow:none!important;background:none!important}
+.mk.headpin .num{left:50%;top:50%;transform:translate(-50%,-50%)}
+/* a single large record never runs off the bottom */
+.doc:not(.row):not(.wide) .frame .sheet img{max-height:calc(100vh - 380px)!important}
+.doc:not(.row) .figs>.mklist,.doc:not(.row) .figs>.mkkey,.doc:not(.row) .figs>.grpnote{flex:0 0 auto!important}
+.doc .figs{align-items:stretch}
+.doc:not(.row) .figs>.mklist{align-self:stretch}
+.doc:not(.row) .figs>figure{flex:0 1 auto;min-height:0}
+.doc .figs>.mklist{min-height:2.4em}
+.doc .mklist li.on{animation:none!important}
+/* the list always comes after the captions, in normal flow, never on top of them */
+.doc .figs>figure{flex-shrink:0!important}
+.doc figcaption{position:relative;z-index:1}
+.doc .figs>.mklist{position:relative;z-index:2;background:rgba(10,11,13,.92);border-radius:6px;padding:8px 10px}
+/* back to labels beside each box (Sam: "it says what it is directly above or below… you don't have to figure anything out") */
+.mk .tag{display:block!important}
+.mk .num,.doc .mklist{display:none!important}
+.mk.headpin{width:2px!important;height:2px!important}
+.mk.headpin .tag{bottom:6px;left:50%!important;right:auto!important;transform:translateX(-50%);white-space:nowrap!important;font-size:10.5px!important}
+.doc figure.lesser .frame .sheet img{max-height:12vh!important;width:auto}
+.doc figure.lesser .rk{font-size:clamp(15px,1.1vw,19px)!important}
+.intro .title.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.intro .wheelbig svg{width:130px;height:130px}
+@media (max-width:759px){ .intro .wheelbig svg{width:84px;height:84px} }
+/* Reunited: Helen's box back at the bottom right; both of her quotes stay in it (Sam) */
+body.voice-br .voice{left:auto!important;right:28px!important;top:auto!important;bottom:86px!important;width:min(40vw,620px)!important;max-height:calc(100vh - 260px);overflow:auto}
+.voice .prevq{display:block;opacity:.6;font-size:.85em;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(243,236,223,.12)}
+/* names outside the photograph with pointer lines; room above and below the picture for them */
+.doc figure:has(.mk.headpin){padding:44px 0 46px}
+.mk.headpin .tag{font:500 12px/1.2 var(--serif)!important;letter-spacing:0!important;background:rgba(10,11,13,.92)!important;color:var(--cream)!important;border:1px solid rgba(207,159,99,.6)}
+svg.pinlines{position:absolute;left:0;pointer-events:none;overflow:visible;z-index:1}
+svg.pinlines line{stroke:var(--gold);stroke-width:1.2;opacity:.85}
+svg.pinlines circle{fill:var(--gold)}
+.mk.headpin{opacity:1!important;transform:none!important}
+.mk.headpin:not(.on) .tag{opacity:0}
+/* the opening card always fits the window height (Sam: "is the intro getting cut off?") */
+.intro{overflow-y:auto}
+.intro .wheelbig svg{width:min(130px,13vh)!important;height:min(130px,13vh)!important}
+.intro .wheelbig{margin-bottom:min(18px,2vh)}
+.intro blockquote{font-size:clamp(26px,min(4.6vw,7.4vh),76px)!important;line-height:1.18}
+.intro .go{margin-top:min(34px,3.5vh)!important}
+.intro .sig{margin-top:min(34px,3.5vh)!important}
+.intro .sig img{height:min(52px,6vh)!important}
+/* travellers' names in their road's colour (Sam) */
+.walker-tag{color:inherit!important}
+/* no colour key under the records (Sam) */
+.mkkey{display:none!important}
+/* records as big as the panel allows (Sam: "bigger the better, not covering anything") */
+.doc{width:min(46vw,900px)!important}
+.doc.wide{width:min(58vw,1100px)!important}
+.doc:not(.row):not(.wide) .frame .sheet img,.doc.wide:not(.row) .frame .sheet img{max-height:calc(100vh - 300px)!important}
+/* what has been explained stays on the record (Sam: "don't have the info disappear") */
+.doc figure.small .mk:not(.now) .tag,.doc.row .mk:not(.now) .tag,.doc.many .mk:not(.now) .tag{opacity:1!important}
+.endcard .ek2{font:italic 400 clamp(18px,1.5vw,24px)/1.3 var(--serif);color:var(--gold-text);margin:6px 0 18px}
+/* a letter line under the photographs (museum stop) */
+.doc .doclesson{flex:1 0 100%;order:9;margin-top:10px;padding:8px 14px;border-left:3px solid var(--gold);font:italic 400 clamp(16px,1.25vw,21px)/1.4 var(--serif);color:var(--gold-text);background:rgba(10,11,13,.85);border-radius:4px}
+/* intern fixes, 8 Oct 2026 */
+.cap.out{opacity:0!important}                         /* the old caption never lingers through a flight */
+.cap.dim .w{opacity:1!important}                      /* Sam's words never dim while Helen speaks */
+.doc:not(.in) .dk.titled,.doc:not(.in) .mkkey{opacity:0!important}   /* no floating title plates between stops */
+.doc.wide{width:min(58vw,1100px,calc(100vw - min(46vw,700px) - 84px))!important}   /* never under the caption at 1280 */
+.doc img,.doc .frame .sheet img{max-width:100%!important}
+@media (max-width:759px){ .doc.row .frame .sheet img{height:auto!important;width:100%!important} .doc figcaption{-webkit-line-clamp:unset!important;display:block!important} }
+/* Király utca: the Dachau form large, the belt small beneath it (Sam: "needs to fix") */
+.doc figure.lesser .frame .sheet img{max-height:none!important;width:min(340px,40%)!important;height:auto}
+.doc figure.lesser{align-self:flex-start}
+.doc figure.lesser figcaption{max-width:340px}
+/* the wide records (Buchenwald, Budapest 1945, Reitzenhain, Király) use all the room there is (Sam: "that's my hero") */
+.doc.wide{top:118px!important;bottom:92px!important}
+.doc.wide:not(.row) .frame .sheet img{max-height:calc(100vh - 330px)!important}
+.doc.wide .rk{margin-bottom:6px!important}
+.doc.wide{top:100px!important}
+.doc.wide:not(.row) .frame .sheet img{max-height:calc(100vh - 290px)!important}
+/* 1939 photo: names right above/below each person, room reserved outside the picture */
+.doc figure:has(.mk.headpin){padding:0!important}
+.doc figure:has(.mk.headpin) .frame{margin:52px 0 52px}
+svg.pinlines line{display:none}
+svg.pinlines circle{r:2.5}
+.mk.headpin .tag{font:600 13px/1.1 var(--serif)!important;padding:3px 8px!important}
+/* a narrow photo hugs the right edge, leaving the map open (Hawaii) */
+.doc.right .figs{align-items:flex-end}
+.doc.right figure{align-items:flex-end;text-align:right}
+.doc.right .rk{align-self:flex-end}
+.endcard .ek2{color:#ff8f82!important}
+/* the belt as wide as the form above it (Sam: "use space better") */
+.doc figure.lesser .frame .sheet img{width:100%!important;max-width:none!important}
+.doc figure.lesser,.doc figure.lesser .frame{width:var(--formw,560px);max-width:100%}
+.doc.row .figs{align-items:flex-start}
+/* the closing lights: a single photograph takes a narrower panel at the right edge, so the map has room to show the lights beside it (Sam, 8 Oct 2026) */
+@media (min-width:760px){ .doc.snug{width:min(30vw,560px)!important} }
+/* Király utca: form and belt in the left column, the gate today tall on the right (Sam) */
+.doc.sidecol .figs{display:grid!important;grid-template-columns:auto auto;column-gap:14px;align-items:start;justify-content:start}
+.doc.sidecol figure{grid-column:1}
+.doc.sidecol figure[data-side]{grid-column:2;grid-row:1 / span 2}
+.doc.sidecol figure[data-side] .frame .sheet img{max-height:calc(100vh - 300px)!important;width:auto}
+.doc.sidecol figure[data-side] figcaption{max-width:260px}
+/* Reunited: Helen's box smaller, so the caption's title shows (Sam) */
+body.voice-compact .voice blockquote{font-size:clamp(17px,1.3vw,21px)!important}
+body.voice-compact .voice .prevq{display:none}
+body.voice-compact .voice{padding:14px 20px 12px}
+.doc.sidecol figure:not([data-side]):not(.lesser) .frame .sheet img{max-height:calc(100vh - 480px)!important;width:auto!important}
+.doc.sidecol figure.lesser .frame .sheet img{width:var(--formw,460px)!important}
+.doc.sidecol figure[data-side] .frame .sheet img{max-height:calc(100vh - 330px)!important}
+/* PHONES (final pass, 8 Oct 2026): records stacked full width on top, Helen's box just above the caption */
+@media (max-width:759px){
+  .doc,.doc.wide,.doc.row,.doc.sidecol,body.has-voice .doc{left:8px!important;right:8px!important;width:auto!important;top:92px!important;bottom:auto!important;max-height:34vh!important;overflow-y:auto!important;justify-content:flex-start!important}
+  .doc .figs,.doc.row .figs,.doc.sidecol .figs{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;gap:8px!important}
+  .doc figure,.doc.row figure,.doc.sidecol figure{flex:0 0 auto!important;width:100%!important;grid-column:auto!important;grid-row:auto!important;padding:0!important}
+  .doc figure .frame,.doc figure .frame .sheet{width:100%!important}
+  .doc figure .frame .sheet img,.doc.row .frame .sheet img,.doc figure.lesser .frame .sheet img{width:100%!important;height:auto!important;max-height:none!important;max-width:100%!important}
+  .doc .rk{font-size:14px!important;padding:4px 10px!important;margin-bottom:4px!important}
+  .doc .dk.titled .rk{font-size:14px!important}
+  .doc figcaption{font-size:10px!important}
+  .mk .tag{font-size:9px!important;padding:2px 4px!important;max-width:60vw!important}
+  .voice,body.voice-br .voice,body.voice-compact .voice{left:8px!important;right:8px!important;width:auto!important;top:auto!important;bottom:calc(var(--capH,170px) + 96px)!important;max-height:22vh!important;overflow:auto!important;padding:10px 12px!important}
+  .voice blockquote{font-size:15px!important}
+  .year .n{font-size:40px!important}
+  .doc .grpnote,.doc .doclesson{font-size:13px!important}
+}
+@media (max-width:759px){ .doc.sidecol figure:not([data-side]):not(.lesser) .frame .sheet img,.doc.sidecol figure[data-side] .frame .sheet img{width:100%!important;height:auto!important;max-height:none!important} .doc figure:has(.mk.headpin) .frame{margin:22px 0!important} }
+/* Hebrew: text panels read right to left; the map stays as it is */
+html.he .cap,html.he .voice,html.he .doc figcaption,html.he .doc .rk,html.he .mk .tag,html.he .grpnote,html.he .doclesson,html.he .intro .in,html.he .endcard,html.he .light .lbl,html.he .endlbl{direction:rtl;font-family:"Frank Ruhl Libre","Newsreader",Georgia,serif}
+html.he .cap,html.he .voice,html.he .doc figcaption,html.he .grpnote,html.he .doclesson{text-align:right}
+html.he .cap .lesson{border-left:0;padding-left:0;border-right:2px solid var(--cream-dim);padding-right:14px}
+html.he .mk .tag{font-family:"Frank Ruhl Libre",Georgia,serif!important;font-size:13px!important}
+#kLang{margin-left:6px}
+/* Hawaii: my photo top left above the caption, its caption beside it; the map stays open (Sam). Only where there is room */
+@media (min-width:1100px) and (min-height:760px){
+  .doc.left{left:28px!important;right:auto!important;top:64px!important;bottom:auto!important;width:min(46vw,700px)!important;justify-content:flex-start!important}
+  .doc.left figure{flex-direction:row!important;flex-wrap:wrap;align-items:flex-end;gap:14px}
+  .doc.left figure .rk{flex:1 0 100%}
+  .doc.left .frame .sheet img{max-height:max(260px,calc(100vh - var(--capH,420px) - 210px))!important;width:auto!important}
+  .doc.left figcaption{flex:1 1 180px;max-width:260px;margin:0 0 4px;font-size:12px}
+}
+.endcard .ek{color:#ff8f82!important}
+.endcard .ek2{color:var(--gold-text)!important}
+/* phones: no scroll bars anywhere; records shrink to fit instead (Sam) */
+@media (max-width:759px){
+  .doc,.doc.wide,.doc.row,.doc.sidecol,body.has-voice .doc{overflow:hidden!important;max-height:40vh!important}
+  .doc figure .frame .sheet img,.doc.row .frame .sheet img,.doc figure.lesser .frame .sheet img,
+  .doc.sidecol figure:not([data-side]):not(.lesser) .frame .sheet img,.doc.sidecol figure[data-side] .frame .sheet img{
+    width:auto!important;max-width:100%!important;height:auto!important;max-height:26vh!important;margin:0 auto;display:block}
+  .doc figure:nth-of-type(2) .frame .sheet img,.doc figure:nth-of-type(3) .frame .sheet img{max-height:12vh!important}
+  .doc figure:nth-of-type(n+2) figcaption{display:none!important}
+  .doc figure .frame,.doc figure .frame .sheet{width:auto!important;max-width:100%;overflow:hidden;margin:0 auto}
+  .cap,.voice{overflow:hidden!important}
+  .cap{max-height:none!important}
+}
+/* phones, final: a smaller caption, and the records take exactly the space above it (no scroll bars) */
+@media (max-width:759px){
+  .cap{padding:12px 14px 10px!important}
+  .cap h2{font-size:19px!important;margin-bottom:6px!important}
+  .cap p{font-size:13.5px!important;line-height:1.4!important}
+  .cap .lesson{font-size:13px!important;margin-top:6px!important}
+  .cap .rnote,.cap .k{font-size:9.5px!important}
+  .doc,.doc.wide,.doc.row,.doc.sidecol,.doc.left,body.has-voice .doc{max-height:calc(100vh - var(--capH,300px) - 190px)!important}
+  .doc figure .frame .sheet img,.doc.row .frame .sheet img,.doc figure.lesser .frame .sheet img,
+  .doc.sidecol figure:not([data-side]):not(.lesser) .frame .sheet img,.doc.sidecol figure[data-side] .frame .sheet img,.doc.left .frame .sheet img{
+    max-height:calc(100vh - var(--capH,300px) - 250px)!important}
+  .doc figure:nth-of-type(n+2) .frame .sheet img{max-height:calc((100vh - var(--capH,300px) - 250px) * .4)!important}
+  .doc figure:nth-of-type(n+2) .rk,.doc .doclesson,.doc .grpnote{display:none!important}
+  .doc.left figure{flex-direction:column!important}
+}
+/* phones and narrow windows: the photo never shrinks to a thumbnail */
+@media (max-width:759px){ .doc figure:first-of-type .frame .sheet img{min-height:min(200px,30vh)} }
+@media (max-width:759px){
+  html body #ui .doc figure .frame .sheet img{max-height:calc(100vh - var(--capH,300px) - 250px)!important;width:auto!important;max-width:100%!important;height:auto!important}
+  html body #ui .doc figure:nth-of-type(n+2) .frame .sheet img{max-height:calc((100vh - var(--capH,300px) - 250px) * .4)!important}
+  html body #ui .doc figure:first-of-type .frame .sheet img{min-height:0!important}
+}
+@media (max-width:759px){ html body #ui .doc figure:nth-of-type(n+2){display:none!important} }   /* phones: the main record only, full size (others on larger screens) */
+@media (min-width:760px){ .doc.wide.low{top:175px!important} }   /* below the year (museum stop) */
+/* Hawaii: my photo tall on the right, using the empty side of the map (Sam: "use space way better") */
+@media (min-width:760px){
+  .doc.tall{top:150px!important;bottom:92px!important;width:auto!important;right:28px!important}
+  .doc.tall .frame .sheet img{max-height:calc(100vh - 320px)!important;width:auto!important}
+  .doc.tall figcaption:empty{display:none}
+}
+.light.big .lbl{font-size:26px!important;color:var(--gold-text)!important;text-shadow:0 2px 12px #000,0 0 3px #000}
+.light.big .lbl small{font-size:12px!important;color:var(--cream)!important}
+@media (min-width:760px){ .doc.tall{top:120px!important;bottom:70px!important} .doc.tall .frame .sheet img{max-height:calc(100vh - 250px)!important} }
+.intro .help .dotsep{color:var(--cream-faint);margin:0 8px}
