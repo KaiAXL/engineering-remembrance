@@ -57,7 +57,7 @@ document.addEventListener('close', function(e){
       num: 'Board 322 \u00b7 Buchenwald 56906',
       body: [
         'Born 9 December 1924 in Tiszabogd\u00e1ny. A carter, like his uncle.',
-        'Arrested 10 April 1944, five weeks before the others on this card.',
+        'Arrested in Tiszabogd\u00e1ny in spring 1944.',
         'Auschwitz 24 May. Buchenwald 2 June. Sent on to the synthetic-fuel plant at Rehmsdorf.'
       ],
       fate: 'Survived. Liberated at Terez\u00edn, May 1945.',
@@ -72,7 +72,7 @@ document.addEventListener('close', function(e){
         'Auschwitz 26 May. Buchenwald 2 June. Rehmsdorf, then the evacuation and the march.',
         'At Terez\u00edn he was billeted in block C III/257.'
       ],
-      fate: 'Survived. In Budapest in June 1945 he and Lajos found Helen and told her what had happened to her family.',
+      fate: 'Survived. He and Lajos are most likely the two cousins who found Helen in Budapest in 1945.',
       cls: 'lived'
     },
     zacharias: {
@@ -82,9 +82,9 @@ document.addEventListener('close', function(e){
       body: [
         'Born 1901 in Tiszabogd\u00e1ny. A carter. Married to Roza Land\u00f3, six children.',
         'Auschwitz 26 May. Buchenwald 2 June. Magdeburg-Rothensee on 23 July.',
-        'Worked past use, he was ordered back to Auschwitz that October.'
+        'Sent back to Auschwitz that October, most likely judged unfit for work.'
       ],
-      fate: 'Murdered at Auschwitz, about 10 October 1944, on the ground where his wife and children had waited five months before.',
+      fate: 'Murdered at Auschwitz, about 10 October 1944.',
       cls: 'died'
     }
   };
