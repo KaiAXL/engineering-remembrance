@@ -1134,3 +1134,16 @@ html body .doc img[src*="sam-wedding"],html body .who img[src*="sam-wedding"]{fi
 
 /* labels on a crowded record (the Reitzenhain board): narrower, so two sit side by side (Sam, 9 Oct 2026) */
 .mk.narrow .tag{max-width:calc(var(--fw,300px) * .44)!important;white-space:normal!important}
+
+/* names above the photograph, never on it: leave room above the record (Sam, 10 Oct 2026) */
+.doc .frame:has(.mk[data-lane="above"]){ margin-top:46px!important; }
+.mk[data-lane="above"]{ border:0!important; background:none!important; }
+.mk[data-lane="above"]::after{ content:""; position:absolute; left:0; top:0; width:7px; height:7px; margin:-3px 0 0 -3px; border-radius:50%; background:#e6b66e; box-shadow:0 0 0 2px rgba(0,0,0,.5); }
+.doc .frame:has(.mk[data-lane="above"]){ margin-top:var(--above-m,92px)!important; }
+html body #ui .doc figure .frame:has(.mk[data-lane="above"]){ margin-top:64px!important; }
+
+/* Helen's emphasis: the words she says with great feeling (Sam, 10 Oct 2026) */
+.voice em.feel{font-style:italic;font-weight:600;font-size:1.12em;color:#f6e2b8;letter-spacing:.01em}
+
+/* tablets: the label being explained stays bright; earlier ones fade back, so labels never pile up (Sam, 10 Oct 2026, option 1) */
+@media (min-width:760px) and (max-width:1100px){ html body #ui .doc .mk.on:not(.now):not(.headpin) .tag{opacity:.14!important} html body #ui .doc .mk.on:not(.now):not(.headpin){opacity:.55} }

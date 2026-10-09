@@ -507,7 +507,11 @@
 
   /* ---------- caption, in time with Sam's voice ---------- */
   var words=[], titleShare=0;
-  function wordsHtml(t){ return t.split(/\s+/).filter(Boolean).map(function(w){return '<span class="w">'+w+'</span>';}).join(' '); }
+  // a word Sam wrote in capitals is one Helen says with great feeling: shown larger, bold and italic, not shouted (Sam, 10 Oct 2026)
+  function wordsHtml(t){ return t.split(/\s+/).filter(Boolean).map(function(w){
+    var m=w.match(/^([“"(]*)([A-Z]{3,})([.,!?…”")]*)$/);
+    if(m&&!/^(USA|USCC|NKVD|SS|DP|UN)$/.test(m[2])) return '<span class="w">'+m[1]+'<em class="feel">'+m[2].toLowerCase()+'</em>'+m[3]+'</span>';
+    return '<span class="w">'+w+'</span>';}).join(' '); }
   function renderCap(s){
     $('cK').textContent=s.k||''; $('cL').textContent=s.lessonInDoc?'':(s.lesson||''); $('cL').classList.toggle('rare',!!s.lessonRed); $('cL').classList.toggle('letter',!!s.lessonGold||/^From my first letter/.test(s.lesson||'')); $('cR').textContent=s.rnote||''; $('cX').innerHTML=s.src||'';
     cap.classList.toggle('showp',!!(s.showp||(s.night||s.end||s.part===2&&!s.lesson)&&(s.p||'').length<420));
@@ -601,6 +605,7 @@
   /* ---------- the documents, and the magnifier ---------- */
   var loupeT=[];
   function clearLoupe(){ loupeT.forEach(clearTimeout); loupeT=[]; $('dR').classList.remove('on'); [].forEach.call(doc.querySelectorAll('.mk,.mklist li'),function(b){ b.classList.remove('on','now'); }); }
+  doc.addEventListener('load',function(e){ if(e.target.tagName==='IMG') setTimeout(layoutPins,60); },true);   // a photo that finishes loading re-places its names
   function renderDoc(s){
     clearLoupe(); doc.classList.remove('in'); setTimeout(fitDoc,60);
     var m=s.media||[]; document.body.classList.toggle('has-doc',!!m.length); document.body.classList.toggle('drawn-on',!!(m[0]&&m[0].html));
@@ -637,7 +642,7 @@
   function marksHtml(d){
     return (d.regions||[]).map(function(r,k){
       var tagPos=r.spot!=null?(r.spot?' '+r.spot:''):(r.y<0.16?' below':'')+(r.x+r.w/2>0.62?' right':'');   // a record can set where its label goes (crowded boards)
-      return '<span class="mk'+(r.kind?' '+r.kind:'')+tagPos+'" data-k="'+k+'"'+(r.lane?' data-lane="'+r.lane+'"':'')+' style="left:'+(r.x*100)+'%;top:'+(r.y*100)+'%;width:'+(r.w*100)+'%;height:'+(r.h*100)+'%">'+(r.notag?'':'<span class="tag">'+(r.gloss||r.label)+'</span>')+'</span>';
+      return '<span class="mk'+(r.kind?' '+r.kind:'')+tagPos+'" data-k="'+k+'"'+(r.lane?' data-lane="'+r.lane+'"':'')+' style="left:'+(r.x*100)+'%;top:'+(r.y*100)+'%;width:'+(r.w*100)+'%;height:'+(r.h*100)+'%">'+(r.notag?'':'<span class="tag">'+(r.tagHtml||r.gloss||r.label)+'</span>')+'</span>';
     }).join('');
   }
   // a tall record never gets cut off at the bottom of the panel: shrink it to the room there is
@@ -659,7 +664,7 @@
       var gaps=12*(ims.length-1)+4, top0=ims[0].getBoundingClientRect().top;
       var H=Math.floor(Math.min((doc.clientWidth-gaps)/sumA, limit-top0-70));
       ims.forEach(function(im){ im.style.height=Math.max(innerWidth<760?40:80,H*wt(im))+'px'; im.style.width='auto'; im.style.maxHeight='none'; var f=im.closest('figure'); if(f) f.style.setProperty('--fw',im.offsetWidth+'px'); });
-      return;
+      layoutPins(); return;   // records side by side: still place the names (Cecilie, Szerene)
     }
     for(var pass=0;pass<3;pass++){
       var low=0; [].forEach.call(doc.querySelectorAll('.doc figure'),function(f){ low=Math.max(low,f.getBoundingClientRect().bottom); });
@@ -680,14 +685,27 @@
       var W=sh.clientWidth, H=sh.clientHeight; if(!W) return;
       var ns='http://www.w3.org/2000/svg', svg=document.createElementNS(ns,'svg'); svg.setAttribute('class','pinlines');
       svg.setAttribute('width',W); svg.setAttribute('height',H+220); svg.style.top='-110px';
+      // lane 'above': the name sits in the space above the photograph and a fine line drops to the person, so no label is ever on a face
+      // (Cecilie and Szerene, Sam 10 Oct 2026). The first name reads leftward from its person, the next rightward.
+      var ab=pins.filter(function(m){ return m.dataset.lane==='above'; }).sort(function(p,q){ return parseFloat(p.style.left)-parseFloat(q.style.left); });
+      [].forEach.call(sh.querySelectorAll('.pinline'),function(e){ e.remove(); });
+      ab.forEach(function(m,i){ var t=m.querySelector('.tag'); if(!t) return;
+        var x=parseFloat(m.style.left)/100*W+1, y=parseFloat(m.style.top)/100*H+1;
+        t.style.cssText='position:absolute;white-space:nowrap;line-height:1.25;bottom:auto;transform:none;'+(i%2?'text-align:left;':'text-align:right;');
+        var w=t.offsetWidth, h=t.offsetHeight, left=i%2?x-6:x-w+6; left=Math.max(-x,Math.min(W-x-w,left-x))+x;
+        var prev=ab[i-1]&&ab[i-1]._box, row=0; if(prev&&left<prev.r+6&&left+w>prev.l-6) row=prev.row+1;
+        m._box={l:left,r:left+w,row:row}; sh.style.setProperty('--above',(row+1)*(h+8)+14+'px');
+        t.style.setProperty('left',(left-x)+'px','important'); t.style.setProperty('top',(-y-h-10-row*(h+8))+'px','important'); t.style.setProperty('right','auto','important'); t.style.setProperty('bottom','auto','important'); t.style.setProperty('transform','none','important');
+        var ln=document.createElement('i'); ln.className='pinline'; var lt=-10-row*(h+8); ln.style.cssText='position:absolute;left:'+x+'px;top:'+lt+'px;width:1.5px;height:'+(y-lt)+'px;background:rgba(230,182,110,.9);pointer-events:none';
+        sh.appendChild(ln); });
       var lanes={top:[],bot:[]};
-      pins.forEach(function(m){ var x=parseFloat(m.style.left)/100*W+1, y=parseFloat(m.style.top)/100*H+1; (m.dataset.lane==='top'?lanes.top:lanes.bot).push({m:m,x:x,y:y}); });
+      pins.forEach(function(m){ if(m.dataset.lane==='above') return; var x=parseFloat(m.style.left)/100*W+1, y=parseFloat(m.style.top)/100*H+1; (m.dataset.lane==='top'?lanes.top:lanes.bot).push({m:m,x:x,y:y}); });
       // each name sits right above (back row) or right below (front row) its person; no lines across faces
       ['top','bot'].forEach(function(L){
         var a=lanes[L].sort(function(p,q){ return p.x-q.x; }), lastR=-1e9, row=0;
         a.forEach(function(p){
           var t=p.m.querySelector('.tag'); if(!t) return;
-          t.style.cssText='position:absolute;white-space:nowrap;transform:translateX(-50%);left:0;'+(L==='top'?'top:auto;bottom:'+(p.y+6)+'px':'bottom:auto;top:'+(H-p.y+6)+'px');
+          t.style.cssText='position:absolute;white-space:nowrap;text-align:center;line-height:1.25;transform:translateX(-50%);left:0;'+(L==='top'?'top:auto;bottom:'+(p.y+6)+'px':'bottom:auto;top:'+(H-p.y+6)+'px');
           var w=t.offsetWidth, cx=Math.max(w/2,Math.min(W-w/2,p.x));
           row=(cx-w/2<lastR+4)?(row?0:1):0; lastR=cx+w/2;
           t.style.left=(cx-p.x)+'px';
@@ -736,6 +754,7 @@
     var f=doc.querySelectorAll('figure[data-i]'), k=0; phAt=i; phLast=Date.now();
     for(var j=0;j<f.length;j++){ var on=+f[j].dataset.i===i; f[j].classList.toggle('ph-on',on); if(on) k=j; }
     var n=doc.querySelector('.phn'); if(n) n.textContent=(k+1)+' / '+f.length;
+    setTimeout(layoutPins,60);   // a record shown for the first time places its names now (they can't be measured while hidden)
   }
   function runLoupe(s,g,total){
     var m=s.media||[], regs=[];
@@ -757,6 +776,7 @@
     var fig=doc.querySelector('figure[data-i="'+x.i+'"]'); if(!fig) return;
     if(!keepOthers) [].forEach.call(doc.querySelectorAll('.mk.now'),function(b){ b.classList.remove('now'); });
     var r=x.r, kk=x.d.regions.indexOf(r), b=fig.querySelector('.mk[data-k="'+kk+'"]'); if(b) b.classList.add('on','now');
+    if(b&&b.classList.contains('headpin')) setTimeout(layoutPins,60);   // names placed once their record is visible and measured
     if(b&&PHONE()){ var tg=b.querySelector('.tag'), fw=fig.querySelector('.frame').clientWidth; if(tg&&fw) tg.style.maxWidth=Math.max(90,fw-6)+'px'; }   // phones: never wider than the record
     if(!keepOthers) [].forEach.call(doc.querySelectorAll('.mklist li.now'),function(l){ l.classList.remove('now'); });
     var li=doc.querySelector('.mklist li[data-i="'+x.i+'"][data-k="'+kk+'"]'); if(li){ li.classList.add('on','now'); var ol=li.parentNode; if(ol.scrollHeight>ol.clientHeight) ol.scrollTop=li.offsetTop-ol.offsetTop; }
@@ -826,7 +846,8 @@
       skipPart=function(){ try{ hv.pause(); }catch(e){} fin(); };
       hv.ontimeupdate=function(){
         if(!alive(g)) return fin();
-        if(hv.duration) syncWords(vw,hv.currentTime/hv.duration,0);
+        if(v.times&&v.times.length===vw.length){ var ct=hv.currentTime+0.12; for(var k=0;k<vw.length;k++) vw[k].classList.toggle('s',v.times[k]<=ct); followWord(vw.filter(function(w){ return w.classList.contains('s'); }).pop()); }   // each word lights as she says it
+        else if(hv.duration) syncWords(vw,hv.currentTime/hv.duration,0);
         if(v.cues) v.cues.forEach(function(c){ if(hv.currentTime>=c[0]&&!c.done){ c.done=1; setEra(c[1]); } });
       };
       hv.onended=fin;
@@ -906,7 +927,9 @@
     var ok=await speak(s,g); if(!alive(g)) return;
     if(!ok) await wait(Math.max(0,readMs(s)-(Date.now()-t0)));
     if(!alive(g)) return;
-    if(s.voice&&!s.voiceFirst){ await wait(900); await gate(); if(!alive(g)) return; cap.classList.add('dim'); await helenSays(s.voice,s,g); if(!alive(g)) return; cap.classList.remove('dim'); }
+    if(s.voice&&!s.voiceFirst){ await wait(900); await gate(); if(!alive(g)) return; cap.classList.add('dim'); await helenSays(s.voice,s,g); if(!alive(g)) return;
+      if(s.voice2){ await wait(400); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; }   // a second clip after the first (Sam)
+      cap.classList.remove('dim'); }
     schedule(3200);
   }
   var due=false;   // the stop is finished and the road moves on when the visitor isn't paused
@@ -1121,5 +1144,5 @@
   if(start===null) setTimeout(function(){ preload(STOPS[0]); if(STOPS[0].audio){ var a0=new Audio(); a0.preload='auto'; a0.src=STOPS[0].audio+'.mp3'; } },300);   // the first stop is ready before Start
   document.body.classList.add('tone-'+(/^[abcd]$/.test(q.get('tone')||'')?q.get('tone'):'b'));   // map tone (Sam picks)
   document.documentElement.classList.add('road-ready');
-  window.road={untangle:untangle,show:show,stops:STOPS,next:next,prev:prev,setEra:setEra,pause:pause,resume:resume}; window.__leafletMap=map;   // for testing
+  window.road={layoutPins:layoutPins,untangle:untangle,show:show,stops:STOPS,next:next,prev:prev,setEra:setEra,pause:pause,resume:resume}; window.__leafletMap=map;   // for testing
 })();
