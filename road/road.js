@@ -18,6 +18,15 @@
   var HE_ON=!!window.HE_ON; function T(x){ return (HE_ON&&window.HE_UI&&HE_UI[x])||x; }
   var DATA=window.ROAD, P=DATA.P;
   var STOPS=DATA.STOPS;
+  // the same road in three settings (Sam, 9 Oct 2026): 'web' the website · 'talk' the Philadelphia workshop, a few slides
+  // about me first, then each stop waits for the clicker · 'loop' the table, plays by itself forever, nothing to touch.
+  // Talk and loop end on "You are here: Philadelphia" with a QR code to the homepage. Set by talk.html / loop.html.
+  var MODE=/^(talk|loop)$/.test(window.ROAD_MODE||'')?window.ROAD_MODE:'web';
+  document.body.classList.add('mode-'+MODE);
+  // talk: the speaker-notes window (notes.html, opened with N) follows along on this channel
+  var chan=null, told=null; try{ if(MODE==='talk'&&window.BroadcastChannel){ chan=new BroadcastChannel('helens-road-talk');
+    chan.onmessage=function(e){ if(e.data&&e.data.hello&&told) chan.postMessage(told); }; } }catch(e){}
+  function tell(m){ told=m; if(chan) try{ chan.postMessage(m); }catch(e){} }
   var PHONE=function(){ return window.innerWidth<760; };
   document.body.classList.add('web');
 
@@ -815,8 +824,8 @@
 
   async function show(n,jump){
     n=Math.max(0,Math.min(STOPS.length-1,n));
-    var g=++gen; clearAdv(); skipPart=null; stopAudio(); clearLoupe(); hideVoice();
-    var prev=cur, s=STOPS[n]; cur=n; post();
+    var g=++gen; clearAdv(); skipPart=null; stopAudio(); clearLoupe(); hideVoice(); leaveHere(); document.body.classList.remove('stop-done');
+    var prev=cur, s=STOPS[n]; cur=n; post(); tell({at:'stop',n:n});
     if(jump||n!==prev+1) rebuildTo(n);
     paintRoad(n);
     cap.classList.add('out'); doc.classList.remove('in'); setRing({ring:null});
@@ -879,7 +888,7 @@
     schedule(3200);
   }
   var due=false;   // the stop is finished and the road moves on when the visitor isn't paused
-  function schedule(ms){ clearAdv(); due=true; if(!playing) return; advTimer=setTimeout(next,FAST?Math.min(ms,1200):ms); }
+  function schedule(ms){ clearAdv(); due=true; if(MODE==='talk'){ document.body.classList.add('stop-done'); tell({at:'stop',n:cur,done:true}); return; } if(!playing) return; advTimer=setTimeout(next,FAST?Math.min(ms,1200):ms); }
   function next(){ due=false; if(cur>=STOPS.length-1){ finish(); } else { hideEnd(); show(cur+1); } }
   function prev(){ due=false; hideEnd(); if(cur>0) show(cur-1,true); else show(0,true); }
 
@@ -924,13 +933,48 @@
   }
   function leaveIntro(){ introClip.ontimeupdate=null; intro.classList.add('out'); setTimeout(function(){ intro.hidden=true; },1700); try{ introClip.pause(); }catch(e){} show(0); }
 
+  /* ---------- talk: who I am, before the road (Sam's own points, 8 Oct 2026; wording for Sam to check) ---------- */
+  var WHO=(window.TALK&&window.TALK.who)||[];   // road/talk.js: the slides, and the speaker notes for notes.html
+  var who=null, whoAt=-1;
+  if(MODE==='talk'){ who=el('div','who',''); who.hidden=true; }
+  function whoSlide(i){ whoAt=i; var w=WHO[i]; tell({at:'who',n:i});
+    who.innerHTML='<figure><img src="'+w.img+'" alt=""><figcaption>'+w.cap+'</figcaption></figure><div class="wt"><h2>'+w.h+'</h2>'+w.p.map(function(t){ return '<p>'+t+'</p>'; }).join('')+'</div>';
+    who.classList.remove('in'); void who.offsetWidth; who.classList.add('in'); }
+  function whoStart(){ intro.hidden=true; who.hidden=false; document.body.classList.add('at-who'); whoSlide(0); }
+  function whoNext(){ if(whoAt<WHO.length-1){ whoSlide(whoAt+1); return; }
+    who.hidden=true; whoAt=-2; document.body.classList.remove('at-who'); openingCard(); tell({at:'intro'}); hearHelen(); begin(); fadeMusic(); }   // the click is the tap the browser needs for sound
+  function whoBack(){ if(whoAt>0) whoSlide(whoAt-1); }
+
   /* ---------- the end ---------- */
   var endCard=el('div','endcard','<p class="ek">Recovering families from the records that were meant to erase them</p><p class="ek2">Start with one name and one town.</p>'+
     '<div class="eb"><button type="button" id="eAgain">Start over</button>'+
     '<a href="index.html">Home</a><a href="method.html">Method</a><a href="databases.html">Database</a><a href="about.html">Researcher</a></div>');   // Sam, 8 Oct 2026
   endCard.hidden=true;
-  function finish(){ clearAdv(); playing=false; paintCtl(); endCard.hidden=false; document.body.classList.add('at-end'); setTimeout(function(){ $('eAgain').focus({preventScroll:true}); },60); }
+  function finish(){ if(MODE!=='web'){ hereScene(); return; } clearAdv(); playing=false; paintCtl(); endCard.hidden=false; document.body.classList.add('at-end'); setTimeout(function(){ $('eAgain').focus({preventScroll:true}); },60); }
   function hideEnd(){ endCard.hidden=true; document.body.classList.remove('at-end'); }
+
+  /* ---------- talk and loop: "You are here", Philadelphia, with the QR code to the homepage ---------- */
+  var PHILLY=[39.9526,-75.1652], hereMk=null, atHere=false;
+  var hereCard=el('div','herecard','<p class="ek">Recovering families from the records that were meant to erase them</p>'+
+    '<div class="hrow"><img class="qr" src="road/qr-home.svg" alt="QR code: engineeringremembrance.org" width="220" height="220">'+
+    '<div class="ht"><p class="ek2">Start with one name and one town.</p><p class="url">engineeringremembrance.org</p>'+
+    '<p class="sm">The free guide, the databases, and Helen’s Road to watch again</p></div></div>');
+  hereCard.hidden=true;
+  function hereScene(){
+    var g=++gen; clearAdv(); skipPart=null; stopAudio(); clearLoupe(); hideVoice(); atHere=true; tell({at:'here'});
+    cap.classList.add('out'); doc.classList.remove('in'); setRing({ring:null}); markPlace(null,false);
+    document.body.classList.remove('night','evidence','stop-done'); document.body.classList.add('at-here');
+    setEra('today'); setYear(2026); $('yK').textContent=''; $('yM').textContent='October';
+    try{ map.flyToBounds([[36,-80],[56,26]],{paddingTopLeft:[60,90],paddingBottomRight:[60,Math.round(innerHeight*.36)],duration:REDUCED?0:3.2}); }catch(e){}   // the card sits below, over the ocean
+    setTimeout(function(){ if(!alive(g)) return;
+      hereMk=L.marker(PHILLY,{interactive:false,keyboard:false,zIndexOffset:3300,icon:L.divIcon({className:'',
+        html:'<div class="here"><i></i><i class="r2"></i><b></b><span>You are here<small>Philadelphia · October 2026</small></span></div>',iconSize:[0,0]})}).addTo(map);
+      hereCard.hidden=false; void hereCard.offsetWidth; hereCard.classList.add('in');
+    },REDUCED?0:3000);
+    if(MODE==='loop') advTimer=setTimeout(function(){ if(alive(g)) restartLoop(); },REDUCED?20000:40000);   // then the road starts again
+  }
+  function leaveHere(){ if(!atHere) return; atHere=false; if(hereMk){ map.removeLayer(hereMk); hereMk=null; } hereCard.classList.remove('in'); hereCard.hidden=true; document.body.classList.remove('at-here'); }
+  function restartLoop(){ leaveHere(); openingCard(); setTimeout(function(){ if(cur===-1) begin(); },2500); }
 
   /* ---------- the visitor's input ---------- */
   function applyMute(){ [narr,hv,introClip,music].forEach(function(a){ if(!a.dataset.unlocking) a.muted=muted; }); paintCtl(); }
@@ -1000,6 +1044,20 @@
 
   document.addEventListener('keydown',function(e){
     if(e.ctrlKey||e.metaKey||e.altKey) return;
+    if(MODE==='loop'){ e.preventDefault(); return; }   // the table: nothing a visitor presses does anything
+    if(MODE==='talk'){ var kt=e.key; goFull();
+      // a presentation clicker sends PageDown / PageUp (some send arrows, Space, or B / . for a black screen)
+      if(kt==='b'||kt==='B'||kt==='.'){ e.preventDefault(); document.body.classList.toggle('curtain'); return; }
+      if(/^(PageDown|ArrowRight|ArrowDown|Enter| )$/.test(kt)){ e.preventDefault();
+        if(who&&!who.hidden) whoNext(); else if(!intro.hidden&&!intro.classList.contains('started')){ hearHelen(); begin(); fadeMusic(); }
+        else if(!intro.hidden) skipIntro(); else if(!atHere) nextPart(); return; }
+      if(/^(PageUp|ArrowLeft|ArrowUp)$/.test(kt)){ e.preventDefault();
+        if(who&&!who.hidden) whoBack(); else if(atHere){ show(STOPS.length-1,true); } else if(intro.hidden) prev(); return; }
+      if(kt==='p'||kt==='P'||kt==='k'||kt==='K'){ e.preventDefault(); toggle(); return; }
+      if(kt==='m'||kt==='M'){ soundKey(); return; }
+      if(kt==='n'||kt==='N'){ window.open('notes.html','hr-notes','width=980,height=760'); return; }   // speaker notes, on the laptop screen
+      if(kt==='Home'){ e.preventDefault(); go(0); return; }
+      return; }
     var d=document.getElementById('credits'); if(d&&d.open) return;
     if(!lb.hidden){ if(e.key==='Escape'){ e.preventDefault(); closeRecord(); } return; }
     var k=e.key, onCtl=e.target.closest&&e.target.closest('button,a,input,textarea,select');
@@ -1017,12 +1075,26 @@
   setTimeout(roadRoom,50); setInterval(roadRoom,1500);
   window.addEventListener('resize',function(){ map.invalidateSize(); fitDoc(); clearTimeout(rz); rz=setTimeout(function(){ if(cur>=0) settle(STOPS[cur]); },300); });
 
+  /* ---------- loop: starts by itself where the browser allows sound without a tap (the launcher's Chrome does);
+     otherwise the first touch anywhere starts it, and from then on it runs forever ---------- */
+  function loopStart(){
+    var went=false; function goLoop(){ if(went) return; went=true; document.removeEventListener('pointerdown',goLoop,true); document.removeEventListener('keydown',goLoop,true); hearHelen(); begin(); fadeMusic(); }
+    document.addEventListener('pointerdown',goLoop,true); document.addEventListener('keydown',goLoop,true);
+    try{ var t=new Audio(); t.src=DATA.INTRO.clip; t.volume=0; var pr=t.play(); if(pr&&pr.then) pr.then(function(){ t.pause(); setTimeout(goLoop,1500); },function(){}); }catch(e){}
+  }
+  // talk: full screen on the first click or clicker press (browsers allow it only after one); Esc leaves it
+  function goFull(){ try{ if(!document.fullscreenElement&&document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function(){}); }catch(e){} }
+  // talk: a mouse click moves the slides on too
+  if(MODE==='talk') document.addEventListener('click',function(e){ if(e.target.closest('dialog,.lightbox')) return; goFull(); if(who&&!who.hidden) whoNext(); });
+
   /* ---------- go ---------- */
   setEra('1930',true); paintVillage();
   var start=q.get('start');
   if(start!==null){ var si=isNaN(+start)?STOPS.findIndex(function(x){return x.id===start;}):+start; intro.hidden=true; show(Math.max(0,si),true); }
   else if(q.get('still')==='1'){ intro.hidden=true; document.body.classList.add('still'); setEra('1942',true); rebuildTo(STOPS.length); wheel.setLatLng(P.boh); wheelState('gone');
     map.fitBounds([[45.6,9.2],[53.8,25.2]],{animate:false}); }
+  else if(MODE==='talk'){ openingCard(); whoStart(); }   // the slides about me, then her quote, then the road
+  else if(MODE==='loop'){ openingCard(); loopStart(); }
   else openingCard();   // waits for Start (Sam, 8 Oct 2026)
   if(start===null) setTimeout(function(){ preload(STOPS[0]); if(STOPS[0].audio){ var a0=new Audio(); a0.preload='auto'; a0.src=STOPS[0].audio+'.mp3'; } },300);   // the first stop is ready before Start
   document.body.classList.add('tone-'+(/^[abcd]$/.test(q.get('tone')||'')?q.get('tone'):'b'));   // map tone (Sam picks)

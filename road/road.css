@@ -1044,3 +1044,62 @@ html.he .mk .tag{font-family:"Frank Ruhl Libre",Georgia,serif!important;font-siz
 
 /* phones: long paragraphs scroll along with the voice, no visible bar */
 @media (max-width:759px){ html body .cap,html body .voice{overflow-y:auto!important;scrollbar-width:none;scroll-behavior:auto} html body .cap::-webkit-scrollbar,html body .voice::-webkit-scrollbar{display:none} }
+
+/* ===== Philadelphia: the workshop (talk.html) and the table (loop.html), Sam 9 Oct 2026 ===== */
+body.mode-talk .ctl,body.mode-loop .ctl,body.mode-talk .intro .help,body.mode-loop .intro .help{display:none!important}
+body.mode-talk,body.mode-talk *,body.mode-loop,body.mode-loop *{cursor:none!important}
+body.mode-loop #ui,body.mode-loop #ui *{pointer-events:none!important}   /* the table: nothing to touch */
+body.mode-talk .road,body.mode-loop .road{right:28px!important}
+body.mode-talk .road .tick,body.mode-loop .road .tick{pointer-events:none}
+/* talk: a faint dot, bottom right, when the stop's recordings are done (for the speaker, not the room) */
+body.mode-talk::after{content:'';position:fixed;right:16px;bottom:16px;width:9px;height:9px;border-radius:50%;background:var(--gold);opacity:0;transition:opacity .6s;z-index:3000}
+body.mode-talk.stop-done::after{opacity:.55}
+/* talk: B on the clicker blacks out the screen */
+body.curtain::before{content:'';position:fixed;inset:0;background:#000;z-index:5000}
+/* talk: the slides about me */
+.who{position:fixed;inset:0;z-index:1500;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;gap:6vw;padding:8vh 7vw;
+  background:radial-gradient(ellipse at 30% 40%,#171a20,#0b0d10 75%)}
+.who[hidden]{display:none}
+.who figure{margin:0;justify-self:end}
+.who figure img{display:block;max-height:70vh;max-width:100%;border-radius:4px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(243,236,223,.08)}
+.who figcaption{font:500 13px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim);margin-top:12px}
+.who .wt{max-width:44vw}
+.who h2{font:400 clamp(40px,4.4vw,76px)/1.08 var(--serif);margin:0 0 3vh;color:var(--cream);border-left:4px solid var(--gold);padding-left:22px}
+.who p{font:400 clamp(24px,2.1vw,38px)/1.42 var(--serif);color:var(--cream);margin:0 0 2.4vh;opacity:0;transform:translateY(10px);transition:opacity .9s,transform .9s}
+.who.in p{opacity:1;transform:none}
+.who.in p:nth-of-type(2){transition-delay:.5s}.who.in p:nth-of-type(3){transition-delay:1s}
+.who p:last-child{color:var(--gold-text,#e6b66e)}
+/* the end of talk and loop: You are here */
+.here{position:relative;width:0;height:0}
+.here b{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--gold);box-shadow:0 0 18px 4px rgba(230,182,110,.7)}
+.here i{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;border:2px solid var(--gold);animation:herePulse 2.4s ease-out infinite}
+.here i.r2{animation-delay:1.2s}
+@keyframes herePulse{from{transform:scale(1);opacity:.9}to{transform:scale(5.5);opacity:0}}
+.here span{position:absolute;left:22px;top:-26px;white-space:nowrap;font:500 30px/1.05 var(--serif);color:var(--gold);text-shadow:0 2px 14px #000,0 0 3px #000}
+.here small{display:block;font:500 13px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cream)}
+.herecard{position:fixed;right:5vw;top:50%;transform:translate(0,-46%);z-index:900;max-width:min(560px,44vw);padding:30px 34px;border-radius:8px;
+  background:linear-gradient(180deg,rgba(17,19,24,.97),rgba(13,15,18,.98));box-shadow:0 0 0 1px rgba(243,236,223,.07),0 30px 80px 20px rgba(7,8,10,.7);
+  border-left:3px solid var(--gold);opacity:0;transition:opacity 1.2s,transform 1.2s}
+.herecard.in{opacity:1;transform:translate(0,-50%)}
+.herecard[hidden]{display:none}
+.herecard .ek{font:italic 400 clamp(20px,1.7vw,28px)/1.35 var(--serif);color:#ff9f93;margin:0 0 22px}
+.herecard .hrow{display:flex;gap:26px;align-items:center}
+.herecard .qr{width:clamp(150px,13vw,230px);height:auto;border-radius:6px;flex:none}
+.herecard .ek2{font:500 clamp(22px,1.9vw,32px)/1.25 var(--serif);color:var(--gold);margin:0 0 12px}
+.herecard .url{font:600 clamp(14px,1.1vw,18px)/1.3 var(--mono);letter-spacing:.04em;color:var(--cream);margin:0 0 10px}
+.herecard .sm{font:400 clamp(14px,1.05vw,17px)/1.45 var(--serif);color:var(--cream-dim);margin:0}
+body.at-here .cap,body.at-here .doc,body.at-here .voice{opacity:0!important}
+/* the card under the map, so Europe, the crossing and Philadelphia all show above it */
+.herecard{right:auto;left:50%;top:auto;bottom:7vh;transform:translate(-50%,16px);max-width:min(860px,80vw)}
+.herecard.in{transform:translate(-50%,0)}
+.herecard .ek{text-align:center;margin-bottom:18px}
+.herecard .hrow{justify-content:center}
+/* phones: the opening card sits in the middle of the screen, not at the top (Sam, 9 Oct 2026) */
+@media (max-width:759px){ html body .intro{align-content:safe center!important;min-height:100%;padding-bottom:max(48px,env(safe-area-inset-bottom))} }
+@media (max-width:759px) and (min-height:700px){
+  html body .intro .wheelbig svg{width:112px!important;height:112px!important}
+  html body .intro .wheelbig{margin-bottom:26px}
+  html body .intro blockquote{font-size:28px}
+  html body .intro .go{margin-top:34px}
+  html body .intro .sig{margin-top:40px}
+}
