@@ -60,3 +60,31 @@
     var h=img.getBoundingClientRect().height; if(h) card.style.setProperty('--porH',h+'px'); }
   if(img.complete) fit(); img.addEventListener('load',fit); window.addEventListener('resize',fit);
 })();
+
+/* method examples on laptops: each label sits above or below its box, never on another label and never past the record's edges (Sam, 10 Oct 2026) */
+(function(){
+  var docs=document.querySelectorAll('.stepex .exdoc'); if(!docs.length) return;
+  function ov(a,b){ return a.left<b.right+3&&a.right>b.left-3&&a.top<b.bottom+3&&a.bottom>b.top-3; }
+  function place(){
+    if(innerWidth<=1100) return;
+    [].forEach.call(docs,function(d){
+      var box=d.getBoundingClientRect(), done=[];
+      [].forEach.call(d.querySelectorAll('.exmk'),function(m){
+        var l=m.querySelector('.exl'); if(!l) return;
+        var tries=[['',0],['below',0],['',-1],['below',1],['',-2],['below',2],['',-3],['below',3]];
+        for(var i=0;i<tries.length;i++){
+          m.classList.toggle('below',tries[i][0]==='below'); l.style.marginTop=''; l.style.transform='';
+          var shift=tries[i][1]; if(shift) l.style.transform='translateY('+(shift*(l.offsetHeight+4))+'px)';
+          l.style.left=''; l.style.right='';
+          var r=l.getBoundingClientRect(), mr=m.getBoundingClientRect();
+          if(r.right>box.right){ l.style.left='auto'; l.style.right='-2px'; r=l.getBoundingClientRect(); }
+          if(r.left<box.left){ l.style.right='auto'; l.style.left=(box.left-mr.left)+'px'; r=l.getBoundingClientRect(); }
+          if(!done.some(function(o){ return ov(r,o); })) break;
+        }
+        done.push(l.getBoundingClientRect());
+      });
+    });
+  }
+  window.addEventListener('load',place); window.addEventListener('resize',function(){ clearTimeout(place.t); place.t=setTimeout(place,150); });
+  setTimeout(place,300);
+})();

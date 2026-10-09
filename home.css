@@ -741,3 +741,23 @@ div.door:hover{ transform:none; }
   .claim{ font-size:1.02rem!important; margin-bottom:.6rem!important; }
   .hintro{ font-size:.92rem!important; line-height:1.5!important; margin-bottom:.9rem!important; }
 }
+/* method examples: on phones and tablets the labels sit in a list under the record, each with the colour of its box (Sam, 10 Oct 2026) */
+@media (max-width:1100px){
+  .stepex .exdoc{ margin:.4rem 0 .2rem!important; }
+  .stepex .exl{ display:none!important; }
+  .stepex .exlist{ display:block!important; }
+}
+.stepex .exlist{ display:none; list-style:none; margin:.7rem 0 0; padding:0; }
+.stepex .exlist li{ margin:0 0 .4rem; padding:.3rem .55rem; border-left:3px solid #cf9f63; background:rgba(12,13,16,.6); font:500 .78rem/1.4 var(--mono); color:#f3ecdf; }
+.stepex .exlist li.true{ border-left-color:#7fc49a; color:#c9ecd6; } .stepex .exlist li.false{ border-left-color:#e2685c; color:#ffc9c1; }
+/* method tabs wrap instead of scrolling off-screen on phones */
+@media (max-width:600px){ .mtabs{ flex-wrap:wrap!important; overflow:visible!important; } .mtabs .mt{ flex:1 1 auto; } }
+/* the road card on phones: the portrait never runs into the words, and nothing under ~8px */
+@media (max-width:760px){
+  .hhero.solo .roadcard .rcpor{ min-width:0!important; max-width:100%!important; }
+  .hhero.solo .roadcard .rcpor img{ width:100%!important; }
+  .hhero.solo .roadcard .rctag{ font-size:.5rem!important; }
+  .hhero.solo .roadcard .rcvoice{ font-size:.56rem!important; }
+  .hhero.solo .roadcard .rck{ font-size:.58rem!important; }
+  .hhero.solo .roadcard .rcgo{ font-size:.62rem!important; }
+}
