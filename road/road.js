@@ -256,8 +256,10 @@
   // on a phone the panels stack: the record under the header, the caption over the controls, the map between
   function padPhone(s){
     var top=64, bottom=Math.min(H()*0.5,320);
-    var cr=cap.getBoundingClientRect(); if(cr.height) bottom=H()-cr.top+10;
-    if(s&&s.media&&s.media.length){ var dr=$('dF').getBoundingClientRect(); if(dr.height) top=Math.max(top,dr.bottom+12); }
+    // only panels actually on screen count: while the wheel travels, the caption and records are hidden,
+    // so the whole phone screen shows the road (fix, 8 Oct 2026: on phones the travel was squeezed out of sight)
+    var cr=cap.getBoundingClientRect(); if(cr.height&&!cap.classList.contains('out')) bottom=H()-cr.top+10; else bottom=110;
+    if(s&&s.media&&s.media.length&&doc.classList.contains('in')){ var dr=$('dF').getBoundingClientRect(); if(dr.height) top=Math.max(top,dr.bottom+12); }
     if(top+bottom>H()-90){ top=64; bottom=Math.min(bottom,H()-154); }
     return {tl:[16,top],br:[16,bottom]};
   }
@@ -332,11 +334,15 @@
   function spin(a){ var e=wheelEl(); if(e) e.querySelector('svg').style.transform='rotate('+a+'deg)'; }
 
   /* ---------- roads ---------- */
-  function drawLeg(pts,color,mode,conf){
-    return L.polyline(pts,{color:color,weight:conf==='unknown'?3.6:4.4,opacity:conf==='unknown'?0.75:1,dashArray:CONF_DASH[conf]?CONF_DASH[conf].split(' ').map(function(v){return +v*1.6;}).join(' '):null,
+  function drawLeg(pts,color,mode,conf,cased){
+    // a road laid back over another (Zacharias sent back to Auschwitz): a dark edge underneath so its gaps don't show the road below
+    var cs=cased?L.polyline(pts,{color:'#0d0f12',weight:7,opacity:1,lineCap:'round',interactive:false,className:'route'}).addTo(routeLayer):null;
+    var ln=L.polyline(pts,{color:color,weight:conf==='unknown'?3.6:4.4,opacity:conf==='unknown'?0.75:1,dashArray:CONF_DASH[conf]?CONF_DASH[conf].split(' ').map(function(v){return +v*1.6;}).join(' '):null,
       lineCap:'round',interactive:false,className:'route'}).addTo(routeLayer);
+    if(cs){ ln._case=cs; var sl=ln.setLatLngs; ln.setLatLngs=function(p){ cs.setLatLngs(p); return sl.call(ln,p); }; ln.on('remove',function(){ routeLayer.removeLayer(cs); }); }
+    return ln;
   }
-  function drawRoad(legs,color){ legs.forEach(function(lg){ drawLeg(legPts(lg),color,lg.mode,lg.conf); }); }
+  function drawRoad(legs,color,cased){ legs.forEach(function(lg){ drawLeg(legPts(lg),color,lg.mode,lg.conf,cased); }); }
   function roadJob(legs,colorKey,o){
     var color=C[colorKey]||colorKey, pts=[], lines=[];
     legs.forEach(function(lg,i){
@@ -351,7 +357,7 @@
       if(k<=l.from){ if(l.line){ routeLayer.removeLayer(l.line); l.line=null; } return; }
       var end=Math.min(k,l.to+1), seg=job.pts.slice(l.from,end); if(k<=l.to) seg.push(pt);
       if(seg.length<2) return;
-      if(!l.line) l.line=drawLeg(seg,job.color,l.mode,l.conf); else l.line.setLatLngs(seg);
+      if(!l.line) l.line=drawLeg(seg,job.color,l.mode,l.conf,job.o.cased); else l.line.setLatLngs(seg);
     });
   }
   function walkerIcon(job){
@@ -396,7 +402,7 @@
     await animate(jobs,g,sea?12000:5200,null,null,sea?10000:0);
     if(!alive(g)) return;
     if(s.other&&s.other.then){
-      var tj=roadJob(s.other.then.legs,s.other.then.color,{train:true,tag:s.other.tag});
+      var tj=roadJob(s.other.then.legs,s.other.then.color,{train:true,tag:s.other.tag,cased:true});
       fxLayer.clearLayers(); await animate([tj],g,3600);
     }
   }
@@ -408,7 +414,7 @@
   }
   function layDown(s,target){
     if(s.helen){ var hl=helenLegs(s); drawRoad(hl,C.helen); var last=hl[hl.length-1].pts; wheelPos=last[last.length-1]; }
-    if(s.other){ drawRoad(s.other.legs,C[s.other.color]); if(s.other.then) drawRoad(s.other.then.legs,C[s.other.then.color]); }
+    if(s.other){ drawRoad(s.other.legs,C[s.other.color]); if(s.other.then) drawRoad(s.other.then.legs,C[s.other.then.color],true); }
     if(target&&target.night&&s.night){ (s.lights||[]).forEach(function(l){ addLight(l,true); }); (s.threads||[]).forEach(function(t){ addThread(t,true); }); }
   }
 
@@ -498,7 +504,11 @@
     words=[].slice.call($('cP').querySelectorAll('.w')); titleShare=(s.t.length+12)/(s.t.length+12+(s.p||'').length);
   }
   function allWords(){ $('cP').className='static'; }
-  function syncWords(list,f,share){ if(!list.length) return; var g=(f-(share||0))/(1-(share||0)), upto=Math.floor(g*list.length*1.04); for(var k=0;k<list.length;k++) list[k].classList.toggle('s',k<upto); }
+  function syncWords(list,f,share){ if(!list.length) return; var g=(f-(share||0))/(1-(share||0)), upto=Math.floor(g*list.length*1.04); for(var k=0;k<list.length;k++) list[k].classList.toggle('s',k<upto); followWord(list[Math.min(upto,list.length)-1]); }
+  // long text on a small screen: glide the box so the line being spoken stays in view (no scroll bar shown)
+  function followWord(w){ if(!w) return; var box=w.closest('.cap,.voice,.intro'); if(!box||box.scrollHeight<=box.clientHeight+2) return;
+    var want=box.scrollTop+(w.getBoundingClientRect().top-box.getBoundingClientRect().top)-box.clientHeight*0.55;
+    want=Math.max(0,Math.min(want,box.scrollHeight-box.clientHeight)); if(Math.abs(box.scrollTop-want)>4) box.scrollTop+= (want-box.scrollTop)*0.35; }
 
   /* ---------- drawn documents: the process flow, the family tree, the purge list ---------- */
   function flowSvg(){
@@ -894,7 +904,11 @@
     paintCtl();
   }
   // iOS lets an audio element play later only if it first played inside a click
-  function unlock(a,src){ try{ if(!a.getAttribute('src')) a.src=src; a.muted=true; var pr=a.play(); if(pr&&pr.then) pr.then(function(){ a.pause(); a.muted=muted; },function(){ a.muted=muted; }); }catch(e){} }
+  // phones: start each player silently inside the tap, then stop it at once; it stays silent until a stop really uses it
+  // (fix, 8 Oct 2026: on phones the unmute ran before the pause, so Sam's and Helen's first clips played together)
+  function unlock(a,src){ try{ if(!a.getAttribute('src')) a.src=src; a.dataset.unlocking='1'; a.muted=true; a.volume=0;
+    var u=a.src, done=function(){ if(a.src===u){ try{ a.pause(); a.currentTime=0; }catch(e){} } delete a.dataset.unlocking; a.volume=1; a.muted=muted; };   // a real clip that started meanwhile keeps playing
+    var pr=a.play(); if(pr&&pr.then) pr.then(done,done); else done(); }catch(e){} }
   async function begin(){
     applyMute(); if(!introClip.getAttribute('src')) introClip.src=DATA.INTRO.clip;
     var g=++gen; playing=true; paused=false; paintCtl();
@@ -919,7 +933,7 @@
   function hideEnd(){ endCard.hidden=true; document.body.classList.remove('at-end'); }
 
   /* ---------- the visitor's input ---------- */
-  function applyMute(){ [narr,hv,introClip,music].forEach(function(a){ a.muted=muted; }); paintCtl(); }
+  function applyMute(){ [narr,hv,introClip,music].forEach(function(a){ if(!a.dataset.unlocking) a.muted=muted; }); paintCtl(); }
   // the tap that turns the sound on also unlocks the players for later stops (iOS needs a tap per player)
   function hearHelen(){
     var firstNarr=STOPS.filter(function(x){ return x.audio; })[0];
