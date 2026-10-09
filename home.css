@@ -441,3 +441,9 @@ h2.dbh{ scroll-margin-top:16rem; }
 .pfd-recs{ grid-template-columns:repeat(4,18.84%); column-gap:2.9%; }
 .pr img{ height:auto; aspect-ratio:3/1; object-fit:cover; object-position:center; }
 @media (max-width:37.5rem){ .pfd-recs{ grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:.9rem; } }
+/* reopen: set-aside leads can come back */
+.pfd .reo{ stroke:#f1e7d5; stroke-opacity:.45; stroke-dasharray:3 5; stroke-width:1.8; }
+.pfd .rl2{ font:italic 400 15px var(--serif); fill:var(--muted); }
+[data-theme="light"] .pfd .reo{ stroke:#7d6b52; }
+.pfd .xo{ font:500 18px var(--serif); fill:var(--ink-dim); text-decoration:line-through; text-decoration-color:#d0573f; }
+.pfd .xs{ font:400 14px var(--serif); fill:var(--muted); }
