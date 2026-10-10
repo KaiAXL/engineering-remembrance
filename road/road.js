@@ -453,7 +453,28 @@
       if(shift) l.style.marginLeft=shift+'px';
     });
   }
-  map.on('moveend zoomend',function(){ setTimeout(keepEndsOn,30); });
+  // a place name hidden behind a panel (the caption, the records, her words) swaps to the other side of its light
+  function panelRects(){ return [].map.call(document.querySelectorAll('.cap,.doc.in,.voice,.brand,.year'),function(e){ var cs=getComputedStyle(e); if(cs.display==='none'||cs.visibility==='hidden'||e.hidden||e.classList.contains('out')) return null; var r=e.getBoundingClientRect(); return r.width?r:null; }).filter(Boolean); }
+  function hitArea(a,P){ var t=0; P.forEach(function(b){ var w=Math.min(a.right,b.right)-Math.max(a.left,b.left), h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top); if(w>0&&h>0) t+=w*h; }); return t; }
+  function clearLights(){ var P=panelRects();
+    [].forEach.call(document.querySelectorAll('.light .lbl'),function(l){ var li=l.parentNode;
+      if(li.dataset.flip){ li.classList.toggle('left'); delete li.dataset.flip; }
+      l.style.maxWidth=''; l.style.whiteSpace='';
+      if(li.classList.contains('up')||li.classList.contains('star')) return;
+      var r=l.getBoundingClientRect(); if(!r.width) return; if(!hitArea(r,P)) return;
+      if(hitArea(li.getBoundingClientRect(),P)) return;   // the light itself is under a panel: moving its name would not help
+      li.classList.toggle('left'); if(!hitArea(l.getBoundingClientRect(),P)){ li.dataset.flip='1'; return; } li.classList.toggle('left');
+      // neither side is clear: keep its side and fold the name onto two lines, up to the panel's edge
+      var left=li.classList.contains('left'), room=0;
+      P.forEach(function(b){ if(b.bottom<r.top||b.top>r.bottom) return;
+        var w=left?r.right-b.right-8:b.left-r.left-8; if(w>0&&(left?b.right<r.right:b.left>r.left)) room=room?Math.min(room,w):w; });
+      if(room>=90){ l.style.whiteSpace='normal'; l.style.maxWidth=room+'px'; }
+    }); }
+  function clearWitness(){ if(!witness.classList.contains('on')&&!witness.dataset.hid) return;
+    if(witness.dataset.hid){ witness.classList.add('on'); delete witness.dataset.hid; }
+    var w=witness.getBoundingClientRect(), P=[].map.call(document.querySelectorAll('.doc.in .rk, .doc.in .mk.on .tag'),function(e){ return e.getBoundingClientRect(); });
+    if(hitArea(w,P)){ witness.classList.remove('on'); witness.dataset.hid='1'; } }   // the words "her memory" and "the record" are already on the panels
+  map.on('moveend zoomend',function(){ setTimeout(function(){ keepEndsOn(); clearLights(); },30); });
   function addThread(t,instant){
     var pts=arc(t[0],t[1]); var line=L.polyline(instant?pts:[pts[0]],{color:C.thread,weight:1.4,opacity:.75,interactive:false,className:'thread'}).addTo(lightLayer);
     if(instant||REDUCED){ line.setLatLngs(pts); return; }
@@ -620,7 +641,7 @@
     clearLoupe(); doc.classList.remove('in'); setTimeout(fitDoc,60);
     var m=s.media||[]; document.body.classList.toggle('has-doc',!!m.length); document.body.classList.toggle('drawn-on',!!(m[0]&&m[0].html));
     if(!m.length){ $('dF').innerHTML=''; return; }
-    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.wideDoc?' wide':'')+(s.row?' row':'')+(!s.row&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
+    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.docSmall?' petite':'')+(s.wideDoc?' wide':'')+(s.row?' row':'')+(!s.row&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
     // a title over a group of records sits above them all, not inside the first one (Sam, 8 Oct 2026)
     if(s.docTitle){ $('dK').innerHTML='<span class="rk">'+s.docTitle+'</span>'; $('dK').classList.add('titled'); }
     else { $('dK').classList.remove('titled'); $('dK').textContent=s.voice&&s.witness?'The record':(s.part===2?'The record':''); }
@@ -728,9 +749,9 @@
   // a new label never sits on one already showing (Sam, 8 Oct 2026): try below its box, then the other side
   // a label never sits on another label or on another highlighted box (Sam, 8 Oct 2026: "make sure nothing overlaps")
   function ov(a,b){ return a.left<b.right-1&&a.right>b.left+1&&a.top<b.bottom-1&&a.bottom>b.top+1; }
-  function hits(t,m){ var r=t.getBoundingClientRect();
+  function hits(t,m,relax){ var r=t.getBoundingClientRect();
     if(r.left<2||r.right>innerWidth-2||r.top<2) return true;   // off the screen counts as a collision
-    var fr=m.closest('.frame'); if(fr){ var q=fr.getBoundingClientRect(); if(r.left<q.left-4||r.right>q.right+4||r.top<q.top-2||r.bottom>q.bottom+2) return true; }   // stays on its own record: never over the next one or the caption under it (Sam)
+    var fr=m.closest('.frame'); if(fr&&!relax){ var q=fr.getBoundingClientRect(); if(r.left<q.left-4||r.right>q.right+4||r.top<q.top-2||r.bottom>q.bottom+2) return true; }   // stays on its own record: never over the next one or the caption under it (Sam)
     return [].some.call(doc.querySelectorAll('.mk.on'),function(o){
       if(o!==m&&ov(r,o.getBoundingClientRect())) return true;
       var ot=o.querySelector('.tag'); return ot&&ot!==t&&getComputedStyle(ot).opacity!=='0'&&ov(r,ot.getBoundingClientRect()); })
@@ -746,7 +767,10 @@
     var bases=['','below'];
     for(var bI=0;bI<2;bI++){ m.className=keep+(bases[bI]?' '+bases[bI]:'');
       for(var k=1;k<=10;k++){ t.style.marginTop=(bI?k*14:-k*14)+'px'; if(!hits(t,m)) return; } }
-    t.style.marginTop=''; m.className=keep;
+    t.style.marginTop='';
+    // a record too thin to hold its labels: a label may step off the record, but never onto a title or another label
+    for(var j=0;j<SPOTS.length;j++){ m.className=keep+(SPOTS[j]?' '+SPOTS[j]:''); if(!hits(t,m,true)) return; }
+    m.className=keep;
   }
   // phones show one record at a time, full size (Sam, 9 Oct 2026: before, a stop's second record never showed on a phone).
   // The record the highlights are on comes up; records with nothing highlighted take turns every few seconds; "1 / 2" says there are more.
@@ -844,9 +868,9 @@
     $('vK').textContent=T('In her own words')+' · '+v.when+(s&&s.witness?' · '+T('her memory'):'');
     $('vT').innerHTML=(keep?'<span class="prevq">'+keep+'</span>':'')+wordsHtml('“'+v.text+'”'); $('vN').textContent=v.note||'';
     voice.classList.remove('out'); document.body.classList.add('has-voice');
-    witness.classList.toggle('on',!!(s&&s.witness&&s.media&&s.media.length));
+    delete witness.dataset.hid; witness.classList.toggle('on',!!(s&&s.witness&&s.media&&s.media.length)); setTimeout(clearWitness,900); setTimeout(clearWitness,2500);
   }
-  function hideVoice(){ voice.classList.add('out'); document.body.classList.remove('has-voice'); witness.classList.remove('on'); }
+  function hideVoice(){ voice.classList.add('out'); document.body.classList.remove('has-voice'); witness.classList.remove('on'); delete witness.dataset.hid; }
   function helenSays(v,s,g,keep){
     return new Promise(function(res){
       showVoice(v,s,keep); var vw=[].slice.call($('vT').querySelectorAll(':scope > .w'));
@@ -925,7 +949,7 @@
     },(1800+Math.min(k*12,4000))*(FAST?0.3:1)); });
     (s.threads||[]).forEach(function(t,k){ setTimeout(function(){ if(alive(g)) addThread(t); },600+k*700); });
     cap.classList.remove('out');
-    if(s.media&&s.media.length){ void doc.offsetWidth; doc.classList.add('in'); fitDoc(); setTimeout(fitDoc,400); }   // the records come up with the caption, at once (Sam)
+    if(s.media&&s.media.length){ void doc.offsetWidth; doc.classList.add('in'); fitDoc(); setTimeout(fitDoc,400); } setTimeout(function(){ clearLights(); clearWitness(); },500); setTimeout(function(){ clearLights(); clearWitness(); },1600);   // the records come up with the caption, at once (Sam)
     preload(STOPS[n+1]);
 
     // her voice and mine, in the stop's order
@@ -1005,8 +1029,10 @@
     '<div class="eb"><button type="button" id="eAgain">Start over</button>'+
     '<a href="index.html">Home</a><a href="method.html">Method</a><a href="databases.html">Database</a><a href="about.html">Researcher</a></div>');   // Sam, 8 Oct 2026
   endCard.hidden=true;
-  function finish(){ if(MODE!=='web'){ hereScene(); return; } clearAdv(); playing=false; paintCtl(); endCard.hidden=false; document.body.classList.add('at-end'); setTimeout(function(){ $('eAgain').focus({preventScroll:true}); },60); }
-  function hideEnd(){ endCard.hidden=true; document.body.classList.remove('at-end'); }
+  function finish(){ if(MODE!=='web'){ hereScene(); return; } clearAdv(); playing=false; paintCtl(); endCard.hidden=false; document.body.classList.add('at-end');
+    var dr=doc.getBoundingClientRect(); endCard.style.left=(innerWidth>=900&&dr.width&&dr.left>520)?Math.round(dr.left/2)+'px':'';   // the end menu sits beside the last photograph, never on it (review, 9 Oct 2026)
+    setTimeout(function(){ $('eAgain').focus({preventScroll:true}); },60); }
+  function hideEnd(){ endCard.hidden=true; endCard.style.left=''; document.body.classList.remove('at-end'); }
 
   /* ---------- talk and loop: "You are here", Philadelphia, with the QR code to the homepage ---------- */
   var PHILLY=[39.9526,-75.1652], hereMk=null, atHere=false;

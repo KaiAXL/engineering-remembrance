@@ -1148,3 +1148,11 @@ html body #ui .doc figure .frame:has(.mk[data-lane="above"]){ margin-top:64px!im
 
 /* tablets: the label being explained stays bright; earlier ones fade back, so labels never pile up (Sam, 10 Oct 2026, option 1) */
 @media (min-width:760px) and (max-width:1100px){ html body #ui .doc .mk.on:not(.now):not(.headpin) .tag{opacity:.14!important} html body #ui .doc .mk.on:not(.now):not(.headpin){opacity:.55} }
+
+/* records side by side are narrow: their labels fold sooner, so two never collide (review, 9 Oct 2026) */
+.doc.row .mk .tag{max-width:min(210px,calc(var(--fw,300px) - 8px))!important}
+
+/* at the end, the caption steps back so the end menu can take its place beside the last photograph */
+@media (min-width:900px){ body.at-end .cap{opacity:0;pointer-events:none;transition:opacity .8s} }
+/* the last photograph, smaller: the ending stays on Helen and her cousins (review, 9 Oct 2026) */
+@media (min-width:900px){ .doc.petite{width:min(330px,24vw)!important;top:auto!important;bottom:96px!important} .doc.petite .frame .sheet img{max-height:min(440px,52vh)!important;width:auto!important;height:auto!important} }
