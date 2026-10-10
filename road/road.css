@@ -1109,7 +1109,8 @@ html body .doc img[src*="sam-wedding"],html body .who img[src*="sam-wedding"]{fi
 /* phones: every record of a stop gets its turn, full size, one at a time (Sam, 9 Oct 2026) */
 @media (max-width:759px){
   html body #ui .doc.phc figure:not(.ph-on){display:none!important}
-  html body #ui .doc.phc figure.ph-on{display:block!important;animation:phIn .6s ease}
+  html body #ui .doc.phc figure.ph-on{display:block!important}
+  html body #ui .doc.phc.in figure.ph-on{animation:phIn .6s ease}   /* fade in only once the record is meant to show (Sam, 10 Oct 2026: it flashed before the wheel arrived) */
   html body #ui .doc.phc figure.ph-on .frame .sheet img{max-height:calc(100vh - var(--capH,300px) - 275px)!important}
   html body #ui .doc.phc figure.ph-on figcaption{display:block!important}
   html body #ui .doc.phc figure.ph-on .rk{display:inline-block!important}
