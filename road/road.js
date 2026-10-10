@@ -443,7 +443,17 @@
   function addEnd(e){
     L.marker(e.at,{interactive:false,keyboard:false,zIndexOffset:2600,icon:L.divIcon({className:'',
       html:'<div class="endlbl '+e.kind+' '+e.who+'"><span>'+(e.kind==='from'?'from ':'to ')+'</span>'+e.n+'</div>',iconSize:[0,0]})}).addTo(fxLayer);
+    setTimeout(keepEndsOn,60); setTimeout(keepEndsOn,900);
   }
+  // a place name at the edge of a small screen slides back on so no letter is cut ("to AUSCHWITZ", "to STALINGRAD", Sam 10 Oct 2026)
+  function keepEndsOn(){
+    [].forEach.call(document.querySelectorAll('.endlbl'),function(l){
+      l.style.marginLeft=''; var r=l.getBoundingClientRect(); if(!r.width) return;
+      var pad=8, shift=0; if(r.left<pad) shift=pad-r.left; else if(r.right>innerWidth-pad) shift=(innerWidth-pad)-r.right;
+      if(shift) l.style.marginLeft=shift+'px';
+    });
+  }
+  map.on('moveend zoomend',function(){ setTimeout(keepEndsOn,30); });
   function addThread(t,instant){
     var pts=arc(t[0],t[1]); var line=L.polyline(instant?pts:[pts[0]],{color:C.thread,weight:1.4,opacity:.75,interactive:false,className:'thread'}).addTo(lightLayer);
     if(instant||REDUCED){ line.setLatLngs(pts); return; }
