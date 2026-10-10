@@ -464,6 +464,8 @@ h2.dbh{ scroll-margin-top:16rem; }
 .bala-steps{ list-style:none; padding:0; margin:1rem 0 1.4rem; counter-reset:bs; }
 .bala-steps li{ counter-increment:bs; position:relative; padding:.7rem 0 .7rem 3rem; border-bottom:1px solid var(--rule-soft); }
 .bala-steps li::before{ content:counter(bs); position:absolute; left:0; top:.55rem; width:2rem; height:2rem; border-radius:50%; border:1px solid var(--accent); color:var(--accent); font:500 .85rem/2rem var(--mono); text-align:center; }
+.bala-h1{ display:flex; align-items:center; gap:.9rem; }
+.bala-logo{ width:clamp(52px,9vw,76px); height:auto; flex:none; }
 .bala-note{ border-left:3px solid var(--accent); padding:.8rem 1.1rem; background:var(--panel); margin:1.2rem 0; }
 .bala-soon{ display:inline-block; font:500 .72rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--bg); background:var(--accent); padding:.45rem .7rem; border-radius:3px; }
 
@@ -589,7 +591,7 @@ div.door:hover{ transform:none; }
 .hhero.solo .roadcard .rctag{ font-size:.55rem; }
 @media (max-width:760px){ .hhero.solo .roadcard .rcover{ gap:1.1rem; } .hhero.solo .roadcard .rcgo{ margin-top:.6rem; } }
 .roadcard .rcgo .sm{ display:none; }
-@media (max-width:1400px) and (min-width:761px){
+@media (max-width:1560px) and (min-width:761px){
   .roadcard .rcgo .lg{ display:none; } .roadcard .rcgo .sm{ display:inline; }
   .roadcard .rcgo{ white-space:nowrap!important; }
   .hhero.solo .roadcard .rcpor{ flex-basis:36%!important; }
@@ -761,3 +763,14 @@ div.door:hover{ transform:none; }
   .hhero.solo .roadcard .rck{ font-size:.58rem!important; }
   .hhero.solo .roadcard .rcgo{ font-size:.62rem!important; }
 }
+
+/* review pass, 9 Oct 2026: a tone behind photos while they load; readable small labels; no mixed caps in the door link */
+.main img:not([src$=".png"]):not([src$=".svg"]){ background-color:var(--panel); }
+:root:not([data-theme="light"]) .cite{ color:#d9896a!important; }
+.cite{ font-size:max(.7rem,11.5px)!important; }
+.ftrow span{ font-size:max(.68rem,11px); line-height:1.3; }
+.ptag{ font-size:max(.62rem,10px); }
+@media (max-width:34rem){ .ptag{ font-size:10px; } }
+.door .dsub em{ font:inherit!important; font-style:normal!important; text-transform:uppercase!important; letter-spacing:inherit!important; color:var(--ink); }
+
+#faces{ scroll-margin-top:150px; }

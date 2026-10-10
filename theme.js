@@ -140,7 +140,10 @@ document.addEventListener('close', function(e){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!('IntersectionObserver' in window)) return;
   var sel = '.hero, .routes, .strip, .panel, .doc, .step, .fields, .pull, .clip, .db, .sig';
-  var els = [].slice.call(document.querySelectorAll(sel));
+  // what is already on screen at load never fades: it is there from the first frame
+  var els = [].slice.call(document.querySelectorAll(sel)).filter(function(el){
+    return el.getBoundingClientRect().top >= window.innerHeight * 1.05;
+  });
   if (!els.length) return;
 
   function reveal(el){ el.classList.add('risen'); }
