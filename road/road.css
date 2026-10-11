@@ -1156,3 +1156,333 @@ html body #ui .doc figure .frame:has(.mk[data-lane="above"]){ margin-top:64px!im
 @media (min-width:900px){ body.at-end .cap{opacity:0;pointer-events:none;transition:opacity .8s} }
 /* the last photograph, smaller: the ending stays on Helen and her cousins (review, 9 Oct 2026) */
 @media (min-width:900px){ .doc.petite{width:min(330px,24vw)!important;top:auto!important;bottom:96px!important} .doc.petite .frame .sheet img{max-height:min(440px,52vh)!important;width:auto!important;height:auto!important} }
+
+/* at the end the last photograph steps back: only the end menu (Sam, 10 Oct 2026) */
+body.at-end .doc{opacity:0!important;pointer-events:none;transition:opacity .8s}
+
+/* ---------- the memorial wall at the end (Sam, 10 Oct 2026): written in the map's own hand ----------
+   No stone, no boxes: the map stays under it, dimmed, and the names are set like the map's captions.
+   Each group is marked by one thin rule in the color its road has on the map. Gold stays Helen's alone. */
+.rollcall{position:fixed;inset:0;z-index:5000;display:grid;place-items:start center;overflow:hidden;cursor:pointer;
+  background:radial-gradient(ellipse 80% 70% at 50% 45%,rgba(13,15,18,.9),rgba(13,15,18,.97));opacity:0;transition:opacity 1.4s ease}
+.rollcall.on{opacity:1}
+.rollcall.out{opacity:0!important;transition:opacity .9s}
+.rollcall .rcin{width:min(1240px,94vw);margin-top:2vh;padding:18px 0 14px;text-align:center;transform-origin:50% 0}
+.rollcall .rwheel{width:40px;margin:0 auto 10px;color:var(--gold);opacity:0;transition:opacity 1.2s}
+.rollcall .rwheel svg{display:block}
+.rollcall .rwheel.on{opacity:.9;animation:wallturn 30s linear infinite}
+@keyframes wallturn{to{transform:rotate(360deg)}}
+.rollcall .rtitle{margin:0;font:300 clamp(32px,3.4vw,50px)/1.05 var(--serif);letter-spacing:-.005em;color:var(--cream)}
+.rollcall .rsub{margin:8px 0 30px;font:italic 400 clamp(15px,1.25vw,19px)/1.35 var(--serif);color:var(--cream-dim)}
+/* three columns, Helen's circle the widest, in the middle */
+.rollcall .rwall{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr) minmax(0,1fr);grid-template-areas:"left mid right";column-gap:clamp(26px,3.4vw,58px);align-items:start;text-align:left}
+.rollcall .rg{opacity:0;transition:opacity 1s ease}
+.rollcall .rg.on{opacity:1}
+.rollcall .rg.rc-red{grid-area:mid}.rollcall .rg.rc-blue{grid-area:left}.rollcall .rg.rc-tibi{grid-area:right}
+.rollcall .rg h3{margin:0 0 14px;padding:0 0 0 12px;border-left:2px solid;font:italic 400 clamp(15px,1.2vw,18px)/1.25 var(--serif);color:var(--cream-dim)}
+.rollcall .rc-red h3{border-color:var(--red)}.rollcall .rc-blue h3{border-color:var(--cousin)}.rollcall .rc-tibi h3{border-color:#9fb39a}.rollcall .rc-gray h3{border-color:#6f6a62}
+.rollcall .rg ol{list-style:none;margin:0;padding:0 0 0 14px}
+.rollcall .rc-red ol{columns:2;column-gap:clamp(22px,2.4vw,40px)}
+.rollcall .rg li{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;break-inside:avoid;margin:0 0 9px;opacity:0;transform:translateY(4px);transition:opacity .9s ease,transform .9s ease}
+.rollcall .rg li.on{opacity:1;transform:none}
+.rollcall .rg li b{font:400 clamp(17px,1.4vw,22px)/1.2 var(--serif);color:var(--cream);letter-spacing:0}
+.rollcall .rg li i{align-self:baseline;font:400 clamp(16px,1.25vw,20px)/1 var(--serif);font-style:normal;font-variant-numeric:lining-nums tabular-nums;color:var(--cream-dim);text-align:right}
+.rollcall .rg li span{grid-column:1 / span 2;margin-top:1px;font:italic 400 clamp(12.5px,.95vw,14.5px)/1.35 var(--serif);color:var(--cream-faint, #8a8f97)}
+.rollcall .rg li span em{font-style:italic;color:inherit}
+/* the not-yet-named: one row along the foot, quieter, set in italic like a space left on a stone */
+.rollcall .rg.rc-gray{margin:26px auto 0;text-align:left;max-width:100%}
+.rollcall .rc-gray ol{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:clamp(16px,2vw,32px)}
+.rollcall .rc-gray li b{font-style:italic;color:#b9b1a3}
+.rollcall .rtnzbh{margin:22px 0 0;font:italic 400 13px/1.4 var(--serif);color:var(--cream-faint, #8a8f97)}
+.rollcall .rtnzbh span{display:block;margin-bottom:2px;font:400 20px/1.2 'Frank Ruhl Libre','David',serif;letter-spacing:.1em;color:var(--cream-dim)}
+html.he .rollcall .rwall,html.he .rollcall .rg{text-align:right;direction:rtl}
+html.he .rollcall .rg h3{border-left:0;border-right:2px solid;padding:0 12px 0 0}
+html.he .rollcall .rg ol{padding:0 14px 0 0}
+@media (max-width:1000px){
+  .rollcall .rwall{grid-template-columns:1fr;grid-template-areas:"mid" "left" "right";row-gap:22px}
+  .rollcall .rc-red ol{columns:1}
+  .rollcall .rc-gray ol{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){ .rollcall .rwheel.on{animation:none} .rollcall .rg li{transform:none} }
+/* while the wall is up, every panel steps back; the map stays, dim, under the names */
+body.rolling .cap,body.rolling .doc,body.rolling .voice,body.rolling .witness,body.rolling .year,body.rolling .brand,body.rolling .legend,body.rolling .light .lbl,body.rolling .endlbl{opacity:0!important;transition:opacity 1s}
+.rollcall{background:radial-gradient(ellipse 85% 75% at 50% 45%,rgba(13,15,18,.86),rgba(13,15,18,.95))}
+/* ---------- the stones (Sam, 10 Oct 2026: "like the Yiddish gravestones they never had") ----------
+   Drawn, not faked: each group is the outline of a matzevah in one fine line, the way the map draws a road.
+   Text is centered as it is cut on a stone; the epitaph sits at the foot. Yizkor above: the prayer for those with no grave. */
+.rollcall .ryz{margin:0 0 2px;font:400 clamp(22px,2vw,30px)/1.1 'Frank Ruhl Libre','David',serif;color:var(--cream-dim);letter-spacing:.04em}
+.rollcall .rg.stone{position:relative;text-align:center;padding:52px clamp(14px,1.6vw,26px) 18px;border:1px solid rgba(243,236,223,.22);border-bottom-color:rgba(243,236,223,.1);
+  border-radius:50% 50% 2px 2px / 64px 64px 2px 2px;background:linear-gradient(180deg,rgba(243,236,223,.035),rgba(243,236,223,0) 60%)}
+.rollcall .rg.stone.rc-red{border-color:rgba(207,74,60,.55);border-bottom-color:rgba(207,74,60,.2);border-radius:50% 50% 2px 2px / 84px 84px 2px 2px;padding-top:62px}
+.rollcall .rg.stone.rc-blue{border-color:rgba(143,176,198,.45);border-bottom-color:rgba(143,176,198,.16)}
+.rollcall .rg.stone.rc-tibi{border-color:rgba(159,179,154,.45);border-bottom-color:rgba(159,179,154,.16)}
+.rollcall .rg.stone h3{border:0;padding:0;margin:0 0 16px;text-align:center;font:italic 400 clamp(15px,1.2vw,18px)/1.25 var(--serif);color:var(--cream-dim)}
+.rollcall .rg.stone ol{padding:0}
+.rollcall .rg.stone li{display:block;text-align:center;margin:0 0 10px}
+.rollcall .rg.stone li b{display:block}
+.rollcall .rg.stone li span{display:block}
+.rollcall .rg li span em{display:block;font-style:italic}
+.rollcall .rg.stone .rep{margin:14px 0 0;font:400 18px/1 'Frank Ruhl Libre','David',serif;letter-spacing:.14em;color:var(--cream-dim)}
+.rollcall .rwall{align-items:end}
+.rollcall .rc-gray li{text-align:center}
+.rollcall .rc-gray h3{text-align:center;border:0;padding:0}
+.rollcall .rtnzbh span{display:none}
+html.he .rollcall .rg.stone,html.he .rollcall .rg.stone li{text-align:center}
+@media (max-width:1000px){ .rollcall .rwall{align-items:start} .rollcall .rg.stone{border-radius:50% 50% 2px 2px / 40px 40px 2px 2px} }
+/* hold the wall (Sam): Pause / Resume and Go to the end, in the map's own button style, bottom right */
+.rollcall{cursor:default}
+.rollcall .rbar{position:fixed;right:24px;bottom:22px;display:flex;gap:10px;z-index:2}
+.rollcall .rbar button{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:10px 16px;border-radius:999px;cursor:pointer;
+  background:rgba(21,24,29,.9);color:var(--cream);border:1px solid rgba(243,236,223,.22)}
+.rollcall .rbar .rpause{background:var(--gold);color:#17120d;border-color:var(--gold)}
+.rollcall .rbar button:hover{filter:brightness(1.1)}
+.rollcall .rbar button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.rollcall.held .rwheel.on{animation-play-state:paused}
+/* ---------- two tablets, like the Ten Commandments (Sam, 10 Oct 2026) ----------
+   Two equal stones side by side, each with a round top, drawn in one fine line like the map's roads; the first edged in her family's red. */
+.rollcall .rcin{width:min(1180px,94vw)}
+.rollcall .rtablets{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.6vw,24px);align-items:stretch;margin:4px auto 0;max-width:1080px}
+.rollcall .rg.tablet{position:relative;text-align:center;padding:clamp(56px,6vw,84px) clamp(18px,2.2vw,36px) 18px;
+  border:1px solid rgba(243,236,223,.24);border-radius:50% 50% 3px 3px / clamp(70px,8vw,120px) clamp(70px,8vw,120px) 3px 3px;
+  background:linear-gradient(180deg,rgba(243,236,223,.04),rgba(243,236,223,.008) 55%,rgba(243,236,223,0))}
+.rollcall .rg.tablet.t-tab1{border-color:rgba(207,74,60,.6)}
+.rollcall .rg.tablet h3{border:0!important;padding:0!important;margin:0 0 18px;text-align:center;font:italic 400 clamp(16px,1.3vw,20px)/1.25 var(--serif);color:var(--cream-dim)}
+.rollcall .rg.tablet h4{margin:18px 0 10px;font:italic 400 clamp(14px,1.1vw,17px)/1.25 var(--serif);color:var(--cream-faint)}
+.rollcall .rg.tablet ol{padding:0;columns:2;column-gap:clamp(18px,2vw,34px)}
+.rollcall .rg.tablet ol.un{columns:2}
+.rollcall .rg.tablet li{display:block;text-align:center;margin:0 0 11px;break-inside:avoid}
+.rollcall .rg.tablet li b,.rollcall .rg.tablet li span,.rollcall .rg.tablet li span em{display:block}
+.rollcall .rg.tablet li.rc-un b{font-style:italic;color:#b9b1a3}
+.rollcall .rg.tablet .rep{margin:16px 0 0;font:400 18px/1 'Frank Ruhl Libre','David',serif;letter-spacing:.14em;color:var(--cream-dim)}
+.rollcall .rtnzbh{margin-top:14px}
+@media (max-width:900px){ .rollcall .rtablets{grid-template-columns:1fr} .rollcall .rg.tablet ol{columns:1} .rollcall .rg.tablet{border-radius:50% 50% 3px 3px / 60px 60px 3px 3px} }
+.rollcall .rg.tablet{display:flex;flex-direction:column}
+.rollcall .rg.tablet .rep{margin-top:auto;padding-top:16px}
+/* ---------- tablets, refined (Sam, 10 Oct 2026: "not there yet") ----------
+   True tablets: tall, with a full half-circle top; names larger and brighter; one quiet line under each; nothing of the player showing through. */
+body.rolling .ctl,body.rolling .road,body.rolling .leaflet-control-attribution,body.rolling .endcard{opacity:0!important;pointer-events:none}
+.rollcall{background:rgba(11,12,15,.96)}
+.rollcall .rcin{width:auto;margin-top:1.5vh}
+.rollcall .rwheel{width:30px;margin-bottom:6px}
+.rollcall .ryz{font-size:clamp(26px,2.4vw,36px);margin-bottom:0;color:var(--cream)}
+.rollcall .rtitle{font-size:clamp(28px,2.7vw,40px)}
+.rollcall .rsub{margin:6px 0 26px}
+.rollcall .rtablets{--tw:min(500px,43vw);display:flex;justify-content:center;gap:clamp(10px,1.2vw,18px);max-width:none}
+.rollcall .rg.tablet{width:var(--tw);padding:calc(var(--tw)*.2) clamp(20px,2.4vw,40px) 22px;
+  border-radius:calc(var(--tw)/2) calc(var(--tw)/2) 4px 4px / calc(var(--tw)/2) calc(var(--tw)/2) 4px 4px;
+  border:1.5px solid rgba(243,236,223,.3);background:linear-gradient(180deg,rgba(243,236,223,.055),rgba(243,236,223,.015) 40%,rgba(243,236,223,.01))}
+.rollcall .rg.tablet.t-tab1{border-color:rgba(207,74,60,.75)}
+.rollcall .rg.tablet h3{font-size:clamp(17px,1.4vw,21px);color:var(--cream);margin-bottom:22px}
+.rollcall .rg.tablet ol{column-gap:clamp(20px,2.4vw,40px)}
+.rollcall .rg.tablet li{margin-bottom:14px}
+.rollcall .rg.tablet li b{font-size:clamp(17px,1.45vw,22px);color:#f6efe2}
+.rollcall .rg.tablet li span{font-size:clamp(12.5px,.95vw,14.5px);color:var(--cream-dim)}
+.rollcall .rg.tablet li span em{font-style:normal;color:#9aa0a8;font-size:.95em}
+.rollcall .rg.tablet h4{color:var(--cream-dim);margin-top:8px}
+.rollcall .rg.tablet li.rc-un b{color:#d6cfc2}
+.rollcall .rg.tablet .rep{font-size:20px;color:var(--cream)}
+.rollcall .rtnzbh{color:var(--cream-dim);font-size:14px}
+@media (max-width:900px){ .rollcall .rtablets{flex-direction:column;align-items:center;--tw:min(520px,92vw)} }
+@media (max-width:899px){ .rollcall{overflow-y:auto!important;-webkit-overflow-scrolling:touch} .rollcall .rcin{padding-bottom:90px} .rollcall .rg.tablet{padding-top:calc(var(--tw)*.16)} }
+.rollcall .rbar .remr{background:rgba(21,24,29,.9);color:var(--cream);border-color:rgba(243,236,223,.35);text-transform:none;letter-spacing:.02em;font:italic 400 14px/1 var(--serif)}
+/* the Carpathians behind the stones: a line drawing of snow-capped ridges, as from her village (Sam, 10 Oct 2026) */
+.rollcall::before{content:"";position:fixed;left:0;right:0;bottom:0;height:min(48vh,440px);background:url("carpathians.svg") center bottom/cover no-repeat;pointer-events:none;opacity:.9}
+.rollcall .rcin{position:relative;z-index:1}
+.rollcall .rg.tablet{background:linear-gradient(180deg,rgba(18,20,24,.9),rgba(14,16,19,.94))}
+.rollcall .rkatz{max-width:760px;margin:16px auto 0;font:italic 400 clamp(14px,1.1vw,16.5px)/1.45 var(--serif);color:var(--cream-dim)}
+.rollcall::before{height:100vh;opacity:1}
+
+/* behind the tablets: her valley, Bohdan on the White Tisza, toned into the map's night (Sam, 10 Oct 2026: "the life they never went back to") */
+.rollcall::before{content:"";position:fixed;inset:0;height:auto;background:url("img/road/bohdan-duotone.jpg") center 70%/cover no-repeat;opacity:1;pointer-events:none}
+.rollcall::after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 70% at 50% 45%,rgba(11,12,15,.55),rgba(11,12,15,0) 75%)}
+.rollcall{background:#0b0c0f!important}
+.rollcall .rcredit{position:fixed;left:18px;bottom:14px;z-index:2;margin:0;font:italic 400 10.5px/1.3 var(--serif);color:rgba(243,236,223,.45);max-width:42vw;text-align:left}
+/* background art withdrawn until a real engraving is chosen (Sam, 10 Oct): the map stays dim under the stones */
+.rollcall::before,.rollcall::after{content:none!important;background:none!important}
+.rollcall{background:rgba(11,12,15,.9)!important}
+.rollcall .rcredit{display:none}
+
+/* behind the tablets: the Pietrosz and Hoverla above the White Tisza, drawn by Geza Paur in 1900 (Sam chose it, 10 Oct 2026) */
+html body .rollcall::before{content:""!important;position:fixed;inset:0;pointer-events:none;background:url("extra/pietrosz-hoverla-1900.jpg") center 35%/cover no-repeat!important;opacity:1}
+html body .rollcall{background:#0b0c0f!important}
+html body .rollcall .rcredit{display:block}
+
+/* the stones drawn in the same hand as the 1900 engraving behind them (Sam): fine engraved hatching across the face,
+   a double cut line for the edge, letters cut into the stone */
+html body .rollcall .rg.tablet{
+  background:
+    repeating-linear-gradient(118deg,rgba(236,228,212,.045) 0 1px,rgba(0,0,0,0) 1px 3.5px),
+    repeating-linear-gradient(28deg,rgba(0,0,0,.18) 0 1px,rgba(0,0,0,0) 1px 6px),
+    linear-gradient(180deg,#2a2a2b 0%,#1d1d1f 55%,#161618 100%);
+  border:1px solid rgba(236,228,212,.55);
+  box-shadow:inset 0 0 0 5px rgba(11,12,15,.55),inset 0 0 0 6px rgba(236,228,212,.28),0 14px 40px rgba(0,0,0,.55)}
+html body .rollcall .rg.tablet.t-tab1{border-color:rgba(214,120,104,.8);box-shadow:inset 0 0 0 5px rgba(11,12,15,.55),inset 0 0 0 6px rgba(214,120,104,.38),0 14px 40px rgba(0,0,0,.55)}
+html body .rollcall .rg.tablet li b,html body .rollcall .rg.tablet h3,html body .rollcall .rg.tablet .rep{text-shadow:0 -1px 0 rgba(0,0,0,.85),0 1px 0 rgba(236,228,212,.16)}
+html body .rollcall .rtitle,html body .rollcall .ryz{text-shadow:0 2px 14px rgba(0,0,0,.8)}
+
+/* the stones bigger, and the Katz line readable over the engraving (Sam, 10 Oct 2026) */
+html body .rollcall .rtablets{--tw:min(640px,48vw)}
+html body .rollcall .rcin{width:auto;max-width:98vw}
+html body .rollcall .rkatz{max-width:860px;margin:18px auto 0;padding:10px 22px;font:italic 400 clamp(16px,1.3vw,19px)/1.5 var(--serif);color:var(--cream);
+  background:rgba(14,16,19,.82);border-radius:6px;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+html body .rollcall .rkatz + *{text-shadow:0 1px 2px rgba(0,0,0,.7)}
+@media (max-width:900px){ html body .rollcall .rtablets{--tw:min(520px,92vw)} }
+html body .rollcall .rg.tablet{padding-top:calc(var(--tw)*.14);padding-bottom:14px}
+html body .rollcall .rg.tablet h3{margin-bottom:14px}
+html body .rollcall .rg.tablet li{margin-bottom:9px}
+html body .rollcall .rg.tablet li b{font-size:clamp(19px,1.75vw,26px)}
+html body .rollcall .rg.tablet li span{font-size:clamp(13.5px,1.1vw,16px)}
+@media (min-width:900px){ html body .rollcall .rcin{margin-top:4px;padding-top:6px} }
+@media (min-width:900px){
+ html body .rollcall .rg.tablet li span em{display:inline}
+ html body .rollcall .rg.tablet li span em::before{content:" \00b7  "}
+}
+html body .rollcall .rcin > .rtnzbh{display:inline-block;margin-top:8px;padding:4px 14px;font-size:clamp(14px,1.1vw,16px);color:var(--cream);background:rgba(14,16,19,.75);border-radius:4px}
+
+/* the coda: her own words over the stones, then the photograph found after her death (Sam, 10 Oct 2026) */
+html body .rollcall .rcoda{position:fixed;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;pointer-events:none;opacity:0;transition:opacity 1.6s}
+html body .rollcall.coda .rcoda{opacity:1}
+html body .rollcall .rcin{transition:opacity 1.6s}
+html body .rollcall.coda .rcin{opacity:.16}
+html body .rollcall .rcoda blockquote{margin:0;max-width:780px;font:italic 400 clamp(22px,2.4vw,34px)/1.4 var(--serif);color:var(--cream);text-shadow:0 2px 12px rgba(0,0,0,.8)}
+html body .rollcall .rcoda cite{display:block;margin-top:14px;font:400 12px/1 var(--mono);letter-spacing:.16em;color:var(--cream-dim);font-style:normal}
+html body .rollcall .rfound{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0;transition:opacity 2s}
+html body .rollcall.found .rfound{opacity:1}
+html body .rollcall .rfound img{max-height:36vh;max-width:min(460px,80vw);width:auto;height:auto;border:1px solid rgba(243,236,223,.35);box-shadow:0 12px 40px rgba(0,0,0,.65)}
+html body .rollcall .rfound p{margin:0;max-width:620px;font:400 clamp(15px,1.25vw,18px)/1.5 var(--serif);color:var(--cream);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+html body .rollcall .rbar{z-index:4}
+
+/* stack: the record across the top, the photographs side by side beneath it (Sam, 10 Oct 2026) */
+.doc.stack{width:min(46vw,860px)}
+.doc.stack .figs{flex-direction:row!important;flex-wrap:wrap;align-items:flex-start!important;gap:12px}
+.doc.stack figure{flex:0 0 auto!important;width:var(--fw,auto);max-width:100%}
+.doc.stack figure[data-lead]{flex:0 0 100%!important;width:100%}
+.doc.stack figure figcaption{max-width:var(--fw,100%)}
+.doc.stack figure[data-lead] figcaption{max-width:none}
+.doc.stack .frame,.doc.stack .frame .sheet{width:auto!important}
+.doc.stack .frame .sheet img{max-width:100%!important}
+.doc.stack{top:12px!important;width:min(58vw,1100px)}
+.doc.stack figure[data-lead]{display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:end}
+.doc.stack figure[data-lead] > .rk{grid-column:1 / -1}
+.doc.stack figure[data-lead] figcaption{align-self:end;max-width:none;margin:0}
+.doc.stack figure .rk{font-size:clamp(18px,1.5vw,24px)!important;padding-top:6px!important;padding-bottom:6px!important}
+/* links inside captions stay white, underlined (Sam, 10 Oct 2026) */
+.doc figcaption a,.doc figcaption a:visited,#lbC a,#lbC a:visited{color:var(--cream)!important;text-decoration:underline;text-underline-offset:2px}
+html body .rollcall .rg.tablet ol.rlast{columns:1!important;margin:2px auto 6px;padding:0;text-align:center;list-style:none}
+/* names kept clear of the stone's edge and its arch (Sam, 10 Oct 2026) */
+@media (min-width:900px){
+ html body .rollcall .rg.tablet{padding-left:clamp(30px,3.2vw,52px);padding-right:clamp(30px,3.2vw,52px);padding-top:calc(var(--tw)*.235)}
+ html body .rollcall .rg.tablet ol{column-gap:clamp(18px,2vw,32px)}
+ html body .rollcall .rg.tablet li{margin-bottom:10px;break-inside:avoid}
+}
+/* the horses of Bogdan, as a small print at the foot of the wall, credited (Sam, 10 Oct 2026) */
+html body .rollcall .rhorses{position:fixed;left:22px;bottom:40px;z-index:2;margin:0;width:min(15vw,220px);opacity:0;transition:opacity 1.6s}
+html body .rollcall.on .rhorses{opacity:.92}
+html body .rollcall.coda .rhorses{opacity:.25}
+html body .rollcall .rhorses img{display:block;width:100%;height:auto;border:1px solid rgba(243,236,223,.3);box-shadow:0 8px 28px rgba(0,0,0,.6);filter:contrast(1.05)}
+html body .rollcall .rhorses figcaption{margin-top:7px;font:italic 400 12px/1.4 var(--serif);color:var(--cream-dim);text-align:left}
+@media (max-width:899px){ html body .rollcall .rhorses{position:static;margin:18px auto 0;width:min(240px,70vw)} }
+/* the horses and their cart, set into the engraving's foreground on their road (Sam, 10 Oct 2026) */
+html body .rollcall .rhorses{left:0;bottom:30px;width:min(21vw,380px)}
+html body .rollcall .rhorses img{border:0;box-shadow:none;filter:none}
+html body .rollcall .rhorses figcaption{margin:2px 0 0 22px;max-width:min(17vw,300px);font-size:11.5px}
+html body .rollcall .rhorses{z-index:0}
+html body .rollcall .rhorses{width:min(18vw,360px);bottom:52px}
+html body .rollcall .rhorses{left:14px;bottom:52px}
+@media (max-width:899px){ html body .rollcall .rhorses{width:min(320px,80vw)!important} }
+/* balance: the horses fade into the left margin, Tibi's family sits in the right (Sam, 10 Oct 2026) */
+html body .rollcall.on .rhorses{opacity:.78}
+html body .rollcall .rhorses img{-webkit-mask-image:radial-gradient(ellipse 72% 70% at 50% 58%,#000 45%,transparent 100%);mask-image:radial-gradient(ellipse 72% 70% at 50% 58%,#000 45%,transparent 100%)}
+@media (min-width:900px){
+ html body .rollcall .rkatz{position:fixed;right:18px;bottom:60px;z-index:1;margin:0;max-width:none;padding:14px 18px;text-align:left;
+   font:italic 400 clamp(14px,1.05vw,17px)/1.55 var(--serif);background:rgba(14,16,19,.72);border-left:2px solid rgba(243,236,223,.35);border-radius:0 4px 4px 0;opacity:0;transition:opacity 1.6s}
+ html body .rollcall.on .rkatz{opacity:1}
+}
+html body .rollcall.coda .rkatz{opacity:.2}
+@media (min-width:900px){ html body .rollcall .rkatz{bottom:76px} }
+/* the ER wheel, top right of the wall, always turning (Sam, 10 Oct 2026) */
+@media (min-width:900px){
+ html body .rollcall > .rwheel{position:fixed;top:20px;right:26px;z-index:3;width:clamp(56px,4.6vw,84px);margin:0}
+ html body .rollcall > .rwheel svg{width:100%;height:auto}
+ html body .rollcall > .rwheel.on{opacity:.95;animation:wallturn 18s linear infinite}
+ html body .rollcall.held > .rwheel.on{animation-play-state:running}
+ html body .rollcall.coda > .rwheel.on{opacity:.5}
+}
+html body .rollcall .rhorses{left:40px}
+html body .rollcall .rkatz{color:#e07a66!important;border-left-color:rgba(207,74,60,.75)!important}
+/* a little more like stone, kept quiet: dark granite grain, a cut edge, letters cut into the face (Sam, 10 Oct 2026) */
+html body .rollcall .rg.tablet{
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .78  0 0 0 0 .76  0 0 0 0 .72  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23g)' opacity='.16'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .54  0 0 0 0 .52  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23m)' opacity='.14'/></svg>"),
+    linear-gradient(180deg,#2a2b2e 0%,#232427 45%,#1d1e21 100%)!important;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.07),inset 0 -3px 6px rgba(0,0,0,.45),inset 0 0 0 6px rgba(0,0,0,.18),inset 0 0 0 7px rgba(243,236,223,.06),0 14px 40px rgba(0,0,0,.55)}
+html body .rollcall .rg.tablet li b,html body .rollcall .rg.tablet h3,html body .rollcall .rg.tablet .rep{text-shadow:0 -1px 0 rgba(0,0,0,.75),0 1px 0 rgba(255,255,255,.08)}
+/* the end card sits above her Hawaii light, not on it (Sam, 10 Oct 2026) */
+@media (min-width:760px){ html body .endcard{top:clamp(180px,33vh,380px)} }
+/* stack, refined: each photograph's caption beside it, so nothing runs into the controls; the year steps aside (Sam, 10 Oct 2026) */
+.doc.stack figure:not([data-lead]){display:grid;grid-template-columns:auto var(--capw,200px);column-gap:12px;align-items:end;width:auto!important;max-width:none}
+.doc.stack figure:not([data-lead]) > .rk{grid-column:1 / -1}
+.doc.stack figure:not([data-lead]) figcaption{max-width:none!important;margin:0}
+body.has-stack .year{opacity:0;transition:opacity .4s}
+html body.has-stack .year{opacity:0!important;visibility:hidden}
+/* stack, final: captions back under their images, short; no side columns (Sam: "not a fan") */
+.doc.stack figure[data-lead],.doc.stack figure:not([data-lead]){display:flex!important;flex-direction:column;align-items:flex-start;width:var(--fw,auto)!important;max-width:100%}
+.doc.stack figure[data-lead]{flex:0 0 100%!important}
+.doc.stack figure figcaption{max-width:var(--fw,100%)!important;margin-top:6px}
+html body .doc.stack figure figcaption{align-self:flex-start!important}
+.intro blockquote .seg{display:inline-block}   /* "story to tell" stays together on its own line, never "tell." alone (Sam, 10 Oct 2026) */
+/* her quote in three lines at most: line 1, "You know, all of us have some kind", "of story to tell." (Sam, 10 Oct 2026) */
+@media (min-width:900px){
+ html body .intro .in{max-width:min(94vw,1500px)}
+ html body .intro blockquote .seg{white-space:nowrap}
+ html body .intro blockquote{font-size:min(clamp(26px,min(4.6vw,7.4vh),76px),5.6vw)!important}
+}
+@media (min-width:900px){ html body .intro blockquote .seg{display:block} }
+/* stack, sized by fitDoc: one block hugging the right edge; slimmer titles so the card and photographs get the height (intern pass, 10 Oct 2026) */
+@media (min-width:760px){ html body .doc.stack{top:10px!important;right:20px!important;overflow:visible!important} html body .doc.stack figure .rk{font-size:clamp(15px,1.05vw,19px)!important;padding-top:3px!important;padding-bottom:3px!important;margin-bottom:4px!important} html body .doc.stack .figs{gap:10px 12px!important} }
+/* stack in one row on wide screens: card and photographs side by side, each caption under its image (intern pass) */
+@media (min-width:760px){ html body .doc.stack.strow figure[data-lead]{flex:0 0 auto!important;width:var(--fw,auto)!important} html body .doc.stack .figs{flex-wrap:wrap!important} html body .doc.stack.strow .figs{flex-wrap:nowrap!important} }
+/* the note that travels with her wheel (Dror, at Indersdorf), under "Helen", in the same mono caps (intern pass, 10 Oct 2026) */
+.wheel-note{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:20px;white-space:nowrap;padding:3px 7px;border-radius:3px;background:rgba(12,13,16,.82);
+  font:500 10px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cream);opacity:0;transition:opacity .8s;pointer-events:none}
+.wheel-note.on{opacity:.95}
+.wheel-mk.waiting .wheel-note,.wheel-mk.gone .wheel-note{opacity:0}
+html.he .wheel-note{font-family:"Frank Ruhl Libre",Georgia,serif;letter-spacing:0;font-size:12px;direction:rtl}
+/* more of the horses showing, the fade pushed out to the far edges; caption short (Sam, 10 Oct 2026) */
+html body .rollcall .rhorses{left:14px}
+html body .rollcall .rhorses img{-webkit-mask-image:radial-gradient(ellipse 92% 88% at 50% 52%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 92% 88% at 50% 52%,#000 62%,transparent 100%)}
+html body .rollcall .rhorses figcaption{margin-left:26px}
+/* Indersdorf, final (Sam, 10 Oct 2026): [card | portrait / sports day], sized by fitDoc (--c0, --c1); title above and short caption under each image */
+@media (min-width:760px){
+ html body .doc.stack.g2 .figs{display:grid!important;grid-template-columns:var(--c0,60%) var(--c1,40%);column-gap:14px;row-gap:10px;align-items:start;justify-content:start}
+ html body .doc.stack.g2 figure{width:var(--fw,auto)!important;max-width:none!important;flex:none!important;margin:0!important}
+ html body .doc.stack.g2 figure[data-lead]{grid-column:1;grid-row:1 / span 2}
+ html body .doc.stack.g2 figure:not([data-lead]){grid-column:2}
+ html body .doc.stack.g2 .frame .sheet img{max-width:none!important}
+}
+/* the wall uses the map's own controls: back, play/pause, forward (Sam, 10 Oct 2026) */
+html body.rolling .ctl{opacity:1!important;pointer-events:auto!important;z-index:2600}
+html body .rollcall .rbar .rpause,html body .rollcall .rbar .rskip{display:none}
+html body.rolling .ctl{z-index:5200!important}
+/* Indersdorf, one row: card, portrait, sports day at one height, each caption under its image (Sam, 10 Oct 2026) */
+@media (min-width:760px){
+ html body .doc.stack.strow .figs{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;gap:14px;align-items:flex-start!important}
+ html body .doc.stack.strow figure,html body .doc.stack.strow figure[data-lead]{flex:0 0 auto!important;width:var(--fw,auto)!important;max-width:none!important;margin:0!important;display:flex!important;flex-direction:column}
+ html body .doc.stack.strow figure figcaption{max-width:var(--fw)!important}
+ html body .doc.stack.strow .frame .sheet img{max-width:none!important}
+}
+html body .doc.stack figure[data-lead] .mk[data-k="1"].below .tag{margin-top:14px!important}   /* the birth-date tag clears the name tag above it */
+@media (min-width:760px){
+ html body .doc.stack.strow2 .figs{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:12px 14px;align-items:flex-start!important}
+ html body .doc.stack.strow2 figure{flex:0 0 auto!important;width:var(--fw,auto)!important;max-width:none!important;margin:0!important;display:flex!important;flex-direction:column}
+ html body .doc.stack.strow2 figure[data-lead]{flex:0 0 100%!important;width:100%!important}
+ html body .doc.stack.strow2 figure figcaption{max-width:var(--fw)!important}
+ html body .doc.stack.strow2 .frame .sheet img{max-width:none!important}
+}
+@media (min-width:1600px){ html body.has-stack .cap{width:min(28vw,560px)!important;max-width:none!important} }   /* a narrower text panel here gives the records the width (Sam: use the space) */
+/* thicker borders on the stones: red for her family on the map, white for the rest (Sam, 10 Oct 2026) */
+html body .rollcall .rg.tablet{border-width:4px!important;border-style:solid!important;border-color:rgba(243,236,223,.7)!important}
+html body .rollcall .rg.tablet.t-tab1{border-color:rgba(207,74,60,.95)!important}
+/* Helen named, as the one who survived (Sam, 10 Oct 2026) */
+html body .rollcall .rsurv{margin:4px auto 10px;font:400 clamp(15px,1.15vw,18px)/1.4 var(--serif);color:var(--gold-text,#e2c58f);letter-spacing:.01em}

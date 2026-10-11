@@ -213,7 +213,7 @@
     if(!on) return;
     [].forEach.call(pfd.querySelectorAll('[data-u]'),function(e){ e.classList.toggle('lit',e.dataset.u===String(s.unit)); });
     var k=STOPS.indexOf(s), n=0; for(var i=0;i<=k;i++) if(STOPS[i].pin) n++;
-    $('pfdN').textContent=s.board||s.unit==='out'?'300+':Math.max(1,n);
+    $('pfdN').textContent=s.board||s.unit==='out'?'2,000+':Math.max(1,n);
   }
   /* ---------- the visitor's controls ---------- */
   var IC={
@@ -261,7 +261,7 @@
   function wait(ms){ var left=FAST?ms/4:ms; return new Promise(function(r){ (function tick(){ if(left<=0) return r(); var t=Math.min(left,100); setTimeout(function(){ if(!paused) left-=t; tick(); },t); })(); }); }
   function alive(g){ return g===gen; }
   function W(){ return window.innerWidth; } function H(){ return window.innerHeight; }
-  function docW(s){ if(!s||!s.media||!s.media.length) return 0; if(s.media[0].html) return W()-Math.min(W()*0.34,520)-52; return Math.min(W()*(s.row?0.44:0.40),s.row?720:640)+56; }
+  function docW(s){ if(!s||!s.media||!s.media.length) return 0; if(s.stack&&W()>=760) return W()-(cap.offsetLeft+cap.offsetWidth+30)-40; if(s.media[0].html) return W()-Math.min(W()*0.34,520)-52; return Math.min(W()*(s.row?0.44:0.40),s.row?720:640)+56; }
   // on a phone the panels stack: the record under the header, the caption over the controls, the map between
   function padPhone(s){
     var top=64, bottom=Math.min(H()*0.5,320);
@@ -295,6 +295,15 @@
     if(PHONE()) return padPhone(s);
     if(!s||!s.t) return {tl:[70,150],br:[130,90]};
     if(s.night||s.end){ var fp=padFree(s); if(fp) return fp; }
+    // the record group spans the top (Indersdorf): put the map in the open space left, below the records, or above the text panel, whichever shows it bigger (Sam: "you can't see Indersdorf")
+    // Budapest 1945: the map in the open corner beside the tracing cards (Sam: "can't see Budapest")
+    if(s.mapBox==='tr'&&!PHONE()){ var w1=W(), h1=H(), cr1=cap.getBoundingClientRect(), x0=cr1.right+30+(w1-cr1.right-54)*0.44; return {tl:[Math.round(x0),70],br:[24,Math.round(h1*0.56)]}; }
+    if(s.stack&&s.bounds){ var w=W(), h=H(), cr0=cap.getBoundingClientRect(), ct=ctl.getBoundingClientRect(), fl=ct.height?ct.top-14:h-100, dbot=0;
+      [].forEach.call(doc.querySelectorAll('.doc figcaption,.doc .frame'),function(e){ var r=e.getBoundingClientRect(); if(r.height) dbot=Math.max(dbot,r.bottom); }); if(!dbot) dbot=h*0.64;
+      var cs=[{l:cr0.right+30,t:dbot+20,r:w-24,b:fl},{l:30,t:84,r:cr0.right,b:cr0.top-16}], bb=L.latLngBounds(s.bounds), best=null, bz=-99;
+      var lf=doc.querySelector('figure[data-lead]'); if(lf&&doc.classList.contains('strow2')){ var lr=lf.getBoundingClientRect(); if(lr.width) cs.push({l:lr.right+30,t:60,r:w-24,b:lr.bottom}); }   // beside the top record, when it leaves room (Budapest)
+      cs.forEach(function(c){ var cw=c.r-c.l, ch=c.b-c.t; if(cw<160||ch<110) return; var z=map.getBoundsZoom(bb,false,L.point(w-cw,h-ch)); if(z>bz){ bz=z; best=c; } });
+      if(best) return {tl:[best.l,best.t],br:[w-best.r,h-best.b]}; }
     var top=150, bottom=Math.min(H()*0.42,360);
     var cr=cap.getBoundingClientRect(); if(cr.height) bottom=H()-cr.top+24;
     if(s.voice){ var vr=voice.getBoundingClientRect(); if(vr.height) top=Math.max(top,vr.bottom+20); }
@@ -337,9 +346,12 @@
   /* ---------- the wheel on the map ---------- */
   var wheelPos=P.boh, wheelAngle=0;
   var wheel=L.marker(P.boh,{interactive:false,zIndexOffset:3000,keyboard:false,
-    icon:L.divIcon({className:'',html:'<div class="wheel-mk gone">'+wheelSvg(34)+'<span class="wheel-tag">Helen</span></div>',iconSize:[34,34],iconAnchor:[17,17]})}).addTo(map);
+    icon:L.divIcon({className:'',html:'<div class="wheel-mk gone">'+wheelSvg(34)+'<span class="wheel-tag">Helen</span><span class="wheel-note"></span></div>',iconSize:[34,34],iconAnchor:[17,17]})}).addTo(map);
   function wheelEl(){ return wheel.getElement()&&wheel.getElement().querySelector('.wheel-mk'); }
   function wheelState(st){ var e=wheelEl(); if(!e) return; e.classList.toggle('waiting',st==='waiting'); e.classList.toggle('gone',st==='gone'); }
+  function wheelNote(t){ var e=wheelEl(), w=e&&e.querySelector('.wheel-note'); if(!w) return; w.textContent=t; w.classList.toggle('on',!!t); }
+  function wheelNoteClear(){ var e=wheelEl(), w=e&&e.querySelector('.wheel-note'); if(!w||!w.classList.contains('on')) return; var r=w.getBoundingClientRect();   // fades if her stop's panels come up over it
+    var under=[cap,doc].some(function(p){ var q=p.getBoundingClientRect(); return q.width&&getComputedStyle(p).opacity!=='0'&&r.left<q.right&&r.right>q.left&&r.top<q.bottom&&r.bottom>q.top; }); if(under) w.classList.remove('on'); }
   function spin(a){ var e=wheelEl(); if(e) e.querySelector('svg').style.transform='rotate('+a+'deg)'; }
 
   /* ---------- roads ---------- */
@@ -627,7 +639,7 @@
     s+='<text x="8" y="414" font-family="'+M+'" font-size="10.5" fill="'+D+'">ZACHARIAS AND ROZA’S SEVEN CHILDREN</text>';
     // key
     var kx=600, ky=318;
-    [['<circle cx="0" cy="0" r="5" fill="'+C+'"/>','survived'],['<circle cx="0" cy="0" r="5" fill="'+RED+'"/>','murdered, 1944'],['<circle cx="0" cy="0" r="4.5" fill="none" stroke="'+RED+'" stroke-width="2"/>','died in forced labour'],['<circle cx="0" cy="0" r="4.5" fill="none" stroke="'+D+'" stroke-width="1.2"/>','died before the war'],['<text x="0" y="4" text-anchor="middle" font-family="'+M+'" font-size="10" fill="'+D+'">?</text>','unknown']].forEach(function(k,i){
+    [['<circle cx="0" cy="0" r="5" fill="'+C+'"/>','survived'],['<circle cx="0" cy="0" r="5" fill="'+RED+'"/>','murdered, 1944'],['<circle cx="0" cy="0" r="4.5" fill="none" stroke="'+RED+'" stroke-width="2"/>','died in forced labour'],['<circle cx="0" cy="0" r="4.5" fill="none" stroke="'+D+'" stroke-width="1.2"/>','died before 1944'],['<text x="0" y="4" text-anchor="middle" font-family="'+M+'" font-size="10" fill="'+D+'">?</text>','unknown']].forEach(function(k,i){
       s+='<g transform="translate('+kx+','+(ky+i*16)+')">'+k[0]+'<text x="12" y="3.5" font-family="'+M+'" font-size="10.5" fill="'+D+'">'+k[1]+'</text></g>'; });
     return s+'</svg>';
   }
@@ -639,9 +651,9 @@
   doc.addEventListener('load',function(e){ if(e.target.tagName==='IMG') setTimeout(layoutPins,60); },true);   // a photo that finishes loading re-places its names
   function renderDoc(s){
     clearLoupe(); doc.classList.remove('in'); setTimeout(fitDoc,60);
-    var m=s.media||[]; document.body.classList.toggle('has-doc',!!m.length); document.body.classList.toggle('drawn-on',!!(m[0]&&m[0].html));
+    var m=s.media||[]; document.body.classList.toggle('has-doc',!!m.length); document.body.classList.toggle('has-stack',!!(s.stack&&m.length)); doc.dataset.leadw=s.leadW||''; document.body.classList.toggle('drawn-on',!!(m[0]&&m[0].html));
     if(!m.length){ $('dF').innerHTML=''; return; }
-    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.docSmall?' petite':'')+(s.wideDoc?' wide':'')+(s.row?' row':'')+(!s.row&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
+    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.docSmall?' petite':'')+(s.wideDoc?' wide':'')+(s.row?' row':'')+(s.stack?' stack':'')+(!s.row&&!s.stack&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
     // a title over a group of records sits above them all, not inside the first one (Sam, 8 Oct 2026)
     if(s.docTitle){ $('dK').innerHTML='<span class="rk">'+s.docTitle+'</span>'; $('dK').classList.add('titled'); }
     else { $('dK').classList.remove('titled'); $('dK').textContent=s.voice&&s.witness?'The record':(s.part===2?'The record':''); }
@@ -679,6 +691,7 @@
   // a tall record never gets cut off at the bottom of the panel: shrink it to the room there is
   // records shrink to the room there is: never under the caption box, never past the bottom of the panel
   function fitDoc(){
+    doc.style.removeProperty('width'); doc.style.removeProperty('left'); doc.style.removeProperty('right'); doc.classList.remove('g2');   // set again by the stack branch
     if(innerWidth<760){ [].forEach.call(doc.querySelectorAll('.frame .sheet img'),function(im){ im.style.removeProperty('max-height'); im.style.height=''; im.style.width=''; }); doc.style.removeProperty('max-height'); layoutPins(); return; }   // phones: sized by the stylesheet from the caption's height
     var ims=[].slice.call(doc.querySelectorAll('.frame .sheet img')); if(!ims.length) return;
     ims.forEach(function(im){ im.style.removeProperty('max-height'); im.style.height=''; im.style.width=''; });
@@ -687,6 +700,39 @@
     limit-=extra;   // room for the list under the records (measured before it fills)
     if(!cap.classList.contains('out')&&cr.width&&cr.right>dr.left&&cr.left<dr.right) limit=Math.min(limit,cr.top-12);
     // side by side: one shared height, as tall as the panel allows (Sam: same height)
+    // the record on top across the panel, the photographs beneath it side by side (Sam, 10 Oct 2026: Indersdorf)
+    if(doc.classList.contains('stack')&&ims.length>2){
+      // Indersdorf (Sam, 10 Oct 2026): the card large on the left; her portrait top right, the sports day bottom right; the card as tall as the two together.
+      // The group fills the box from just right of the caption panel to the right margin, top to above the controls, as large as it can.
+      var ar=function(im){ return (+im.getAttribute('width')||im.naturalWidth||1)/(+im.getAttribute('height')||im.naturalHeight||1); };
+      var rest=ims.slice(1), k=0; rest.forEach(function(im){ k+=1/ar(im); });
+      var a0=ar(ims[0]), GAP=14, RG=10;
+      var boxL=cap.offsetLeft+cap.offsetWidth+30, boxR=24, boxW=innerWidth-boxL-boxR;
+      doc.classList.add('g2'); doc.style.setProperty('left',boxL+'px','important'); doc.style.setProperty('right',boxR+'px','important'); doc.style.setProperty('width',boxW+'px','important');
+      var Wd=doc.clientWidth-4-GAP, top=doc.querySelector('figure').getBoundingClientRect().top;
+      var floor=innerHeight; [].forEach.call(document.querySelectorAll('.ctl,.road'),function(e){ var r=e.getBoundingClientRect(); if(r.height&&r.right>boxL) floor=Math.min(floor,r.top); });
+      var avail=floor-14-top;   // captions stop above the controls and the timeline
+      var figs=[].map.call(ims,function(im){ return im.closest('figure'); });
+      // one row, one height: the card and both photographs side by side, as tall as the box allows (Sam: "I hate how small the photos are")
+      doc.classList.remove('g2','strow','strow2');
+      var CW=parseFloat(doc.dataset.leadw)||0.68, wt=function(i){ return i===0?CW:1; }, sumA=0, sumP=0; ims.forEach(function(im,i){ sumA+=wt(i)*ar(im); if(i) sumP+=ar(im); });
+      var Hrow=Math.min((boxW-4-GAP*(ims.length-1))/sumA, avail-60);
+      var A2=avail-150, H1=Math.min(A2*0.56,(boxW-4-GAP*(rest.length-1))/sumP), Hc=Math.min(A2-H1,(boxW-4)/a0);
+      var two=H1>Hrow*1.04;   // a narrower screen: the card on top, the photographs beneath it, whichever shows the photographs bigger (Sam)
+      doc.classList.add(two?'strow2':'strow');
+      var hs=function(i,f){ return Math.floor(two?(i?H1:Hc)*f:Hrow*wt(i)*f); };
+      for(var ps=0,f=1;ps<5;ps++){
+        ims.forEach(function(im,i){ im.style.height=hs(i,f)+'px'; im.style.width='auto'; im.style.maxHeight='none'; im.style.maxWidth='none'; im.closest('figure').style.setProperty('--fw',im.offsetWidth+'px'); });
+        var low=0; figs.forEach(function(fg){ low=Math.max(low,fg.getBoundingClientRect().bottom); });
+        var over=low-(floor-14); if(over<=1) break; f*=Math.max(.5,1-(over+4)/Math.max(1,low-top));
+      }
+      if(two){ var bw2=Math.max(ims[0].offsetWidth, rest.reduce(function(t,im){ return t+im.offsetWidth; },0)+GAP*(rest.length-1))+4;
+        if(bw2<boxW-2){ doc.style.setProperty('width',Math.ceil(bw2)+'px','important'); doc.style.setProperty('left',Math.round(boxL+(boxW-bw2)/2)+'px','important'); doc.style.setProperty('right','auto','important'); }
+        layoutPins(); return; }
+      var bw=0; ims.forEach(function(im){ bw+=im.offsetWidth; }); bw+=GAP*(ims.length-1)+4;
+      if(bw<boxW-2){ doc.style.setProperty('width',Math.ceil(bw)+'px','important'); doc.style.setProperty('left',Math.round(boxL+(boxW-bw)/2)+'px','important'); doc.style.setProperty('right','auto','important'); }
+      layoutPins(); return;
+    }
     if(doc.classList.contains('row')&&ims.length>1){
       // a lead record (d.lead) stands a little taller than the others beside it (Sam: Reitzenhain memorial)
       var anyLead=ims.some(function(im){ return im.closest('figure').dataset.lead; });
@@ -755,7 +801,8 @@
     return [].some.call(doc.querySelectorAll('.mk.on'),function(o){
       if(o!==m&&ov(r,o.getBoundingClientRect())) return true;
       var ot=o.querySelector('.tag'); return ot&&ot!==t&&getComputedStyle(ot).opacity!=='0'&&ov(r,ot.getBoundingClientRect()); })
-      || [].some.call(doc.querySelectorAll('.rk'),function(k){ var rg=document.createRange(); rg.selectNodeContents(k); return ov(r,rg.getBoundingClientRect()); }); }   // may touch a title's box, never its words (Sam)
+      || [].some.call(doc.querySelectorAll('.rk'),function(k){ var rg=document.createRange(); rg.selectNodeContents(k); return ov(r,rg.getBoundingClientRect()); })   // may touch a title's box, never its words (Sam)
+      || [].some.call(doc.querySelectorAll('figcaption,.mkkey,.doclesson,.grpnote,.frame'),function(k){ if(k===fr||k.contains(m)) return false; return ov(r,k.getBoundingClientRect()); }); }   // never on a caption, a key, or another record (Sam: "hard to read")
   var SPOTS=['','below','right','below right','side-r','side-l','side-r below','side-l below'];
   function untangle(m){
     if(m.classList.contains('headpin')) return;   // placed by layoutPins
@@ -912,6 +959,7 @@
     if(!s.night) { lightLayer.clearLayers(); litKeys={}; }
     fxLayer.clearLayers();
     wheelState(n===0&&prev<0&&!jump?'gone':(s.other&&!s.helen?'waiting':null));
+    wheelNote(s.wheelNote||'');   // a note that travels with her wheel, this stop only (Sam: Dror)
     tweenYear(s,g); $('yK').textContent=s.age||''; $('yM').textContent=s.when||''; paintPfd(s); document.body.classList.toggle('show-legend',s.part===1||!!s.legend);
     setEra(eraFor(s),jump);
 
@@ -949,7 +997,7 @@
     },(1800+Math.min(k*12,4000))*(FAST?0.3:1)); });
     (s.threads||[]).forEach(function(t,k){ setTimeout(function(){ if(alive(g)) addThread(t); },600+k*700); });
     cap.classList.remove('out');
-    if(s.media&&s.media.length){ void doc.offsetWidth; doc.classList.add('in'); fitDoc(); setTimeout(fitDoc,400); } setTimeout(function(){ clearLights(); clearWitness(); },500); setTimeout(function(){ clearLights(); clearWitness(); },1600);   // the records come up with the caption, at once (Sam)
+    if(s.media&&s.media.length){ void doc.offsetWidth; doc.classList.add('in'); fitDoc(); setTimeout(fitDoc,400); } setTimeout(function(){ clearLights(); clearWitness(); },500); setTimeout(function(){ clearLights(); clearWitness(); wheelNoteClear(); },1600);   // the records come up with the caption, at once (Sam)
     preload(STOPS[n+1]);
 
     // her voice and mine, in the stop's order
@@ -975,7 +1023,7 @@
   var intro=el('div','intro',
     '<div class="in"><div class="wheelbig">'+wheelSvg(130)+'</div>'+
     '<h1 class="title vh">Helen’s Road</h1>'+   // visually hidden: the button already says it (Sam)
-    '<blockquote><span class="ln">'+wordsHtml(HE_ON?'”לכולנו יש סיפורים לספר.':'“We all have stories to tell.')+'</span><span class="ln">'+wordsHtml(HE_ON?'אתם יודעים, לכל אחד מאיתנו יש איזה סיפור לספר.“':'You know, all of us have some kind of story to tell.”')+'</span></blockquote>'+
+    '<blockquote><span class="ln">'+wordsHtml(HE_ON?'”לכולנו יש סיפורים לספר.':'“We all have stories to tell.')+'</span><span class="ln">'+(HE_ON?wordsHtml('אתם יודעים, לכל אחד מאיתנו יש איזה סיפור לספר.“'):'<span class="seg">'+wordsHtml('You know, all of us have some kind')+'</span> <span class="seg">'+wordsHtml('of story to tell.”')+'</span>')+'</span></blockquote>'+
     '<div class="attr">Helen Landó Helmán, my grandmother</div>'+
     '<div class="go"><button type="button" class="play" id="goStart">'+IC.play+'<span>Follow Helen’s road</span></button></div>'+
     '<div class="help"><button type="button" class="quiet" id="goQuiet">or watch without sound</button>'+(window.HE_MAP?' <span class="dotsep">·</span> <button type="button" class="quiet" id="goLang" lang="'+(HE_ON?'en':'he')+'">'+(HE_ON?'English':'בעברית')+'</button>':'')+'</div>'+
@@ -1029,10 +1077,117 @@
     '<div class="eb"><button type="button" id="eAgain">Start over</button>'+
     '<a href="index.html">Home</a><a href="method.html">Method</a><a href="databases.html">Database</a><a href="about.html">Researcher</a></div>');   // Sam, 8 Oct 2026
   endCard.hidden=true;
-  function finish(){ if(MODE!=='web'){ hereScene(); return; } clearAdv(); playing=false; paintCtl(); endCard.hidden=false; document.body.classList.add('at-end');
-    var dr=doc.getBoundingClientRect(); endCard.style.left=(innerWidth>=900&&dr.width&&dr.left>520)?Math.round(dr.left/2)+'px':'';   // the end menu sits beside the last photograph, never on it (review, 9 Oct 2026)
+  /* ---------- the roll call: her family, by name, before the end menu (Sam, 10 Oct 2026). Ages from their birth records. ---------- */
+  // two columns: her own family, then her father's family. '#' = a small heading, '@' = where and when.
+  // The roll call = the memorial wall (Sam, 10 Oct 2026): Helen's circle in the middle (red), her cousins and aunt by marriage
+  // (blue), Tibi's family, and the names not yet found (gray). [name, age at death, relation, where and when]; ages only where records give them.
+  // Two tablets (Sam, 10 Oct 2026: "like the Ten Commandments"), Helen's family only.
+  // The first: her parents, brothers and sisters, and the family the map itself names. The second: the rest of her family we know of.
+  // [name, age at death, relation, where and when]. Ages only where the records give them.
+  var WALL={
+    tab1:[['Roza Lando','40','mother','Auschwitz, May 1944'],['Zacharias Helman','43','father','Auschwitz, October 1944'],['Hinda Helman','17','sister','Auschwitz, May 1944'],
+          ['Izak Helman','12','brother','Auschwitz, May 1944'],['Majer Helman','10','brother','Auschwitz, May 1944'],['Adela Helman','7','sister','Auschwitz, May 1944'],
+          ['Yiddel Helman','4','brother','Auschwitz, May 1944'],['Feige Dikker Helman','77','grandmother','Auschwitz, May 1944'],['Cecilie Dikker M\u00fcller','','great-aunt, also written Petranker','murdered on arrival at the camps'],
+          ['Miksa Helman','','uncle','Auschwitz, May 1944'],['Hudia Petranker Helman','','aunt, also written Dikker','Auschwitz, May 1944'],['Moshe Helman','','cousin','labor service, 1943'],
+          ['David Helman','40','uncle','Stalingrad, 1943'],['Cecilie Helman','2','sister','died in 1940','last']],
+    tab2:[['Szymszon Lebovits','','grandfather','taken by the Nazis'],['Eidl Lebovits','','aunt','taken by the Nazis'],['Hinda Lebovits','','aunt','taken by the Nazis'],
+          ['Gitl Lebovits','','aunt','taken by the Nazis'],['Jen\u0151 Helman','','uncle','F\u00fcnfteichen, 1945'],['Zheni Herskovics Helman','','aunt by marriage','Auschwitz, 1944'],
+          ['Hanna Helman','13','cousin','Auschwitz, 1944'],['Itzik Helman','9','cousin','Auschwitz, 1944'],['Dvora Helman','7','cousin','Auschwitz, 1944'],
+          ['Yosef (Joszel) Helman','','cousin','labor service, 1943']],
+    unnamed:[['Malka\u2019s husband','','uncle by marriage','most likely Kamenets-Podolsk, 1941'],['Malka\u2019s son','','cousin','most likely Kamenets-Podolsk, 1941'],
+             ['Malka\u2019s son','','cousin','most likely Kamenets-Podolsk, 1941'],['Roza\u2019s brother','','uncle','not yet known'],['Her mother\u2019s sisters\u2019 husbands','','uncles by marriage','names not yet found'],['Her mother\u2019s sisters\u2019 children','','cousins','names not yet found']]};
+  var WALL_HEAD={tab1:'Helen\u2019s family on the map',tab2:'And the rest of Helen\u2019s family',unnamed:'Not yet named'};
+  var ROLL_HE={'Helen Lando Helman, 1929\u20132013, survived. These are the family she lost.':'הלן לנדו הלמן, 1929–2013, שרדה. אלה בני המשפחה שאיבדה.','Bogdan, about 1941\u201342. Her father\u2019s horses were taken twice. Ghetto Fighters\u2019 House Archives, 16165.':'בוגדן, בערך 1941–42. הסוסים של אביה נלקחו פעמיים. בית לוחמי הגיטאות, 16165.','Her mother\u2019s sisters\u2019 husbands':'בעלי אחיותיה של אמה','uncles by marriage':'דודים מנישואין','(Joszel)':'(יוסל)','great-aunt, also written Petranker':'דודה רבתא, נרשמה גם פטרנקר','aunt, also written Dikker':'דודה, נרשמה גם דיקר','Dikker':'דיקר','Petranker':'פטרנקר','Herskovics':'הרשקוביץ','Her mother\u2019s sisters\u2019 children':'ילדי אחיותיה של אמה','cousins':'בני דודים','names not yet found':'השמות עדיין לא נמצאו','Behind the stones: the Pietrosz and Hoverla above the White Tisza, drawn by G\u00e9za Paur, 1900.':'מאחורי האבנים: פסגות פייטרוס והוברלה מעל הטיסה הלבנה, ציור של גזה פאור, 1900.','Lando':'לנדו','And the family she married into: Tibi Katz\u2019s mother Eszter, his father Aharon, his sister Perl, his sister-in-law Margit, and the brothers and sisters whose names are not yet found.':'ומשפחתו של טיבי כ\u05F4ץ, שאליה נישאה: אמו אסתר, אביו אהרון, אחותו פרל, גיסתו מרגיט, והאחים והאחיות ששמותיהם עדיין לא נמצאו.','Hear El Malei Rachamim':'אל מלא רחמים','Stop the prayer':'עצירת התפילה','murdered on arrival at the camps':'נרצחה עם הגעתה למחנות','Helen\u2019s family on the map':'משפחתה של הלן שעל המפה','And the rest of Helen\u2019s family':'ושאר משפחתה של הלן','Auschwitz, October 1944':'אושוויץ, אוקטובר 1944','Pause':'השהיה','Resume':'המשך','Go to the end':'לסיום','name not yet found':'השם עדיין לא נמצא','A memorial wall: the gravestones they never had':'קיר זיכרון: המצבות שמעולם לא היו להם','Her cousins, and an aunt by marriage':'בני דודיה, ודודה מנישואין','Not yet named':'עדיין ללא שם','The gravestones they never had':'המצבות שמעולם לא היו להם','May their souls be bound up in the bond of life':'תהא נשמתם צרורה בצרור החיים','Tibi\u2019s brother or sister':'אח או אחות של טיבי','not yet named':'עדיין ללא שם','fate not yet confirmed':'גורלם עדיין לא אושר','Memorial wall':'קיר הזיכרון','uncle by marriage':'דוד מנישואין','most likely Kamenets-Podolsk, 1941':'כנראה קמניץ-פודולסק, 1941','Roza\u2019s brother':'אחיה של רוזה','not yet known':'עדיין לא ידוע','Naming the nameless':'לתת שם לאלה שאין להם שם','Helen\u2019s circle':'המעגל של הלן','Her cousins and her aunt by marriage':'בני דודיה ודודתה מנישואין','Tibi\u2019s family':'המשפחה של טיבי','Names not yet found':'שמות שעדיין לא נמצאו',
+  'Helman':'הלמן','Lebovits':'לבוביץ','M\u00fcller':'מילר','Katz':'כ״ץ','Szymszon':'שמשון','Eszter':'אסתר','Aharon':'אהרון','Perl':'פרל','Margit':'מרגיט','Yosef':'יוסף','Moshe':'משה','Zheni':'ז׳ני','Hanna':'חנה','Itzik':'איציק','Dvora':'דבורה','Jen\u0151':'ינו','David':'דוד','Eidl':'איידל','Gitl':'גיטל',
+  'mother':'אם','father':'אב','sister':'אחות','brother':'אח','grandmother':'סבתא','grandfather':'סבא','great-aunt':'דודה רבתא','uncle':'דוד','aunt':'דודה','cousin':'בן או בת דוד','aunt by marriage':'דודה מנישואין',
+  'Tibi\u2019s mother':'אמו של טיבי','Tibi\u2019s father':'אביו של טיבי','Tibi\u2019s sister':'אחותו של טיבי','Tibi\u2019s sister-in-law':'גיסתו של טיבי','deported with their mother':'גורשו עם אמם','number not yet known':'מספרם עדיין לא ידוע',
+  'Malka\u2019s husband':'בעלה של מלכה','Malka\u2019s son':'בנה של מלכה','Tibi\u2019s brothers and sisters':'אחיו ואחיותיו של טיבי','in the camps':'במחנות','Auschwitz, Oct 1944':'אושוויץ, אוקטובר 1944','Satu Mare, March 1944':'סאטו מארה, מרץ 1944','death march, Nov 1944':'צעדת מוות, נובמבר 1944','Auschwitz, 7 to 10 October 1944':'אושוויץ, בין 7 ל-10 באוקטובר 1944','Auschwitz, May 1944':'אושוויץ, מאי 1944','Her aunt Malka’s husband and their two sons':'בעלה של דודתה מלכה ושני בניהם','And more of her family, whose names are still being found.':'ועוד מבני משפחתה, ששמותיהם עדיין נמצאים.','Her mother’s family':'המשפחה של אמה','her cousin':'בן או בת דודה','her grandfather':'סבה','Simon':'שמשון','Eidl':'איידל','Gitl':'גיטל','taken by the Nazis':'נלקחו על ידי הנאצים','Malka’s husband':'בעלה של מלכה','and two sons':'ושני בניהם','her cousins':'בני דודה','during the war':'במלחמה','her mother, about 40':'אמה, כבת 40','her sister, 17':'אחותה, בת 17','her brother, 12':'אחיה, בן 12','her brother, 10':'אחיה, בן 10','her sister, 7':'אחותה, בת 7','her brother, 4':'אחיה, בן 4','her grandmother, about 77':'סבתה, כבת 77','her sister, 2':'אחותה, בת 2','Her family':'המשפחה שלה','Her father’s family':'המשפחה של אביה','Roza':'רוזה','her mother':'אמה','Hinda':'הינדה','Izak':'איזק','Majer':'מאיר','Adela':'אדלה','Yiddel':'יידל',
+            'Zacharias':'זכריה','her father, 43':'אביה, בן 43','Cecilie':'צצילי','Feige':'פייגה','her grandmother':'סבתה','Miksa':'מיקסה','her uncle':'דודה','Hudia':'הודיה','her aunt':'דודתה',
+            'Zheni':'ז׳ני','her uncle Jenő’s wife':'אשתו של דודה ינו','Hanna':'חנה','Itzik':'איציק','Dvora':'דבורה','their daughter':'בתם','their son':'בנם','Jenő':'ינו','Yaakov, her uncle':'יעקב, דודה',
+            'Yosef':'יוסף','Moshe':'משה','her cousin':'בן דודה','David':'דוד',
+            'Auschwitz, 26 May 1944':'אושוויץ, 26 במאי 1944','Auschwitz, October 1944':'אושוויץ, אוקטובר 1944','Auschwitz, 1944':'אושוויץ, 1944',
+            'Fünfteichen, 1945':'פינפטייכן, 1945','labor service, 1943':'שירות עבודה, 1943','Stalingrad, 1943':'סטלינגרד, 1943','died in 1940':'נפטרה ב-1940','And more of her aunts, her uncles and her cousins.':'ועוד מדודותיה, מדודיה ומבני דודיה.','her sister':'אחותה','her brother':'אחיה','her father':'אביה','her grandmother':'סבתה'};
+  ROLL_HE['I don\u2019t have a single picture, not a single picture from home. I never knew that I will never see my parents again.']='אין לי אף תמונה אחת, אף תמונה אחת מהבית. לא ידעתי שלעולם לא אראה את הוריי שוב.';
+  ROLL_HE['She died in 2013. In 2026 we found a photograph from home, kept all these years by her cousins\u2019 families. Bogdan, 1939.']='היא נפטרה ב-2013. ב-2026 מצאנו תמונה מהבית, ששמרו כל השנים משפחות בני דודיה. בוגדן, 1939.';
+  ROLL_HE['Helen, 2008']='הלן, 2008';
+  function RT(x){ return HE_ON?(ROLL_HE[x]||x):x; }
+  function RN(x){ return HE_ON?(ROLL_HE[x]||x.split(' ').map(function(w){ return ROLL_HE[w]||w; }).join(' ')):x; }   // names: word by word in Hebrew
+  var rollEl=null, rollT=[], rollKey=null, rollStopAudio=null, rollVoice=null, rollCtl=null, ctlHome=null, ctlNext=null;
+  function stopRoll(){ if(rollCtl){ ctl.removeEventListener('click',rollCtl,true); rollCtl=null; paintCtl(); } if(ctlHome){ ctlHome.insertBefore(ctl,ctlNext); ctlHome=null; ctlNext=null; } if(rollVoice){ try{ rollVoice.pause(); }catch(e){} rollVoice=null; } if(rollStopAudio){ rollStopAudio(); rollStopAudio=null; } rollT.forEach(clearTimeout); rollT=[]; if(rollKey){ document.removeEventListener('keydown',rollKey,true); rollKey=null; } if(rollEl){ rollEl.remove(); rollEl=null; } document.body.classList.remove('rolling'); }
+  function rollCall(done){
+    stopRoll(); if(REDUCED||MODE!=='web'){ done(); return; }
+    var step=FAST?120:420, k=0;
+    var li=function(r,cls){ return '<li class="'+cls+'" data-k="'+(k++)+'"><b>'+RN(r[0])+'</b><span>'+RT(r[2])+(r[1]?', '+r[1]:'')+(r[3]?'<em>'+RT(r[3])+'</em>':'')+'</span></li>'; };
+    // two tablets side by side, each with its own arched top; the epitaph at the foot of each, as on a stone
+    var EP='<p class="rep" lang="he" dir="rtl">\u05EA\u05F3\u05E0\u05F3\u05E6\u05F3\u05D1\u05F3\u05D4\u05F3</p>';
+    var tablet=function(key,extra){ var h='<section class="rg tablet t-'+key+'"><h3>'+RT(WALL_HEAD[key])+'</h3><ol>'; WALL[key].forEach(function(r){ if(r[4]!=='last') h+=li(r,'rc-'+key); }); h+='</ol>';
+      var last=WALL[key].filter(function(r){ return r[4]==='last'; }); if(last.length){ h+='<ol class="rlast">'; last.forEach(function(r){ h+=li(r,'rc-'+key); }); h+='</ol>'; }   // little Cecilie, alone in the middle at the foot (Sam, 10 Oct 2026)
+      if(extra){ h+='<h4>'+RT(WALL_HEAD[extra])+'</h4><ol class="un">'; WALL[extra].forEach(function(r){ h+=li(r,'rc-un'); }); h+='</ol>'; } return h+EP+'</section>'; };
+    var html='<div class="rcin"><div class="rwheel">'+wheelSvg(40)+'</div><p class="ryz" lang="he" dir="rtl">\u05D9\u05B4\u05D6\u05B0\u05DB\u05BC\u05B9\u05E8</p><h2 class="rtitle">'+RT('Naming the nameless')+'</h2><p class="rsub">'+RT('The gravestones they never had')+'</p><p class="rsurv">'+RT('Helen Lando Helman, 1929\u20132013, survived. These are the family she lost.')+'</p>'+
+      '<div class="rtablets">'+tablet('tab1')+tablet('tab2','unnamed')+'</div><p class="rkatz">'+RT('And the family she married into: Tibi Katz\u2019s mother Eszter, his father Aharon, his sister Perl, his sister-in-law Margit, and the brothers and sisters whose names are not yet found.')+'</p><p class="rtnzbh">'+RT('May their souls be bound up in the bond of life')+'</p></div>';
+    rollEl=el('div','rollcall',html+'<p class="rcredit">'+RT('Behind the stones: the Pietrosz and Hoverla above the White Tisza, drawn by G\u00e9za Paur, 1900.')+'</p>'+
+      '<figure class="rhorses"><img src="road/extra/gfh-16165-bogdan-horses.png?v=3" alt=""><figcaption>'+RT('Bogdan, about 1941\u201342. Her father\u2019s horses were taken twice. Ghetto Fighters\u2019 House Archives, 16165.')+'</figcaption></figure>'+
+      '<div class="rcoda"><blockquote>\u201C'+RT('I don\u2019t have a single picture, not a single picture from home. I never knew that I will never see my parents again.')+'\u201D</blockquote><cite>'+RT('Helen, 2008')+'</cite>'+
+      '</div>'); document.body.appendChild(rollEl); document.body.classList.add('rolling');   // the panels step back; only the map stays under the names
+    // the whole wall always fits the screen: shrink it, never scroll it (laptops are shorter than the wall)
+    var fitWall=function(){ if(!rollEl) return; var c=rollEl.querySelector('.rcin'); c.style.transform=''; if(innerWidth<900) return; /* phones and narrow windows scroll instead of shrinking */ var k=Math.min(1,(innerHeight-20)/c.scrollHeight,(innerWidth-12)/c.scrollWidth); if(k<1) c.style.transform='scale('+k.toFixed(3)+')';
+      var hz=rollEl.querySelector('.rhorses'), tbs=rollEl.querySelectorAll('.rg.tablet'), kz=rollEl.querySelector('.rkatz');
+      if(hz&&tbs[0]){ var tl0=tbs[0].getBoundingClientRect().left, hw=Math.max(170,Math.min(560,tl0*1.05)); hz.style.width=hw+'px'; hz.style.left=Math.round(Math.max(0,tl0-hw*0.8))+'px'; /* bigger; its faded edge may tuck under the stone */ }
+      if(kz&&tbs[1]){ kz.style.width=innerWidth<900?'':Math.max(150,Math.min(420,innerWidth-tbs[1].getBoundingClientRect().right-34))+'px'; } };   // horses on the left, Tibi's family on the right, for balance (Sam)   // the horses fill the space beside the stones
+    var kz0=rollEl.querySelector('.rkatz'); if(kz0) rollEl.appendChild(kz0); var wh0=rollEl.querySelector('.rwheel'); if(wh0&&innerWidth>=900) rollEl.appendChild(wh0);   // the wheel in the top right corner, turning (Sam)   // out of the scaled wall, into the right-hand margin
+    fitWall(); window.addEventListener('resize',fitWall);
+    var items=[].slice.call(rollEl.querySelectorAll('li')), n=items.length;
+    rollT.push(setTimeout(function(){ if(rollEl) rollEl.classList.add('on'); },30));
+    items.forEach(function(e,i){ rollT.push(setTimeout(function(){ e.classList.add('on'); var g=e.closest('.rg'); if(g) g.classList.add('on'); },600+i*step)); });
+    var wh=rollEl.querySelector('.rwheel'); rollT.push(setTimeout(function(){ wh.classList.add('on'); },200));
+    var end=function(){ if(!rollEl) return; document.removeEventListener('keydown',key,true); rollEl.classList.add('out'); rollT.push(setTimeout(function(){ stopRoll(); done(); },900)); };
+    // the wall can be held as long as anyone wants (Sam, 10 Oct 2026): Pause stops the clock, Resume starts it again
+    var held=false, endT=null, left=n*step+600+1500+12500+4500, t0=Date.now();
+    // her own voice ends the wall: no picture from home. Then the one that was found, after she died (Sam, 10 Oct 2026: "bittersweet")
+    var va=new Audio('road/extra/helen-not-a-single-picture.mp3'); va.preload='auto'; rollVoice=va; var shown=false;
+    var showFound=function(){ if(shown||!rollEl) return; if(held){ rollT.push(setTimeout(showFound,300)); return; } shown=true; rollEl.classList.add('found'); };
+    va.addEventListener('ended',function(){ rollT.push(setTimeout(showFound,900)); });
+    var startCoda=function(){ if(!rollEl) return; if(held){ rollT.push(setTimeout(startCoda,300)); return; } rollEl.classList.add('coda');
+      rollT.push(setTimeout(function(){ var pr=va.play(); if(pr&&pr.catch) pr.catch(function(){}); },400)); };
+    rollT.push(setTimeout(startCoda,600+(n-1)*step+1000));   // all the names up, a second of quiet, then her voice (Sam)
+    var arm=function(ms){ clearTimeout(endT); endT=setTimeout(end,ms); rollT.push(endT); t0=Date.now(); left=ms; };
+    var bar=el('div','rbar','<button type="button" class="rpause">'+RT('Pause')+'</button><button type="button" class="rskip">'+RT('Go to the end')+'</button>'); rollEl.appendChild(bar);
+    var pb=bar.querySelector('.rpause');
+    // El Malei Rachamim, the memorial prayer (Sam, 10 Oct 2026). Offered, never automatic; the button appears only when the recording is on the site.
+    var EMR='road/audio/el-malei-rachamim.mp3';
+    fetch(EMR,{method:'HEAD'}).then(function(r){ if(!r.ok||!rollEl) return;
+      var eb=document.createElement('button'); eb.type='button'; eb.className='remr'; eb.textContent=RT('Hear El Malei Rachamim'); bar.insertBefore(eb,pb);
+      var a=new Audio(EMR); a.preload='auto';
+      eb.addEventListener('click',function(e){ e.stopPropagation();
+        if(a.paused){ if(!held) toggle(); a.currentTime=0; a.play(); eb.textContent=RT('Stop the prayer'); }   // the wall holds while the prayer is sung
+        else { a.pause(); eb.textContent=RT('Hear El Malei Rachamim'); } });
+      a.addEventListener('ended',function(){ eb.textContent=RT('Hear El Malei Rachamim'); });
+      rollT.push(setTimeout(function(){},0)); rollStopAudio=function(){ try{ a.pause(); }catch(x){} };
+    }).catch(function(){});
+    var toggle=function(){ held=!held; if(held){ clearTimeout(endT); left=Math.max(1500,left-(Date.now()-t0)); rollEl.classList.add('held'); pb.textContent=RT('Resume'); try{ va.pause(); }catch(x){} }
+      else { rollEl.classList.remove('held'); pb.textContent=RT('Pause'); arm(left); if(va.currentTime>0&&!va.ended){ var pr=va.play(); if(pr&&pr.catch) pr.catch(function(){}); } } };
+    pb.addEventListener('click',function(e){ e.stopPropagation(); toggle(); });
+    bar.querySelector('.rskip').addEventListener('click',function(e){ e.stopPropagation(); end(); });
+    var key=function(e){ if(!rollEl) return; if(e.key===' '||e.key==='p'||e.key==='P'){ e.preventDefault(); e.stopPropagation(); toggle(); var kq=$('kPlay'); if(kq){ kq.innerHTML=held?IC.play:IC.pause; kq.setAttribute('aria-label',held?'Play':'Pause'); } } else if(e.key==='ArrowLeft'){ e.preventDefault(); e.stopPropagation(); stopRoll(); go(DATA.STOPS.length-1); } else if(e.key==='Escape'||e.key==='Enter'||e.key==='ArrowRight'){ e.preventDefault(); e.stopPropagation(); end(); } };
+    document.addEventListener('keydown',key,true); rollKey=key;
+    var kp=$('kPlay'), paintRoll=function(){ kp.innerHTML=held?IC.play:IC.pause; kp.setAttribute('aria-label',held?'Play':'Pause'); };
+    rollCtl=function(e){ var b=e.target.closest('button'); if(!b||!rollEl) return;
+      if(b.id==='kPlay'){ e.preventDefault(); e.stopPropagation(); toggle(); paintRoll(); }
+      else if(b.id==='kNext'){ e.preventDefault(); e.stopPropagation(); end(); }
+      else if(b.id==='kBack'){ e.preventDefault(); e.stopPropagation(); stopRoll(); go(DATA.STOPS.length-1); } };
+    ctl.addEventListener('click',rollCtl,true); paintRoll();
+    ctlHome=ctl.parentNode; ctlNext=ctl.nextSibling; document.body.appendChild(ctl);   // above the wall, not under it
+    arm(left);
+  }
+  function finish(){ if(MODE!=='web'){ hereScene(); return; } clearAdv(); playing=false; paintCtl(); endCard.hidden=true; document.body.classList.remove('at-end'); rollCall(showEnd); }
+  function showEnd(){ endCard.hidden=false; document.body.classList.add('at-end');
+    // centered (Sam, 10 Oct 2026), unless that would put it on the last photograph: then it moves beside it
+    endCard.style.left=''; var dr=doc.getBoundingClientRect(), ew=endCard.offsetWidth;
+    // always centred now: the map frames the whole road under it (Sam, 10 Oct 2026)
+    // the whole road, Hawaii to her village, centered and as large as the space under the card allows (Sam, 10 Oct 2026)
+    var hs=DATA.STOPS[DATA.STOPS.length-1]; if(hs&&hs.bounds&&!PHONE()){ var eb=endCard.getBoundingClientRect(); try{ map.flyToBounds(L.latLngBounds(hs.bounds),{paddingTopLeft:[30,Math.round(eb.bottom)+8],paddingBottomRight:[30,96],maxZoom:5,duration:1.4}); }catch(e){} }
     setTimeout(function(){ $('eAgain').focus({preventScroll:true}); },60); }
-  function hideEnd(){ endCard.hidden=true; endCard.style.left=''; document.body.classList.remove('at-end'); }
+  function hideEnd(){ stopRoll(); endCard.hidden=true; endCard.style.left=''; document.body.classList.remove('at-end'); }
 
   /* ---------- talk and loop: "You are here", Philadelphia, with the QR code to the homepage ---------- */
   var PHILLY=[39.9526,-75.1652], hereMk=null, atHere=false;
