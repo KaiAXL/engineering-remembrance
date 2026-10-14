@@ -396,6 +396,10 @@ dialog.credits .x{position:sticky;top:0;float:right;margin:-8px -10px 0 0;width:
   .road{left:16px;right:16px;bottom:62px;height:14px}
   .road .lab{display:none}
   .road .tick{width:7px;height:7px;margin-left:-3.5px;top:9px}
+  .road{bottom:64px;height:18px}
+  .road .line,.road .done{top:9px}
+  .road .tick{width:8px;height:8px;margin-left:-4px;top:5px}
+  .road .tick::before{content:'';position:absolute;left:-5px;right:-5px;top:-6px;bottom:-6px}   /* a bigger tap area, clear of the control bar (phone review, 14 Oct 2026) */
   .road .wh{display:none}
 
   .cap{left:8px;right:8px;width:auto;bottom:84px;max-height:40vh;overflow:auto;padding:14px 16px 14px;border-radius:6px}
@@ -1124,6 +1128,11 @@ html body .doc img[src*="sam-wedding"],html body .who img[src*="sam-wedding"]{fi
   html body:has(.voice.playing) .cap{opacity:0!important;pointer-events:none}
   html body.has-voice .voice:not(.playing){opacity:0!important;pointer-events:none}
   html body.has-voice .voice,html body.has-voice.voice-br .voice,html body.has-voice.voice-compact .voice{bottom:84px!important;max-height:calc(var(--capH,170px) + 30px)!important}
+  /* one after the other, never a cross-fade: the outgoing text is gone before the incoming one appears (phone review, 14 Oct 2026) */
+  html body:has(.voice.playing) .cap{transition:opacity .35s ease!important}
+  html body.has-voice:not(:has(.voice.playing)) .cap:not(.out){transition:opacity .6s ease .4s,transform .7s var(--ease)!important}
+  html body .voice.playing{transition:opacity .6s ease .4s,transform .8s var(--ease) .4s!important}
+  html body .voice:not(.playing){transition:opacity .35s ease!important}
 }
 /* phones: a label is never wider than its record, so it wraps instead of being cut off at the edge (width set in road.js) */
 @media (max-width:759px){ html body #ui .doc .mk .tag{white-space:normal!important;overflow-wrap:anywhere} }
@@ -1486,3 +1495,11 @@ html body .rollcall .rg.tablet{border-width:4px!important;border-style:solid!imp
 html body .rollcall .rg.tablet.t-tab1{border-color:rgba(207,74,60,.95)!important}
 /* Helen named, as the one who survived (Sam, 10 Oct 2026) */
 html body .rollcall .rsurv{margin:4px auto 10px;font:400 clamp(15px,1.15vw,18px)/1.4 var(--serif);color:var(--gold-text,#e2c58f);letter-spacing:.01em}
+
+/* stop 13 (records stacked on the right): Helen's words go above the caption, in the open map, instead of over the aid-office forms
+   her memory is being compared with (review, 14 Oct 2026). Laptops and wider only; phones swap the two texts instead. */
+@media (min-width:760px){
+  html body.voice-br.has-stack .voice{left:28px!important;right:auto!important;top:auto!important;bottom:calc(var(--capH,300px) + 98px)!important;
+    width:min(46vw,700px)!important;max-height:calc(100vh - var(--capH,300px) - 190px)!important;overflow:auto!important;padding:14px 22px 12px!important}
+  html body.voice-br.has-stack .voice blockquote{font-size:clamp(16px,1.35vw,22px)!important;line-height:1.38!important}
+}

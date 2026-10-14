@@ -471,7 +471,7 @@
   function clearLights(){ var P=panelRects();
     [].forEach.call(document.querySelectorAll('.light .lbl'),function(l){ var li=l.parentNode;
       if(li.dataset.flip){ li.classList.toggle('left'); delete li.dataset.flip; }
-      l.style.maxWidth=''; l.style.whiteSpace='';
+      l.style.maxWidth=''; l.style.width=''; l.style.whiteSpace='';
       if(li.classList.contains('up')||li.classList.contains('star')) return;
       var r=l.getBoundingClientRect(); if(!r.width) return; if(!hitArea(r,P)) return;
       if(hitArea(li.getBoundingClientRect(),P)) return;   // the light itself is under a panel: moving its name would not help
@@ -480,7 +480,7 @@
       var left=li.classList.contains('left'), room=0;
       P.forEach(function(b){ if(b.bottom<r.top||b.top>r.bottom) return;
         var w=left?r.right-b.right-8:b.left-r.left-8; if(w>0&&(left?b.right<r.right:b.left>r.left)) room=room?Math.min(room,w):w; });
-      if(room>=90){ l.style.whiteSpace='normal'; l.style.maxWidth=room+'px'; }
+      if(room>=90){ l.style.whiteSpace='normal'; l.style.width=Math.min(room,Math.ceil(r.width))+'px'; }   // a set width: the label hangs off a 14px light, so max-width alone shrinks it to one word a line
     }); }
   function clearWitness(){ if(!witness.classList.contains('on')&&!witness.dataset.hid) return;
     if(witness.dataset.hid){ witness.classList.add('on'); delete witness.dataset.hid; }
