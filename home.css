@@ -794,3 +794,7 @@ div.door:hover{ transform:none; }
 /* Bigger small labels for older readers (14 Oct 2026) */
 .facehint, .hhero .facehint{ font-size:max(.78rem,12.5px) !important; }
 figcaption .cite, .hhero .herocap .cite, .find figcaption .cite, figure.wide .cite, figure.roster .cite{ font-size:max(.74rem,12px) !important; }
+/* Phones: the Philadelphia banner sits below the hero so the photos come first (Sam, 14 Oct 2026) */
+.philly.philly-low{ margin:1.4rem 0; }
+/* Phones: the case-study line returns, below the hero (Sam, 14 Oct 2026) */
+@media (max-width:760px){ .hintro2.hintro2-low{ display:block!important; margin:1.2rem 0 0!important; } }
