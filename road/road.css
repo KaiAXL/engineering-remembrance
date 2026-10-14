@@ -922,7 +922,7 @@ svg.pinlines circle{fill:var(--gold)}
 /* intern fixes, 8 Oct 2026 */
 .cap.out{opacity:0!important}                         /* the old caption never lingers through a flight */
 .cap.dim .w{opacity:1!important}                      /* Sam's words never dim while Helen speaks */
-.doc:not(.in) .dk.titled,.doc:not(.in) .mkkey{opacity:0!important}   /* no floating title plates between stops */
+.doc:not(.in) .dk.titled,.doc:not(.in) .mkkey,.doc:not(.in) .grpnote{opacity:0!important}   /* no floating title plates between stops */
 .doc.wide{width:min(58vw,1100px,calc(100vw - min(46vw,700px) - 84px))!important}   /* never under the caption at 1280 */
 .doc img,.doc .frame .sheet img{max-width:100%!important}
 @media (max-width:759px){ .doc.row .frame .sheet img{height:auto!important;width:100%!important} .doc figcaption{-webkit-line-clamp:unset!important;display:block!important} }

@@ -797,6 +797,7 @@
   function ov(a,b){ return a.left<b.right-1&&a.right>b.left+1&&a.top<b.bottom-1&&a.bottom>b.top+1; }
   function hits(t,m,relax){ var r=t.getBoundingClientRect();
     if(r.left<2||r.right>innerWidth-2||r.top<2) return true;   // off the screen counts as a collision
+    if([].some.call(document.querySelectorAll('.cap:not(.out),.voice.playing,.year,.brand'),function(k){ return getComputedStyle(k).opacity!=='0'&&ov(r,k.getBoundingClientRect()); })) return true;   // never on the story, her words, the year or the title (review, 14 Oct 2026)
     var fr=m.closest('.frame'); if(fr&&!relax){ var q=fr.getBoundingClientRect(); if(r.left<q.left-4||r.right>q.right+4||r.top<q.top-2||r.bottom>q.bottom+2) return true; }   // stays on its own record: never over the next one or the caption under it (Sam)
     return [].some.call(doc.querySelectorAll('.mk.on'),function(o){
       if(o!==m&&ov(r,o.getBoundingClientRect())) return true;
