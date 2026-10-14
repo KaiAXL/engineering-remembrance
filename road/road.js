@@ -1335,5 +1335,8 @@
   if(start===null) setTimeout(function(){ preload(STOPS[0]); if(STOPS[0].audio){ var a0=new Audio(); a0.preload='auto'; a0.src=STOPS[0].audio+'.mp3'; } },300);   // the first stop is ready before Start
   document.body.classList.add('tone-'+(/^[abcd]$/.test(q.get('tone')||'')?q.get('tone'):'b'));   // map tone (Sam picks)
   document.documentElement.classList.add('road-ready');
+  // Screen readers: a hidden panel keeps the last stop's text in the page, so mark it hidden too (14 Oct 2026)
+  (function(){ function sync(){ voice.setAttribute('aria-hidden',voice.classList.contains('out')?'true':'false'); cap.setAttribute('aria-hidden',cap.classList.contains('out')?'true':'false'); doc.setAttribute('aria-hidden',doc.classList.contains('in')?'false':'true'); }
+    if(window.MutationObserver){ var o=new MutationObserver(sync); [voice,cap,doc].forEach(function(e){ o.observe(e,{attributes:true,attributeFilter:['class']}); }); } sync(); })();
   window.road={layoutPins:layoutPins,untangle:untangle,show:show,stops:STOPS,next:next,prev:prev,setEra:setEra,pause:pause,resume:resume}; window.__leafletMap=map;   // for testing
 })();
