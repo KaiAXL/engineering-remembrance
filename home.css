@@ -774,3 +774,20 @@ div.door:hover{ transform:none; }
 .door .dsub em{ font:inherit!important; font-style:normal!important; text-transform:uppercase!important; letter-spacing:inherit!important; color:var(--ink); }
 
 #faces{ scroll-margin-top:150px; }
+
+/* Hero: the claim is the headline, as on the booth poster (Sam, 14 Oct 2026) */
+.hclaim{ max-width:24ch; text-wrap:balance; }
+.hclaim em{ font-style:italic; color:var(--warm); }
+/* Philadelphia visitors, until 1 Nov 2026 (hidden by script after) */
+.wrap > .philly{ grid-column:1 / -1; }
+.philly{ display:flex; flex-wrap:wrap; gap:.35rem 1rem; align-items:baseline; margin:0 0 1.4rem; padding:.7rem 1rem; border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:4px; background:var(--panel); font-size:.95rem; }
+.philly b{ font-family:var(--mono); font-weight:500; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); }
+.philly a{ color:var(--ink); white-space:nowrap; }
+.wrap > h1.hclaim{ margin-bottom:1.1rem !important; }
+.wrap > h1.hclaim + .hintro{ margin-top:0 !important; }
+/* Method tabs: make them read as choices (Sam, 14 Oct 2026) */
+.mtlabel{ font-family:var(--mono); font-weight:500; font-size:max(.7rem,11px); letter-spacing:.2em; text-transform:uppercase; color:var(--accent-deep); margin:1.6rem 0 .55rem; }
+.mtabs .mt[aria-selected="false"]{ opacity:.68; transition:opacity .15s ease, transform .15s ease; }
+.mtabs .mt[aria-selected="false"]:hover, .mtabs .mt[aria-selected="false"]:focus-visible{ opacity:1; transform:translateY(-1px); }
+@media (prefers-reduced-motion:reduce){ .mtabs .mt[aria-selected="false"]:hover{ transform:none; } }
+.mtlabel + .mtabs{ margin-top:0 !important; }
