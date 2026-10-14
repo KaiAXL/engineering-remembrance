@@ -791,3 +791,6 @@ div.door:hover{ transform:none; }
 .mtabs .mt[aria-selected="false"]:hover, .mtabs .mt[aria-selected="false"]:focus-visible{ opacity:1; transform:translateY(-1px); }
 @media (prefers-reduced-motion:reduce){ .mtabs .mt[aria-selected="false"]:hover{ transform:none; } }
 .mtlabel + .mtabs{ margin-top:0 !important; }
+/* Bigger small labels for older readers (14 Oct 2026) */
+.facehint, .hhero .facehint{ font-size:max(.78rem,12.5px) !important; }
+figcaption .cite, .hhero .herocap .cite, .find figcaption .cite, figure.wide .cite, figure.roster .cite{ font-size:max(.74rem,12px) !important; }
