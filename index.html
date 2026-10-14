@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v=20260822015032">
+<link rel="stylesheet" href="styles.css?v=20261014a">
 <link rel="stylesheet" href="home.css?v=20261011c">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
@@ -71,6 +71,7 @@
     <a href="/balagula.html"><span class="k">04</span> Balagula <span class="soon">coming soon</span></a>
     <a href="/databases.html"><span class="k">05</span> Databases</a>
     <a href="/about.html"><span class="k">06</span> The Researcher</a>
+    <a href="/contact.html"><span class="k">07</span> Contact</a>
     <button class="navhelen" type="button" data-open="helen"><span class="k">&#9654;</span> Hear Helen</button>
   </nav>
   <div class="sidefoot">
@@ -191,14 +192,14 @@
         <a class="dsub" href="/balagula.html">Next: the <em>Balagula</em> app &middot; coming soon &rarr;</a>
         <a class="dgo" href="/method.html">Start with the method &rarr;</a>
       </div>
-      <a class="door" href="mailto:sam@engineeringremembrance.org?subject=A%20talk%20or%20workshop">
+      <a class="door" href="/contact.html?topic=talk">
         <span class="dk">02 &middot; Talks and workshops</span>
         <b>Helen&rsquo;s story, and how to find yours</b>
         <span class="dl">For museums, schools, synagogues and conferences.</span>
         <span class="dnext">Next &middot; Philadelphia &middot; 24 October 2026</span>
         <i>Invite me &rarr;</i>
       </a>
-      <a class="door" href="mailto:sam@engineeringremembrance.org?subject=Records%20research">
+      <a class="door" href="/contact.html?topic=research">
         <span class="dk">03 &middot; Records research</span>
         <b>Research for your family</b>
         <span class="dl">I follow the records for you. Paid, because it takes real time, and I take on a few families at a time.</span>
@@ -365,7 +366,7 @@
         <a class="pr pr1" href="/method.html#step-normalize"><img src="images/th-normalize.jpg" alt="Helen&rsquo;s 1929 birth entry" width="330" height="110" loading="lazy" decoding="async"><span>Helena, filed under her mother&rsquo;s name, Land&oacute;</span></a>
         <a class="pr pr2" href="/method.html#step-reconstruct"><img src="images/th-reconstruct.jpg" alt="Zacharias&rsquo;s Buchenwald card" width="330" height="110" loading="lazy" decoding="async"><span>sent to Buchenwald, 2 June 1944</span></a>
         <a class="pr pr3" href="/method.html#step-correlate"><img src="images/th-correlate.jpg" alt="Helen on a Russian list" width="330" height="110" loading="lazy" decoding="async"><span>Helman becomes Gelman</span></a>
-        <a class="pr pr4" href="/method.html#step-verify"><img src="images/th-verify.jpg" alt="Helen&rsquo;s 1946 DP card" width="480" height="160" loading="lazy" decoding="async"><span>wrong year, wrong town; the parents are right</span></a>
+        <a class="pr pr4" href="/method.html#step-verify"><img src="images/th-verify.jpg" alt="Helen&rsquo;s 1946 displaced persons (DP) card" width="480" height="160" loading="lazy" decoding="async"><span>wrong year, wrong town; the parents are right</span></a>
       </div>
     </figure>
     <p class="pfd-cap">Each box links to its examples on the method page. A set-aside lead can come back, or be crossed off once the sources show it&rsquo;s someone else. &ldquo;Set aside&rdquo; links to my mistakes.</p>
@@ -402,62 +403,9 @@
     <div class="acts">
       <a class="pri" href="/method.html">The free guide</a>
       <a href="/databases.html">The databases</a>
-      <a href="mailto:sam@engineeringremembrance.org?subject=Records%20research">Records research</a>
+      <a href="/contact.html?topic=research">Records research</a>
     </div>
-    <p class="small">The guide is free, and so are most of the databases. I&rsquo;m one person, and I can&rsquo;t research every family for free, but I help where I can, and I hope you&rsquo;ll try it yourself.</p>
-  </section>
-
-  <!-- CONTACT FORM (Formspree) -->
-  <section class="hsec cform" id="contact">
-    <style>
-      .cform h2{max-width:30ch}
-      .cform form{display:grid;grid-template-columns:1fr 1fr;gap:.9rem 1rem;max-width:760px;margin-top:1.2rem;padding:1.4rem 1.4rem 1.2rem;border:1px solid var(--rule);border-top:3px solid var(--accent);border-radius:4px;background:var(--panel)}
-      .cform label{display:flex;flex-direction:column;gap:.35rem;font:500 .7rem/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
-      .cform .full{grid-column:1 / -1}
-      .cform input,.cform select,.cform textarea{font:400 1.02rem/1.45 var(--serif);color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:3px;padding:.6rem .7rem;text-transform:none;letter-spacing:0}
-      .cform textarea{min-height:8.5rem;resize:vertical}
-      .cform input:focus,.cform select:focus,.cform textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
-      .cform select option{color:#111}
-      .cform .check{flex-direction:row;align-items:center;gap:.6rem;font:400 1rem/1.4 var(--serif);letter-spacing:0;text-transform:none;color:var(--ink-dim)}
-      .cform .check input{width:1.1rem;height:1.1rem;accent-color:var(--accent)}
-      .cform button{justify-self:start;font:500 .78rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--panel);background:var(--accent);border:0;border-radius:999px;padding:.9rem 1.5rem;cursor:pointer}
-      .cform button:hover,.cform button:focus-visible{background:var(--ink)}
-      .cform .alt,.cform .done{font:400 .98rem/1.5 var(--serif);color:var(--ink-dim);margin:.2rem 0 0}
-      .cform .done{color:var(--accent)}
-      .cform .hp{position:absolute;left:-9999px}
-      @media (max-width:640px){ .cform form{grid-template-columns:1fr} }
-    </style>
-    <span class="sk">Write to me</span>
-    <h2>Questions, talks, research, or just your family&rsquo;s story.</h2>
-    <form action="https://formspree.io/f/xoejkznn" method="POST" data-cform>
-      <label>Your name<input name="name" autocomplete="name" required></label>
-      <label>Your email<input type="email" name="email" autocomplete="email" required></label>
-      <label class="full">About
-        <select name="topic">
-          <option>A question about my family</option>
-          <option>A talk or workshop</option>
-          <option>Records research</option>
-          <option>Helen&rsquo;s story</option>
-          <option>Something else</option>
-        </select>
-      </label>
-      <label class="full">Message<textarea name="message" required placeholder="A name and a town is a good place to start."></textarea></label>
-      <label class="full check"><input type="checkbox" name="balagula" value="yes"> Tell me when the Balagula app is ready</label>
-      <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <input type="hidden" name="_subject" value="Engineering Remembrance: a new message">
-      <button type="submit">Send</button>
-      <p class="alt full">Or email me directly: <a href="mailto:sam@engineeringremembrance.org">sam@engineeringremembrance.org</a></p>
-      <p class="done full" role="status" hidden>Thank you. Your message reached me, and I&rsquo;ll write back.</p>
-    </form>
-    <script>
-    (function(){ var f=document.querySelector('[data-cform]'); if(!f||!window.fetch) return;
-      f.addEventListener('submit',function(e){ e.preventDefault(); var b=f.querySelector('button'); b.disabled=true; b.textContent='Sending';
-        fetch(f.action,{method:'POST',body:new FormData(f),headers:{Accept:'application/json'}}).then(function(r){
-          if(r.ok){ f.reset(); f.querySelector('.done').hidden=false; b.textContent='Sent'; }
-          else { b.disabled=false; b.textContent='Send'; f.querySelector('.alt').textContent='That didn’t send. Please email me at sam@engineeringremembrance.org.'; }
-        }).catch(function(){ b.disabled=false; b.textContent='Send'; }); });
-    })();
-    </script>
+    <p class="small">The guide is free, and so are most of the databases. I&rsquo;m one person, and I can&rsquo;t research every family, but I help where I can, and I hope you&rsquo;ll try it yourself.</p>
   </section>
 
   <figure class="sig">

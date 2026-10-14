@@ -1288,3 +1288,11 @@ img{ max-width:100%; height:auto; }
 @media (max-height:46rem) and (min-width:64.01rem){
   .hero img{ max-height:min(42vh, 24rem); }
 }
+
+/* Logo: one slow wagon-wheel roll on load, a gentle spin on hover (Sam, 14 Oct 2026). Off for reduced motion. */
+@media (prefers-reduced-motion: no-preference){
+  .brandwrap .wheel{ transform-origin:50% 50%; animation:er-roll 2.4s cubic-bezier(.3,.1,.2,1) .2s both; }
+  .brandwrap:hover .wheel, .brandwrap:focus-visible .wheel{ animation:er-spin 6s linear infinite; }
+  @keyframes er-roll{ from{ transform:rotate(-90deg); } to{ transform:rotate(0deg); } }
+  @keyframes er-spin{ from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
+}
