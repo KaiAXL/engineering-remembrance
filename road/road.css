@@ -1504,3 +1504,21 @@ html body .rollcall .rsurv{margin:4px auto 10px;font:400 clamp(15px,1.15vw,18px)
   html body.voice-br.has-stack .voice blockquote{font-size:clamp(16px,1.35vw,22px)!important;line-height:1.38!important}
 }
 @media (min-width:1600px){ html body.voice-br.has-stack .voice{width:min(28vw,560px)!important} html body.voice-br.has-stack .voice blockquote{font-size:clamp(16px,1.05vw,20px)!important} }   /* as wide as the caption beneath it, clear of the records */
+
+/* phones (review, 14 Oct 2026): a record's caption gets a dark backing so map names don't show through it; "The two roads meet" a size smaller */
+@media (max-width:759px){
+  html body #ui .doc figcaption{background:rgba(13,15,18,.86);padding:4px 7px;border-radius:4px}
+  .meet span{font-size:17px;top:24px}
+}
+
+/* phones: tap a face for the name (photographs with names above and below, e.g. Bogdan 1939). Laptops show every name. */
+@media (max-width:759px){
+  html body #ui .doc .sheet.tapnames{cursor:pointer}
+  html body #ui .doc .sheet.tapnames .mk.headpin .tag{opacity:0!important;transition:opacity .25s;pointer-events:none}
+  html body #ui .doc .sheet.tapnames .mk.headpin.tapped .tag{opacity:1!important;top:auto!important;bottom:10px!important;left:0!important;right:auto!important;transform:translateX(-50%)!important;z-index:5}
+  html body #ui .doc .sheet .taphint{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);white-space:nowrap;line-height:1.2;
+    font:500 10.5px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cream);background:rgba(10,11,13,.82);
+    border:1px solid rgba(207,159,99,.55);border-radius:10px;padding:4px 9px;pointer-events:none;transition:opacity .4s}
+  html body #ui .doc .sheet.tapped-once .taphint{opacity:0}
+}
+.taphint{display:none} @media (max-width:759px){ html body #ui .doc .sheet.tapnames .taphint{display:block} }

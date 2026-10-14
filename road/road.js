@@ -459,7 +459,7 @@
   }
   // a place name at the edge of a small screen slides back on so no letter is cut ("to AUSCHWITZ", "to STALINGRAD", Sam 10 Oct 2026)
   function keepEndsOn(){
-    [].forEach.call(document.querySelectorAll('.endlbl'),function(l){
+    [].forEach.call(document.querySelectorAll('.endlbl,.meet span'),function(l){
       l.style.marginLeft=''; var r=l.getBoundingClientRect(); if(!r.width) return;
       var pad=8, shift=0; if(r.left<pad) shift=pad-r.left; else if(r.right>innerWidth-pad) shift=(innerWidth-pad)-r.right;
       if(shift) l.style.marginLeft=shift+'px';
@@ -790,8 +790,21 @@
         });
       });
       sh.appendChild(svg);
+      // phones: a photograph with names above and below has no room for them all, so the names wait for a tap (Sam, 14 Oct 2026)
+      var tap=PHONE()&&pins.some(function(m){ return m.dataset.lane==='top'||m.dataset.lane==='bot'; });
+      sh.classList.toggle('tapnames',tap); var hint=sh.querySelector('.taphint');
+      if(tap&&!hint){ hint=document.createElement('span'); hint.className='taphint'; hint.textContent=T('Tap a face for the name'); sh.appendChild(hint); }
+      if(!tap&&hint) hint.remove();
     });
   }
+  var tapT=null;
+  doc.addEventListener('click',function(e){ var sh=e.target.closest&&e.target.closest('.sheet.tapnames'); if(!sh) return;
+    e.stopPropagation(); e.preventDefault();   // a tap names the person; it doesn't open the record
+    var r=sh.getBoundingClientRect(), x=(e.clientX-r.left)/r.width*100, y=(e.clientY-r.top)/r.height*100, best=null, bd=1e9;
+    [].forEach.call(sh.querySelectorAll('.mk.headpin'),function(m){ var dx=parseFloat(m.style.left)-x, dy=(parseFloat(m.style.top)-y)*r.height/r.width, d=dx*dx+dy*dy; if(d<bd){ bd=d; best=m; } });
+    [].forEach.call(sh.querySelectorAll('.mk.tapped'),function(m){ m.classList.remove('tapped'); });
+    if(best){ best.classList.add('tapped'); sh.classList.add('tapped-once'); clearTimeout(tapT); tapT=setTimeout(function(){ best.classList.remove('tapped'); },4000); }
+  },true);
   // a new label never sits on one already showing (Sam, 8 Oct 2026): try below its box, then the other side
   // a label never sits on another label or on another highlighted box (Sam, 8 Oct 2026: "make sure nothing overlaps")
   function ov(a,b){ return a.left<b.right-1&&a.right>b.left+1&&a.top<b.bottom-1&&a.bottom>b.top+1; }
