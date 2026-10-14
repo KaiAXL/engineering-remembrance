@@ -798,3 +798,4 @@ figcaption .cite, .hhero .herocap .cite, .find figcaption .cite, figure.wide .ci
 .philly.philly-low{ margin:1.4rem 0; }
 /* Phones: the case-study line returns, below the hero (Sam, 14 Oct 2026) */
 @media (max-width:760px){ .hintro2.hintro2-low{ display:block!important; margin:1.2rem 0 0!important; } }
+@media (max-width:760px){ .hintro.hintro-low{ margin:1.4rem 0 0!important; } .wrap > h1.hclaim{ margin-bottom:1rem!important; } }
