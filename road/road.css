@@ -1503,3 +1503,4 @@ html body .rollcall .rsurv{margin:4px auto 10px;font:400 clamp(15px,1.15vw,18px)
     width:min(46vw,700px)!important;max-height:calc(100vh - var(--capH,300px) - 190px)!important;overflow:auto!important;padding:14px 22px 12px!important}
   html body.voice-br.has-stack .voice blockquote{font-size:clamp(16px,1.35vw,22px)!important;line-height:1.38!important}
 }
+@media (min-width:1600px){ html body.voice-br.has-stack .voice{width:min(28vw,560px)!important} html body.voice-br.has-stack .voice blockquote{font-size:clamp(16px,1.05vw,20px)!important} }   /* as wide as the caption beneath it, clear of the records */
