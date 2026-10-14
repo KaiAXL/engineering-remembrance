@@ -1075,7 +1075,7 @@
   /* ---------- the end ---------- */
   var endCard=el('div','endcard','<p class="ek">Recovering families from the records that were meant to erase them</p><p class="ek2">Start with one name and one town.</p>'+
     '<div class="eb"><button type="button" id="eAgain">Start over</button>'+
-    '<a href="index.html">Home</a><a href="method.html">Method</a><a href="databases.html">Database</a><a href="about.html">Researcher</a></div>');   // Sam, 8 Oct 2026
+    '<a href="index.html">Home</a><a href="method.html">Method</a><a href="databases.html">Databases</a><a href="about.html">Researcher</a><a href="contact.html">Contact</a></div>');   // Sam, 8 Oct 2026
   endCard.hidden=true;
   /* ---------- the roll call: her family, by name, before the end menu (Sam, 10 Oct 2026). Ages from their birth records. ---------- */
   // two columns: her own family, then her father's family. '#' = a small heading, '@' = where and when.
