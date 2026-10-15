@@ -399,7 +399,7 @@ dialog.credits .x{position:sticky;top:0;float:right;margin:-8px -10px 0 0;width:
   .road{bottom:64px;height:18px}
   .road .line,.road .done{top:9px}
   .road .tick{width:8px;height:8px;margin-left:-4px;top:5px}
-  .road .tick::before{content:'';position:absolute;left:-5px;right:-5px;top:-6px;bottom:-6px}   /* a bigger tap area, clear of the control bar (phone review, 14 Oct 2026) */
+  .road .tick::before{content:'';position:absolute;left:-5px;right:-5px;top:-16px;bottom:-12px}   /* a bigger tap area, clear of the control bar (phone review, 14 Oct 2026) */
   .road .wh{display:none}
 
   .cap{left:8px;right:8px;width:auto;bottom:84px;max-height:40vh;overflow:auto;padding:14px 16px 14px;border-radius:6px}
