@@ -310,6 +310,7 @@
     if(document.body.classList.contains('pfd-on')){ var pr=pfd.getBoundingClientRect(); if(pr.height) top=Math.max(top,pr.bottom+40); }
     if(top+bottom>H()-160){ top=150; }   // never squeeze the map to nothing
     bottom=Math.min(bottom,H()*0.36); if(s.board){ top=96; bottom=Math.min(bottom,H()*0.24); }
+    if(W()<1700&&!PHONE()) return {tl:[110,top+34],br:[docW(s)+60,bottom]};   // laptops: room for a place's name, which sits above and around its point (Buchenwald under the title, review 14 Oct 2026)
     return {tl:[70,top],br:[docW(s)+60,bottom]};
   }
   function moved(dur){ return new Promise(function(r){ var done=false; function f(){ if(!done){done=true; map.off('moveend',f); r();} } map.on('moveend',f); setTimeout(f,(dur||1)*1000+700); }); }
