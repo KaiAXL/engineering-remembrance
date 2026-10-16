@@ -799,3 +799,11 @@ figcaption .cite, .hhero .herocap .cite, .find figcaption .cite, figure.wide .ci
 /* Phones: the case-study line returns, below the hero (Sam, 14 Oct 2026) */
 @media (max-width:760px){ .hintro2.hintro2-low{ display:block!important; margin:1.2rem 0 0!important; } }
 @media (max-width:760px){ .hintro.hintro-low{ margin:1.4rem 0 0!important; } .wrap > h1.hclaim{ margin-bottom:1rem!important; } }
+
+/* Databases: send the search to the archives themselves (Sam, 16 Oct 2026) */
+.dbgo{ display:flex; flex-wrap:wrap; align-items:center; gap:.45rem; margin:0; }
+.dbgo > span{ font:400 .78rem/1.3 var(--mono); color:var(--muted); margin-right:.2rem; }
+.dbgo a{ font:500 .72rem/1 var(--mono); letter-spacing:.06em; padding:.55rem .8rem; border-radius:999px; border:1px solid var(--accent); color:var(--accent); text-decoration:none; }
+.dbgo a:hover, .dbgo a:focus-visible{ background:var(--accent); color:var(--bg, #15110d); }
+.dbgo small{ font:inherit; opacity:.75; }
+.dbtools .dbgo{ grid-column:1 / -1; }
