@@ -812,7 +812,7 @@
       var wt=function(im){ return anyLead&&!im.closest('figure').dataset.lead?0.8:1; };
       var sumA=0; ims.forEach(function(im){ sumA+=wt(im)*(+im.getAttribute('width')||im.naturalWidth||1)/(+im.getAttribute('height')||im.naturalHeight||1); });
       var gaps=12*(ims.length-1)+4, top0=ims[0].getBoundingClientRect().top;
-      var H=Math.floor(Math.min((doc.clientWidth-gaps)/sumA, limit-top0-70));
+      var H=Math.floor(Math.min((doc.clientWidth-gaps)/sumA, (doc.classList.contains('at-family39')?Math.max(limit-top0-70,(innerHeight-130)-top0):limit-top0-70)));
       ims.forEach(function(im){ im.style.height=Math.max(innerWidth<760?40:80,H*wt(im))+'px'; im.style.width='auto'; im.style.maxHeight='none'; var f=im.closest('figure'); if(f) f.style.setProperty('--fw',im.offsetWidth+'px'); });
       if(MODE==='loop') for(var rp=0;rp<4;rp++){ var lowR=0; [].forEach.call(doc.querySelectorAll('.doc figure,.doc .doclesson'),function(f){ lowR=Math.max(lowR,f.getBoundingClientRect().bottom); });   // booth loop (23 Oct 2026): the list under each record never pushes it past the bottom
         var ovR=lowR-limit; if(ovR<=2) break; var kR=Math.max(.4,1-(ovR+4)/Math.max(1,lowR-top0)); ims.forEach(function(im){ im.style.height=Math.floor(im.offsetHeight*kR)+'px'; var f=im.closest('figure'); if(f) f.style.setProperty('--fw',im.offsetWidth+'px'); }); }
@@ -1019,7 +1019,7 @@
     if(AUTO&&atHere){ clearInterval(musicFade); try{ music.pause(); }catch(e){} return; }   // workshop: You are here is quiet (Sam, 14 Oct 2026)
     if(music.paused&&intro&&!intro.hidden&&!intro.classList.contains('started')) return;   // no music on the opening card until the first press, when Helen speaks (Sam, 14 Oct 2026)
     clearInterval(musicFade);
-    var tgt=talking===2?HELEN_DUCK:talking?MUSIC_DUCK:(LIVE&&!moving)?0:MUSIC_VOL;
+    var tgt=talking===2?HELEN_DUCK:talking?MUSIC_DUCK:(LIVE&&!moving)?MUSIC_DUCK:MUSIC_VOL;
     if(music.paused){ if(!music.getAttribute('src')) music.src=MUSIC; var pr=music.play(); if(pr&&pr.catch) pr.catch(function(){}); credit.textContent='Music: Dvořák, “Goin’ Home,” United States Air Force Band'; }
     musicFade=setInterval(function(){ var d=tgt-music.volume; if(Math.abs(d)<0.01){ music.volume=tgt; clearInterval(musicFade); return; } music.volume=Math.max(0,Math.min(1,music.volume+d*0.12)); },50);
   }

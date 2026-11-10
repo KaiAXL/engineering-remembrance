@@ -37,3 +37,5 @@ body.at-graves .cap{opacity:0!important}
 .doc .mk .tag:empty{display:none!important}
 @media (min-width:900px){ html body .doc.at-kiraly,html body .doc.at-keleti{top:185px!important} body .doc.big.at-family{width:min(56vw,1300px)!important} }
 html body .doc.at-kiraly.sidecol figure:not([data-side]):not(.lesser) .frame .sheet img{max-height:calc(100vh - 540px)!important}
+/* Adela: her birth record across the panel, below the year; the village photo under it (Sam, 10 Nov 2026) */
+@media (min-width:900px){ html body .doc.at-adela{top:185px!important} html body .doc.at-adela figure:nth-child(2) .frame .sheet img{max-height:calc(100vh - 500px)!important} }
