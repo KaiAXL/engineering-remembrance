@@ -14,28 +14,17 @@
   'use strict';
   var q=new URLSearchParams(location.search);
   var QUIET=q.get('quiet')==='1', FAST=q.get('fast')==='1';
-  // workshop.html (Sam, 14 Oct 2026): I speak live. No recording of my voice; each record note, each clip of Helen and each stop waits for the clicker.
-  // workshop-auto (Sam, 14 Oct 2026): the road plays by itself at the pace of my recordings, my voice muted, so I talk over it and stay on time
-  var AUTO=!!window.ROAD_AUTO; var autoNotes=false;
-  var EMBED=(function(){ try{ return window.parent!==window; }catch(e){ return true; } })();   // played inside the workshop deck as one of its slides (Sam, 14 Oct 2026)
-  function leave(u){ if(EMBED){ try{ parent.postMessage({er:'next'},'*'); }catch(e){} return; } location.href=u; }
-  window.addEventListener('message',function(ev){ var d=ev.data; if(d&&d.erKey) document.dispatchEvent(new KeyboardEvent('keydown',{key:d.erKey,bubbles:true,cancelable:true})); });
-  var LIVE=!!window.ROAD_LIVE, clickQ=[], moving=false, liveHeard=false;
-  window.__live=function(){ return {moving:moving,q:clickQ.length,skip:!!skipPart,cur:cur}; };
   var REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var HE_ON=!!window.HE_ON; function T(x){ return (HE_ON&&window.HE_UI&&HE_UI[x])||x; }
   var DATA=window.ROAD, P=DATA.P;
   var STOPS=DATA.STOPS;
-  // “Helen (?)” never breaks before its question mark (Sam, booth loop, 24 Oct 2026)
-  STOPS.forEach(function(s){ ['t','p','lesson'].forEach(function(k){ if(typeof s[k]==='string') s[k]=s[k].replace(/ \(\?\)/g,' (?)'); }); (s.media||[]).forEach(function(m){ if(typeof m.c==='string') m.c=m.c.replace(/ \(\?\)/g,' (?)'); }); });
   // the same road in three settings (Sam, 9 Oct 2026): 'web' the website · 'talk' the Philadelphia workshop, a few slides
   // about me first, then each stop waits for the clicker · 'loop' the table, plays by itself forever, nothing to touch.
   // Talk and loop end on "You are here: Philadelphia" with a QR code to the homepage. Set by talk.html / loop.html.
   var MODE=/^(talk|loop)$/.test(window.ROAD_MODE||'')?window.ROAD_MODE:'web';
   document.body.classList.add('mode-'+MODE);
-  if(AUTO) document.body.classList.add('ws-auto');   // workshop talk only: road.css scopes its talk fixes under this (24 Oct 2026)
   // talk: the speaker-notes window (notes.html, opened with N) follows along on this channel
-  var chan=null, told=null; try{ if((MODE==='talk'||AUTO)&&window.BroadcastChannel){ chan=new BroadcastChannel('helens-road-talk');
+  var chan=null, told=null; try{ if(MODE==='talk'&&window.BroadcastChannel){ chan=new BroadcastChannel('helens-road-talk');
     chan.onmessage=function(e){ if(e.data&&e.data.hello&&told) chan.postMessage(told); }; } }catch(e){}
   function tell(m){ told=m; if(chan) try{ chan.postMessage(m); }catch(e){} }
   var PHONE=function(){ return window.innerWidth<760; };
@@ -56,9 +45,7 @@
   // stops load OpenStreetMap tiles, darkened. OSM tile usage policy: attribution, no bulk or offline use.
   var tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{minZoom:8.5,maxZoom:17,maxNativeZoom:19,keepBuffer:2,
     attribution:'Streets &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'});
-  if((LIVE||AUTO)&&location.protocol==='file:'){ tiles=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{minZoom:8.5,maxZoom:17,maxNativeZoom:16,keepBuffer:2,
-    attribution:'Streets &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors'}); document.body.classList.add('tiles-carto'); }   // CARTO now asks for a key (14 Oct 2026); Esri needs none
-  else document.body.classList.add('tiles-osm');
+  document.body.classList.add('tiles-osm');
   map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>'); map.attributionControl.setPosition('bottomleft');
   // on a phone the border credit lives in Credits only, so the street-map credit always fits
   if(!PHONE()) map.attributionControl.addAttribution('Borders: A. Ourednik, <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> (<a href="road/LICENSE-borders.txt">GPL-3.0</a>), adapted (<a href="road/borders/build_borders_1930_1942.py">source</a>); Natural Earth. Wartime borders approximate');
@@ -274,7 +261,7 @@
   function wait(ms){ var left=FAST?ms/4:ms; return new Promise(function(r){ (function tick(){ if(left<=0) return r(); var t=Math.min(left,100); setTimeout(function(){ if(!paused) left-=t; tick(); },t); })(); }); }
   function alive(g){ return g===gen; }
   function W(){ return window.innerWidth; } function H(){ return window.innerHeight; }
-  function docW(s){ if(!s||!s.media||!s.media.length) return 0; if(loopSmall()&&!s.stack&&!s.night&&!s.end&&!s.docSmall&&!s.tallDoc&&!s.docLeft&&!s.media[0].html) return W()-(cap.offsetLeft+cap.offsetWidth+24)+26;   /* booth loop on the laptop: the records start just right of the story panel (road.css end), so the map's places and their names stay left of them */ if(s.stack&&W()>=760) return W()-(cap.offsetLeft+cap.offsetWidth+30)-40; if(s.media[0].html) return W()-Math.min(W()*0.34,520)-52; return Math.min(W()*(s.row?0.44:0.40),s.row?720:640)+56; }
+  function docW(s){ if(!s||!s.media||!s.media.length) return 0; if(s.stack&&W()>=760) return W()-(cap.offsetLeft+cap.offsetWidth+30)-40; if(s.media[0].html) return W()-Math.min(W()*0.34,520)-52; return Math.min(W()*(s.row?0.44:0.40),s.row?720:640)+56; }
   // on a phone the panels stack: the record under the header, the caption over the controls, the map between
   function padPhone(s){
     var top=64, bottom=Math.min(H()*0.5,320);
@@ -310,17 +297,11 @@
     if(s.night||s.end){ var fp=padFree(s); if(fp) return fp; }
     // the record group spans the top (Indersdorf): put the map in the open space left, below the records, or above the text panel, whichever shows it bigger (Sam: "you can't see Indersdorf")
     // Budapest 1945: the map in the open corner beside the tracing cards (Sam: "can't see Budapest")
-    // workshop talk only (Sam, 24 Oct 2026: "can't see Keleti"): the place sits in the open map below the records and right of the text panels, clear of Helen's words and of the narrower records while she speaks
-    if(AUTO&&s.wsOpen){ var w2=W(), h2=H(), cr2=cap.getBoundingClientRect(), vr2=voice.getBoundingClientRect(), ct2=ctl.getBoundingClientRect(), fl2=ct2.height?ct2.top-14:h2-100, db2=0;
-      [].forEach.call(doc.querySelectorAll('.doc figcaption,.doc .frame'),function(e){ var r=e.getBoundingClientRect(); if(r.height) db2=Math.max(db2,r.bottom); }); if(!db2) db2=h2*0.6;
-      var l2=Math.max(cr2.right,vr2.width?vr2.right:0)+40, r2=Math.max(l2+200,w2-28-Math.min(w2*0.40,640)-40);
-      var t2=Math.min(Math.max(db2+30,h2*0.5),fl2-220);   // records not laid out yet (a jump, images loading) never push the place off the bottom
-      return {tl:[Math.round(l2),Math.round(t2)],br:[Math.round(w2-r2),Math.round(h2-fl2+70)]}; }
     if(s.mapBox==='tr'&&!PHONE()){ var w1=W(), h1=H(), cr1=cap.getBoundingClientRect(), x0=cr1.right+30+(w1-cr1.right-54)*0.44; return {tl:[Math.round(x0),70],br:[24,Math.round(h1*0.56)]}; }
     if(s.stack&&s.bounds){ var w=W(), h=H(), cr0=cap.getBoundingClientRect(), ct=ctl.getBoundingClientRect(), fl=ct.height?ct.top-14:h-100, dbot=0;
       [].forEach.call(doc.querySelectorAll('.doc figcaption,.doc .frame'),function(e){ var r=e.getBoundingClientRect(); if(r.height) dbot=Math.max(dbot,r.bottom); }); if(!dbot) dbot=h*0.64;
       var cs=[{l:cr0.right+30,t:dbot+20,r:w-24,b:fl},{l:30,t:84,r:cr0.right,b:cr0.top-16}], bb=L.latLngBounds(s.bounds), best=null, bz=-99;
-      var lf=doc.querySelector('figure[data-lead]'); if(lf&&doc.classList.contains('strow2')){ var lr=lf.getBoundingClientRect(); if(lr.width) cs.push({l:lr.right+(loopSmall()?100:30),t:60,r:w-24,b:lr.bottom}); }   // beside the top record, when it leaves room (Budapest)
+      var lf=doc.querySelector('figure[data-lead]'); if(lf&&doc.classList.contains('strow2')){ var lr=lf.getBoundingClientRect(); if(lr.width) cs.push({l:lr.right+30,t:60,r:w-24,b:lr.bottom}); }   // beside the top record, when it leaves room (Budapest)
       cs.forEach(function(c){ var cw=c.r-c.l, ch=c.b-c.t; if(cw<160||ch<110) return; var z=map.getBoundsZoom(bb,false,L.point(w-cw,h-ch)); if(z>bz){ bz=z; best=c; } });
       if(best) return {tl:[best.l,best.t],br:[w-best.r,h-best.b]}; }
     var top=150, bottom=Math.min(H()*0.42,360);
@@ -669,63 +650,11 @@
   var loupeT=[];
   function clearLoupe(){ loupeT.forEach(clearTimeout); loupeT=[]; $('dR').classList.remove('on'); [].forEach.call(doc.querySelectorAll('.mk,.mklist li'),function(b){ b.classList.remove('on','now'); }); }
   doc.addEventListener('load',function(e){ if(e.target.tagName==='IMG') setTimeout(layoutPins,60); },true);   // a photo that finishes loading re-places its names
-  // booth loop on Sam's 14-inch laptop (23 Oct 2026): what each highlighted box says, numbered, in a list right under its record,
-  // so no label sits on the writing. Built in loop mode only; road.css shows it (and hides the labels on the record) only on screens up to 1440x900.
-  // the booth loop on a laptop-sized screen (same media query as the block at the end of road.css): stacked records keep the panel's full width, so their captions and lists never narrow
-  function loopSmall(){ return MODE==='loop'&&!!window.matchMedia&&matchMedia('(min-width:760px) and (max-width:1440px) and (max-height:900px)').matches; }
-  // booth loop on the laptop (Sam, 23 Oct 2026): a record's caption is one short line, two at most; the sources are in Credits.
-  // The first sentence of each caption (never cut inside a quotation or after "No.", "U.S.", an initial); a few long ones are trimmed by hand
-  // to words of the caption itself. The full caption stays in data-full.
-  var LOOPCAP={
-    'birth#0':'Entry 81, Tiszabogdány birth register, 1929.',
-    'keleti#0':'The tracks under the iron roof where she ran after her mother’s train.',
-    'keleti#1':'Her great-aunt Cecilie Dikker (back row, center) and her family.',
-    'kiraly#1':'The belt Szerene kept for the rest of her life.',
-    'family#0':'Her mother, under her maiden name.',
-    'family#1':'Yad Vashem, list of Jews of the Rachov district who perished.',
-    'rehmsdorf#1':'Lajos’s Buchenwald card, the same “11.6. Wille”, and the same stamp.',
-    'reitzenhain#0':'Memorial board, put up in 2010.',
-    'budapest45#1':'Michal’s form, Budapest, June 1945, signed in his own hand.',
-    'prien#1':'Forty years later: Helen, Ibi and Zahava.',   // the title says Los Angeles, 1980s
-    'museum#1':'My brother Adam at the Kloster Indersdorf museum.'
-  };
-  function firstSentence(h){
-    var ABBR=/(?:^|[\s(])(?:No|U\.S|Mr|Mrs|Dr|St|p|pp|Sz|ivk|vol|ca|c)$/i, re=/([.!?…])([”"’]?)(\s+)(?=[A-Z“"<À-Ž])/g, m;
-    while((m=re.exec(h))){
-      var before=h.slice(0,m.index), last=before.split(/[\s>]/).pop();
-      if(m[1]==='.'&&(ABBR.test(before)||/^[A-Z]$/.test(last))) continue;
-      var cut=h.slice(0,m.index+1+m[2].length);
-      if((cut.match(/“/g)||[]).length>(cut.match(/”/g)||[]).length) continue;   // never stop inside a quotation
-      return cut;
-    }
-    return h;
-  }
-  function loopCaptions(s){
-    [].forEach.call(doc.querySelectorAll('figure'),function(fg,fi){ var c=fg.querySelector('figcaption'); if(!c||!c.innerHTML) return;
-      c.setAttribute('data-full',c.innerHTML); c.innerHTML=LOOPCAP[s.id+'#'+fg.getAttribute('data-i')]||firstSentence(c.innerHTML); });
-  }
-  function loopLegend(s){
-    doc.setAttribute('data-stop',s&&s.id||'');
-    [].forEach.call(doc.querySelectorAll('.mk'),function(m){ m.dataset.c0=m.className; });   // each box's own label spot, for loopRetag   // lets road.css tune a stop for the laptop
-    if(loopSmall()) loopCaptions(s);
-    var KEYED={prien:0,reitzenhain:0};   // only these records get a numbered list: the Prien DP card (nine labels) and the Reitzenhain memorial board (long notes); every other label stays on the record, at the words (Sam, 23 Oct 2026)
-    if(!s||!(s.id in KEYED)) return;
-    [].forEach.call(doc.querySelectorAll('figure'),function(fg,fi){
-      if(+fg.getAttribute('data-i')!==KEYED[s.id]) return; fg.classList.add('haskey');
-      var fr=fg.querySelector('.frame'), ms=[].filter.call(fg.querySelectorAll('.mk'),function(m){ return !m.classList.contains('headpin')&&m.querySelector('.tag'); });
-      if(!fr||!ms.length) return;
-      var ol=document.createElement('ol'); ol.className='lgd';
-      ms.forEach(function(m,i){ m.setAttribute('data-n',i+1); var li=document.createElement('li'); li.setAttribute('data-k',m.getAttribute('data-k'));
-        li.className=m.classList.contains('true')?'true':(m.classList.contains('false')?'false':'');
-        li.innerHTML='<b>'+(i+1)+'</b><span>'+m.querySelector('.tag').innerHTML+'</span>'; ol.appendChild(li); });
-      fr.parentNode.insertBefore(ol,fr.nextSibling);
-    });
-  }
   function renderDoc(s){
     clearLoupe(); doc.classList.remove('in'); setTimeout(fitDoc,60);
     var m=s.media||[]; document.body.classList.toggle('has-doc',!!m.length); document.body.classList.toggle('has-stack',!!(s.stack&&m.length)); doc.dataset.leadw=s.leadW||''; document.body.classList.toggle('drawn-on',!!(m[0]&&m[0].html));
     if(!m.length){ $('dF').innerHTML=''; return; }
-    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.docSmall?' petite':'')+(s.wideDoc?' wide':'')+(s.bigPhotos?' big':'')+' at-'+s.id+(s.row?' row':'')+(s.stack?' stack':'')+(!s.row&&!s.stack&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
+    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.docSmall?' petite':'')+(s.wideDoc?' wide':'')+(s.row?' row':'')+(s.stack?' stack':'')+(!s.row&&!s.stack&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
     // a title over a group of records sits above them all, not inside the first one (Sam, 8 Oct 2026)
     if(s.docTitle){ $('dK').innerHTML='<span class="rk">'+s.docTitle+'</span>'; $('dK').classList.add('titled'); }
     else { $('dK').classList.remove('titled'); $('dK').textContent=s.voice&&s.witness?'The record':(s.part===2?'The record':''); }
@@ -739,7 +668,6 @@
       var fl=s.row&&d.w&&d.h?' style="flex:'+(d.w/d.h).toFixed(3)+' 1 0"':(d.grow?' style="flex-grow:'+d.grow+'"':'');
       return '<figure data-i="'+i+'"'+fl+(d.small?' class="lesser"':'')+(d.side?' data-side="1"':'')+(d.lead?' data-lead="1"':'')+'>'+(d.kt?'<div class="rk">'+d.kt+'</div>':'')+'<button type="button" class="frame" data-src="'+d.src+'" aria-label="Enlarge: '+alt+'"><span class="sheet"><img onload="window.__fitDoc&&__fitDoc()" src="'+d.src+'" alt="'+alt+'" width="'+d.w+'" height="'+d.h+'" decoding="async" onerror="this.closest(\'figure\').style.display=\'none\'">'+marksHtml(d)+'</span></button><figcaption>'+d.c+'</figcaption></figure>';
     }).join('')+(s.lessonInDoc&&s.lesson?'<div class="doclesson">'+s.lesson+'</div>':'')+((s.media||[]).some(function(d){ return (d.regions||[]).some(function(r){ return r.kind==='true'||r.kind==='false'; }); })?'<div class="mkkey"><span class="t">green: true</span><span class="f">red: wrong on the record</span><span class="g">gold: what it says</span></div>':'')+(s.groupNotes?'<div class="grpnote" id="gN" aria-live="polite"></div>':'');
-    if(MODE==='loop') loopLegend(s);   // booth loop: box meanings listed under each record (23 Oct 2026)
   }
   // each highlighted field: a box on the record with what it means written beside it (gold; green when the
   // field is true, red and struck through when it is false). They stay on as they build up, like the workshop.
@@ -790,7 +718,7 @@
       doc.classList.remove('g2','strow','strow2');
       var CW=parseFloat(doc.dataset.leadw)||0.68, wt=function(i){ return i===0?CW:1; }, sumA=0, sumP=0; ims.forEach(function(im,i){ sumA+=wt(i)*ar(im); if(i) sumP+=ar(im); });
       var Hrow=Math.min((boxW-4-GAP*(ims.length-1))/sumA, avail-60);
-      var A2=avail-150, H1=Math.min(A2*((doc.classList.contains('at-visit2005')||doc.classList.contains('at-bremen'))?0.72:0.56),(boxW-4-GAP*(rest.length-1))/sumP), Hc=Math.min(A2-H1,(boxW-4)/a0);
+      var A2=avail-150, H1=Math.min(A2*0.56,(boxW-4-GAP*(rest.length-1))/sumP), Hc=Math.min(A2-H1,(boxW-4)/a0);
       var two=H1>Hrow*1.04;   // a narrower screen: the card on top, the photographs beneath it, whichever shows the photographs bigger (Sam)
       doc.classList.add(two?'strow2':'strow');
       var hs=function(i,f){ return Math.floor(two?(i?H1:Hc)*f:Hrow*wt(i)*f); };
@@ -800,10 +728,10 @@
         var over=low-(floor-14); if(over<=1) break; f*=Math.max(.5,1-(over+4)/Math.max(1,low-top));
       }
       if(two){ var bw2=Math.max(ims[0].offsetWidth, rest.reduce(function(t,im){ return t+im.offsetWidth; },0)+GAP*(rest.length-1))+4;
-        if(bw2<boxW-2&&!loopSmall()){ doc.style.setProperty('width',Math.ceil(bw2)+'px','important'); doc.style.setProperty('left',Math.round(boxL+(boxW-bw2)/2)+'px','important'); doc.style.setProperty('right','auto','important'); }
+        if(bw2<boxW-2){ doc.style.setProperty('width',Math.ceil(bw2)+'px','important'); doc.style.setProperty('left',Math.round(boxL+(boxW-bw2)/2)+'px','important'); doc.style.setProperty('right','auto','important'); }
         layoutPins(); return; }
       var bw=0; ims.forEach(function(im){ bw+=im.offsetWidth; }); bw+=GAP*(ims.length-1)+4;
-      if(bw<boxW-2&&!loopSmall()){ doc.style.setProperty('width',Math.ceil(bw)+'px','important'); doc.style.setProperty('left',Math.round(boxL+(boxW-bw)/2)+'px','important'); doc.style.setProperty('right','auto','important'); }
+      if(bw<boxW-2){ doc.style.setProperty('width',Math.ceil(bw)+'px','important'); doc.style.setProperty('left',Math.round(boxL+(boxW-bw)/2)+'px','important'); doc.style.setProperty('right','auto','important'); }
       layoutPins(); return;
     }
     if(doc.classList.contains('row')&&ims.length>1){
@@ -814,8 +742,6 @@
       var gaps=12*(ims.length-1)+4, top0=ims[0].getBoundingClientRect().top;
       var H=Math.floor(Math.min((doc.clientWidth-gaps)/sumA, limit-top0-70));
       ims.forEach(function(im){ im.style.height=Math.max(innerWidth<760?40:80,H*wt(im))+'px'; im.style.width='auto'; im.style.maxHeight='none'; var f=im.closest('figure'); if(f) f.style.setProperty('--fw',im.offsetWidth+'px'); });
-      if(MODE==='loop') for(var rp=0;rp<4;rp++){ var lowR=0; [].forEach.call(doc.querySelectorAll('.doc figure,.doc .doclesson'),function(f){ lowR=Math.max(lowR,f.getBoundingClientRect().bottom); });   // booth loop (23 Oct 2026): the list under each record never pushes it past the bottom
-        var ovR=lowR-limit; if(ovR<=2) break; var kR=Math.max(.4,1-(ovR+4)/Math.max(1,lowR-top0)); ims.forEach(function(im){ im.style.height=Math.floor(im.offsetHeight*kR)+'px'; var f=im.closest('figure'); if(f) f.style.setProperty('--fw',im.offsetWidth+'px'); }); }
       layoutPins(); return;   // records side by side: still place the names (Cecilie, Szerene)
     }
     for(var pass=0;pass<3;pass++){
@@ -882,58 +808,17 @@
   },true);
   // a new label never sits on one already showing (Sam, 8 Oct 2026): try below its box, then the other side
   // a label never sits on another label or on another highlighted box (Sam, 8 Oct 2026: "make sure nothing overlaps")
-  function ovGap(a,b){ return a.left<b.right+4&&a.right>b.left-4&&a.top<b.bottom+4&&a.bottom>b.top-4; }   // booth loop: two labels keep a 4px gap
   function ov(a,b){ return a.left<b.right-1&&a.right>b.left+1&&a.top<b.bottom-1&&a.bottom>b.top+1; }
   function hits(t,m,relax){ var r=t.getBoundingClientRect();
-    var EM=loopSmall()?12:2;   // booth loop: a label keeps 12px from the screen edge (23 Oct 2026)
-    if(r.left<EM||r.right>innerWidth-EM||r.top<EM) return true;   // off the screen counts as a collision
-    if(EM===12&&mapWords().some(function(q){ return ov(r,q); })) return true;   // booth loop: never over a place name on the map
+    if(r.left<2||r.right>innerWidth-2||r.top<2) return true;   // off the screen counts as a collision
     if([].some.call(document.querySelectorAll('.cap:not(.out),.voice.playing,.year,.brand'),function(k){ return getComputedStyle(k).opacity!=='0'&&ov(r,k.getBoundingClientRect()); })) return true;   // never on the story, her words, the year or the title (review, 14 Oct 2026)
     var fr=m.closest('.frame'); if(fr&&!relax){ var q=fr.getBoundingClientRect(); if(r.left<q.left-4||r.right>q.right+4||r.top<q.top-2||r.bottom>q.bottom+2) return true; }   // stays on its own record: never over the next one or the caption under it (Sam)
     return [].some.call(doc.querySelectorAll('.mk.on'),function(o){
       if(o!==m&&ov(r,o.getBoundingClientRect())) return true;
-      var ot=o.querySelector('.tag'); return ot&&ot!==t&&getComputedStyle(ot).opacity!=='0'&&(EM===12?ovGap:ov)(r,ot.getBoundingClientRect()); })
+      var ot=o.querySelector('.tag'); return ot&&ot!==t&&getComputedStyle(ot).opacity!=='0'&&ov(r,ot.getBoundingClientRect()); })
       || [].some.call(doc.querySelectorAll('.rk'),function(k){ var rg=document.createRange(); rg.selectNodeContents(k); return ov(r,rg.getBoundingClientRect()); })   // may touch a title's box, never its words (Sam)
       || [].some.call(doc.querySelectorAll('figcaption,.mkkey,.doclesson,.grpnote,.frame'),function(k){ if(k===fr||k.contains(m)) return false; return ov(r,k.getBoundingClientRect()); }); }   // never on a caption, a key, or another record (Sam: "hard to read")
   var SPOTS=['','below','right','below right','side-r','side-l','side-r below','side-l below'];
-  // booth loop (Sam, 23 Oct 2026): when no spot is free, take the one that costs least. Off the screen or on the story, her words,
-  // the year or the title is worst; then on another label; then over another highlighted box; then stepping off its own record.
-  // the place names written on the map (Király utca 12, Buda, ...): a label stepping off its record must not cover them (booth loop, 23 Oct 2026)
-  function mapWords(){ return [].filter.call(document.querySelectorAll('.leaflet-marker-pane *'),function(e){
-      for(var i=0;i<e.childNodes.length;i++){ var c=e.childNodes[i]; if(c.nodeType===3&&c.nodeValue.trim()) return true; } return false; })
-    .filter(function(e){ return getComputedStyle(e).visibility!=='hidden'&&+getComputedStyle(e).opacity>0.05; })
-    .map(function(e){ return e.getBoundingClientRect(); }).filter(function(q){ return q.width&&q.height; }); }
-  function loopPlace(t,m,keep){
-    var best=null, bs=1e9, fr=m.closest('.frame');
-    var panels=[].filter.call(document.querySelectorAll('.cap:not(.out),.voice.playing,.year,.brand,.road,.ctl'),function(k){ return getComputedStyle(k).opacity!=='0'; }).map(function(k){ return k.getBoundingClientRect(); });
-    var words=mapWords();
-    function cost(){ var r=t.getBoundingClientRect(), c=0;
-      if(r.left<12||r.right>innerWidth-12||r.top<12||r.bottom>innerHeight-12) c+=1000;
-      panels.forEach(function(q){ if(ov(r,q)) c+=1000; });
-      words.forEach(function(q){ if(ov(r,q)) c+=250; });
-      [].forEach.call(doc.querySelectorAll('.mk.on'),function(o){ if(o===m) { if(ov(r,o.getBoundingClientRect())) c+=150; return; }   // never on the words it explains
-        var ot=o.querySelector('.tag'); if(ot&&getComputedStyle(ot).display!=='none'&&getComputedStyle(ot).opacity!=='0'&&ovGap(r,ot.getBoundingClientRect())) c+=300;
-        if(ov(r,o.getBoundingClientRect())) c+=30; });
-      [].forEach.call(doc.querySelectorAll('figcaption,.rk,.lgd,.frame'),function(k){ if(k===fr||k.contains(m)) return; if(ov(r,k.getBoundingClientRect())) c+=(k.classList.contains('frame')?1000:200); });
-      if(fr){ var q=fr.getBoundingClientRect(); if(r.left<q.left-4||r.right>q.right+4||r.top<q.top-2||r.bottom>q.bottom+2) c+=10; }
-      return c; }
-    for(var i=0;i<SPOTS.length;i++) for(var k=-6;k<=6;k++){
-      m.className=keep+(SPOTS[i]?' '+SPOTS[i]:''); t.style.marginTop=(k*12)+'px';
-      var c=cost()+Math.abs(k); if(c<bs){ bs=c; best=[m.className,t.style.marginTop]; } if(bs===0) break; }
-    if(best){ m.className=best[0]; t.style.marginTop=best[1]; }
-  }
-  // booth loop: once the records have their final size, every label starts again from its own spot and is placed in order,
-  // so the result is the same however the reveals were timed (23 Oct 2026)
-  function loopRetag(){
-    [].forEach.call(doc.querySelectorAll('.mk.on'),function(o){ if(o.classList.contains('headpin')) return; var now=o.classList.contains('now');
-      if(o.dataset.c0!=null) o.className=o.dataset.c0+' on'+(now?' now':''); var t=o.querySelector('.tag'); if(t) t.style.marginTop=''; });
-    for(var p=0;p<2;p++) [].forEach.call(doc.querySelectorAll('.mk.on'),function(o){ untangle(o); });
-    // last sweep: any label still touching another label takes the least-bad spot with the others fixed
-    for(var q=0;q<3;q++){ var moved=false, ms=[].filter.call(doc.querySelectorAll('.mk.on:not(.headpin)'),function(o){ var t=o.querySelector('.tag'); return t&&getComputedStyle(t).display!=='none'; });
-      ms.forEach(function(o,i){ var r=o.querySelector('.tag').getBoundingClientRect();
-        if(ms.some(function(u,j){ return j<i&&ovGap(r,u.querySelector('.tag').getBoundingClientRect()); })){ loopPlace(o.querySelector('.tag'),o,o.className.split(/\s+/).filter(function(c){ return ['below','right','side-r','side-l'].indexOf(c)<0; }).join(' ')); moved=true; } });
-      if(!moved) break; } }   // booth loop: labels placed again once the records have their final size
-  if(MODE==='loop') window.__loopRetag=loopRetag;
   function untangle(m){
     if(m.classList.contains('headpin')) return;   // placed by layoutPins
     var t=m.querySelector('.tag'); if(!t||!hits(t,m)) return;
@@ -947,7 +832,6 @@
     t.style.marginTop='';
     // a record too thin to hold its labels: a label may step off the record, but never onto a title or another label
     for(var j=0;j<SPOTS.length;j++){ m.className=keep+(SPOTS[j]?' '+SPOTS[j]:''); if(!hits(t,m,true)) return; }
-    if(loopSmall()){ loopPlace(t,m,keep); return; }   // booth loop: the least-bad spot, never off the screen or on a panel (23 Oct 2026)
     m.className=keep;
   }
   // phones show one record at a time, full size (Sam, 9 Oct 2026: before, a stop's second record never showed on a phone).
@@ -992,7 +876,6 @@
     if(b&&PHONE()){ var tg=b.querySelector('.tag'), fw=fig.querySelector('.frame').clientWidth; if(tg&&fw) tg.style.maxWidth=Math.max(90,fw-6)+'px'; }   // phones: never wider than the record
     if(!keepOthers) [].forEach.call(doc.querySelectorAll('.mklist li.now'),function(l){ l.classList.remove('now'); });
     var li=doc.querySelector('.mklist li[data-i="'+x.i+'"][data-k="'+kk+'"]'); if(li){ li.classList.add('on','now'); var ol=li.parentNode; if(ol.scrollHeight>ol.clientHeight) ol.scrollTop=li.offsetTop-ol.offsetTop; }
-    if(b&&loopSmall()){ setTimeout(loopRetag,750); setTimeout(loopRetag,1600); }   // booth loop: placed again once the box has finished growing in (its scale animation threw the first placement off)
     if(b) requestAnimationFrame(function(){ for(var p=0;p<2;p++){ untangle(b); [].forEach.call(doc.querySelectorAll('.mk.on'),function(o){ if(o!==b) untangle(o); }); } });   // two passes: a new box can land under an earlier label
     if(keepOthers) return;
     // the reader: the same region, enlarged, with what it says
@@ -1007,19 +890,17 @@
     var R=$('dR'); R.classList.remove('on','rest'); void R.offsetWidth; R.classList.add('on');
   }
   function preload(s){ if(!s) return; (s.media||[]).forEach(function(m){ if(m.src){ var i=new Image(); i.src=m.src; } }); if(s.voice){ var a=new Audio(); a.preload='auto'; a.src=CLIP(s.voice.clip); } }
-  function CLIP(c){ return DATA.CLIPS+c+'.mp3?v=20261024b'; }   // new clip endings (Sam, 24 Oct 2026)
+  function CLIP(c){ return DATA.CLIPS+c+'.mp3'; }
 
   /* ---------- sound ---------- */
-  var narr=new Audio(); narr.preload='auto'; if(AUTO) narr.muted=true;
+  var narr=new Audio(); narr.preload='auto';
   var hv=new Audio(); hv.preload='auto';
   var music=new Audio(); music.loop=true; music.preload='none'; music.volume=0;
-  var MUSIC=DATA.MUSIC||null, MUSIC_VOL=0.34, MUSIC_DUCK=0.15,   /* workshop too: the music stays under my live voice (Sam, 17 Oct 2026) */ HELEN_DUCK=0.08, musicFade=null, talking=0;
+  var MUSIC=DATA.MUSIC||null, MUSIC_VOL=0.34, MUSIC_DUCK=0.15, HELEN_DUCK=0.08, musicFade=null, talking=0;
   function fadeMusic(){
     if(QUIET||!MUSIC) return;
-    if(AUTO&&atHere){ clearInterval(musicFade); try{ music.pause(); }catch(e){} return; }   // workshop: You are here is quiet (Sam, 14 Oct 2026)
-    if(music.paused&&intro&&!intro.hidden&&!intro.classList.contains('started')) return;   // no music on the opening card until the first press, when Helen speaks (Sam, 14 Oct 2026)
     clearInterval(musicFade);
-    var tgt=talking===2?HELEN_DUCK:talking?MUSIC_DUCK:(LIVE&&!moving)?0:MUSIC_VOL;
+    var tgt=talking===2?HELEN_DUCK:talking?MUSIC_DUCK:MUSIC_VOL;
     if(music.paused){ if(!music.getAttribute('src')) music.src=MUSIC; var pr=music.play(); if(pr&&pr.catch) pr.catch(function(){}); credit.textContent='Music: Dvořák, “Goin’ Home,” United States Air Force Band'; }
     musicFade=setInterval(function(){ var d=tgt-music.volume; if(Math.abs(d)<0.01){ music.volume=tgt; clearInterval(musicFade); return; } music.volume=Math.max(0,Math.min(1,music.volume+d*0.12)); },50);
   }
@@ -1030,20 +911,14 @@
   // Sam's recording for this stop; resolves when it ends (false if there is none)
   // Next steps through the speaking parts (Sam, 8 Oct 2026): my part, then Helen's, then the next place
   var skipPart=null;
-  var liveVoiceAt=0;
-  function nextPart(){ if(LIVE&&moving) return;   // a press while the map flies would skip a whole stop (review, 14 Oct 2026)
-    if(LIVE&&skipPart&&Date.now()-liveVoiceAt<1500) return;   // a double press must not cut Helen off as she starts
-    if(skipPart){ var f=skipPart; skipPart=null; f(); } else if(LIVE&&clickQ.length){ clickQ.shift()(); } else next(); }
-  function clickGate(){ return new Promise(function(r){ clickQ.push(r); }); }
+  function nextPart(){ if(skipPart){ var f=skipPart; skipPart=null; f(); } else next(); }
   function speak(s,g){
     return new Promise(function(res){
-      if(LIVE){ allWords(); res(true); return; }
       if(QUIET||!s.audio){ allWords(); res(false); return; }
       var done=false; function fin(ok){ if(done) return; done=true; skipPart=null; narr.ontimeupdate=narr.onended=narr.onerror=null; $('cDot').classList.remove('on'); talking=0; fadeMusic(); if(!ok) allWords(); res(ok); }
       skipPart=function(){ try{ narr.pause(); }catch(e){} allWords(); fin(true); };
       narr.onerror=function(){ fin(false); };
-      if(AUTO) allWords();   // workshop: Sam talks over the muted take at her own pace, so her words show all at once, no highlight (Sam, 15 Oct 2026)
-      narr.ontimeupdate=function(){ if(!alive(g)) return fin(false); if(!AUTO&&narr.duration) syncWords(words,narr.currentTime/narr.duration,titleShare); };
+      narr.ontimeupdate=function(){ if(!alive(g)) return fin(false); if(narr.duration) syncWords(words,narr.currentTime/narr.duration,titleShare); };
       narr.onended=function(){ syncWords(words,1.1,0); fin(true); };
       narr.src=s.audio+'.mp3';
       var pr=narr.play(); if(pr&&pr.catch) pr.catch(function(){ fin(false); });
@@ -1054,16 +929,9 @@
   function showVoice(v,s,keep){
     $('vK').textContent=T('In her own words')+' · '+v.when+(s&&s.witness?' · '+T('her memory'):'');
     $('vT').innerHTML=(keep?'<span class="prevq">'+keep+'</span>':'')+wordsHtml('“'+v.text+'”'); $('vN').textContent=v.note||'';
-    voice.classList.remove('out'); document.body.classList.add('has-voice'); if(AUTO) fitVoiceWs();
+    voice.classList.remove('out'); document.body.classList.add('has-voice');
     delete witness.dataset.hid; witness.classList.toggle('on',!!(s&&s.witness&&s.media&&s.media.length)); setTimeout(clearWitness,900); setTimeout(clearWitness,2500);
   }
-  // workshop talk only (Sam, 24 Oct 2026: "her words are cut off" at David): the whole quote always shows, never clipped or scrolled; a long one steps its type down until the box clears the story panel, the year and the road
-  function fitVoiceWs(){ var bq=voice.querySelector('blockquote'); if(!bq||PHONE()) return; bq.style.fontSize=''; voice.style.maxHeight='none'; voice.style.overflow='visible';
-    var fs=parseFloat(getComputedStyle(bq).fontSize)||24, h=H(), rd=document.querySelector('.road'), yr=document.querySelector('.year');
-    function bad(){ var v=voice.getBoundingClientRect(), c=cap.classList.contains('out')?null:cap.getBoundingClientRect(), r=rd&&rd.getBoundingClientRect(), y=yr&&yr.getBoundingClientRect();
-      var hit=function(q){ return q&&q.width&&v.left<q.right&&v.right>q.left&&v.top<q.bottom+12&&v.bottom>q.top-12; };
-      return v.top<56||v.bottom>(r&&r.height?r.top-12:h-70)||hit(c)||hit(y); }
-    while(bad()&&fs>15){ fs-=1; bq.style.fontSize=fs+'px'; } }
   function hideVoice(){ voice.classList.add('out'); document.body.classList.remove('has-voice'); witness.classList.remove('on'); delete witness.dataset.hid; }
   function helenSays(v,s,g,keep){
     return new Promise(function(res){
@@ -1082,7 +950,7 @@
       if(v.cues) v.cues.forEach(function(c){ c.done=0; });
       hv.src=CLIP(v.clip);
       var pr=hv.play(); if(pr&&pr.catch) pr.catch(fin);
-      voice.classList.add('playing'); talking=2; liveVoiceAt=Date.now(); fadeMusic(); post('playing');
+      voice.classList.add('playing'); talking=2; fadeMusic(); post('playing');
     });
   }
   function readMs(s){ var n=((s.t||'')+' '+(s.p||'')).length; return Math.max(6500,2500+n*58); }
@@ -1095,8 +963,8 @@
 
   async function show(n,jump){
     n=Math.max(0,Math.min(STOPS.length-1,n));
-    var g=++gen; clearAdv(); skipPart=null; clickQ=[]; if(LIVE){ moving=true; } stopAudio(); clearLoupe(); hideVoice(); leaveHere(); document.body.classList.remove('stop-done');
-    var prev=cur, s=STOPS[n]; cur=n; post(); tell({at:'stop',n:n}); try{ window.dispatchEvent(new CustomEvent('road-stop',{detail:{s:s,n:n}})); }catch(_e){}   /* Robin's talk */
+    var g=++gen; clearAdv(); skipPart=null; stopAudio(); clearLoupe(); hideVoice(); leaveHere(); document.body.classList.remove('stop-done');
+    var prev=cur, s=STOPS[n]; cur=n; post(); tell({at:'stop',n:n});
     if(jump||n!==prev+1) rebuildTo(n);
     paintRoad(n);
     cap.classList.add('out'); doc.classList.remove('in'); setRing({ring:null});
@@ -1133,7 +1001,6 @@
     document.documentElement.style.setProperty('--capH',(cap.offsetHeight||200)+'px');   // drawn documents sit above the caption
     if(s.voice){ $('vT').innerHTML=wordsHtml('“'+s.voice.text+'”'); $('vN').textContent=s.voice.note||''; }   // laid out (still hidden) so the map can frame around it
     await settle(s); if(!alive(g)) return;
-    if(LIVE){ setTimeout(function(){ if(alive(g)){ moving=false; fadeMusic(); } },600); }
     setRing(s);
     buildBoard(n,true);
     if(s.fresh){ [].forEach.call(document.querySelectorAll('.leaflet-marker-pane .light'),function(e){ e.classList.add('old'); });
@@ -1145,22 +1012,20 @@
     },(1800+Math.min(k*12,4000))*(FAST?0.3:1)); });
     (s.threads||[]).forEach(function(t,k){ setTimeout(function(){ if(alive(g)) addThread(t); },600+k*700); });
     cap.classList.remove('out');
-    if(s.media&&s.media.length){ if(LIVE){ clickQ.push(function(){ if(!alive(g)) return; void doc.offsetWidth; doc.classList.add('in'); fitDoc(); setTimeout(fitDoc,400); runLoupe(s,g,9000); }); } else { void doc.offsetWidth; doc.classList.add('in'); fitDoc(); setTimeout(fitDoc,400); if(MODE==='loop') setTimeout(function(){ if(alive(g)){ fitDoc(); loopRetag(); } },1300); } } setTimeout(function(){ clearLights(); clearWitness(); },500); setTimeout(function(){ clearLights(); clearWitness(); wheelNoteClear(); },1600);   // the records come up with the caption, at once (Sam)
+    if(s.media&&s.media.length){ void doc.offsetWidth; doc.classList.add('in'); fitDoc(); setTimeout(fitDoc,400); } setTimeout(function(){ clearLights(); clearWitness(); },500); setTimeout(function(){ clearLights(); clearWitness(); wheelNoteClear(); },1600);   // the records come up with the caption, at once (Sam)
     preload(STOPS[n+1]);
 
     // her voice and mine, in the stop's order
     var t0=Date.now(), estimate=(s.audio?readMs(s):0)+(s.voice?s.voice.text.length*55:0);
-    if(!LIVE) runLoupe(s,g,Math.max(9000,estimate));   // workshop: the records, and their notes, come up on a press
+    runLoupe(s,g,Math.max(9000,estimate));
     await gate(); if(!alive(g)) return;
-    if(LIVE&&s.voice){ var vg=clickGate(); clickQ[clickQ.length-1].voice=1; await vg; if(!alive(g)) return; }
-    if(s.voice&&s.voiceFirst){ cap.classList.add('dim'); await helenSays(s.voice,s,g); if(!alive(g)) return; if(s.voice2&&!s.voiceSplit){ await wait(400); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; } cap.classList.remove('dim'); await wait(700+(MODE==='loop'&&s.id==='birth'?1000:0)); setEra(eraFor(s)); }   // booth loop, birth: a second more after her last word, “Ukraine”, before my voice (Sam, 24 Oct 2026)
+    if(s.voice&&s.voiceFirst){ cap.classList.add('dim'); await helenSays(s.voice,s,g); if(!alive(g)) return; if(s.voice2){ await wait(400); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; } cap.classList.remove('dim'); await wait(700); setEra(eraFor(s)); }
     await gate(); if(!alive(g)) return;
     var ok=await speak(s,g); if(!alive(g)) return;
     if(!ok) await wait(Math.max(0,readMs(s)-(Date.now()-t0)));
     if(!alive(g)) return;
-    if(s.voice2&&s.voiceFirst&&s.voiceSplit){ if(!LIVE) await wait(900); await gate(); if(!alive(g)) return; cap.classList.add('dim'); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; cap.classList.remove('dim'); }   // workshop Király: Helen, then me, then Helen again (Sam, 24 Oct 2026)
-    if(s.voice&&!s.voiceFirst){ if(!LIVE) await wait(900); await gate(); if(!alive(g)) return; cap.classList.add('dim'); await helenSays(s.voice,s,g); if(!alive(g)) return;
-      if(s.voice2){ if(s.voice2Gate){ await gate(); if(!alive(g)) return; } else await wait(400); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; }   // a second clip after the first (Sam)
+    if(s.voice&&!s.voiceFirst){ await wait(900); await gate(); if(!alive(g)) return; cap.classList.add('dim'); await helenSays(s.voice,s,g); if(!alive(g)) return;
+      if(s.voice2){ await wait(400); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; }   // a second clip after the first (Sam)
       cap.classList.remove('dim'); }
     schedule(3200);
   }
@@ -1174,17 +1039,10 @@
     '<div class="in"><div class="wheelbig">'+wheelSvg(130)+'</div>'+
     '<h1 class="title vh">Helen’s Road</h1>'+   // visually hidden: the button already says it (Sam)
     '<blockquote><span class="ln">'+wordsHtml(HE_ON?'”לכולנו יש סיפורים לספר.':'“We all have stories to tell.')+'</span><span class="ln">'+(HE_ON?wordsHtml('אתם יודעים, לכל אחד מאיתנו יש איזה סיפור לספר.“'):'<span class="seg">'+wordsHtml('You know, all of us have some kind')+'</span> <span class="seg">'+wordsHtml('of story to tell.”')+'</span>')+'</span></blockquote>'+
-    '<div class="attr">Helen Landó Helman, my mother</div>'+
+    '<div class="attr">Helen Landó Helmán, my grandmother</div>'+
     '<div class="go"><button type="button" class="play" id="goStart">'+IC.play+'<span>Follow Helen’s road</span></button></div>'+
     '<div class="help"><button type="button" class="quiet" id="goQuiet">or watch without sound</button>'+(window.HE_MAP?' <span class="dotsep">·</span> <button type="button" class="quiet" id="goLang" lang="'+(HE_ON?'en':'he')+'">'+(HE_ON?'English':'בעברית')+'</button>':'')+'</div>'+
     '<div class="sig"><img src="'+DATA.INTRO.signature+'" alt="The signature of Zacharias Helman, her father" width="939" height="171"><div>Zacharias Helman, her father · Buchenwald, 2 June 1944</div></div></div>');
-  if(AUTO){ intro.classList.add('ws');   // workshop: the deck has introduced me, so the card shows what to notice instead of the buttons (Sam, 14 Oct 2026)
-    var wsn=document.createElement('div'); wsn.className='notice'; wsn.innerHTML='<div class="nk">A case study · what to notice</div><ul>'+
-      '<li><b>Top right</b> the year, and how old she is</li>'+
-      '<li><b>The borders</b> change with each year; the trains run on the rail lines of 1944</li>'+
-      '<li><b>The lines</b> solid documented · dashed probable · dotted unknown</li>'+
-      '<li><b>The colors are people</b> <i class="cg">gold</i> Helen · <i class="cr">red</i> her family’s deportation · <i class="cb">blue</i> her father and cousins · <i class="cp">purple</i> her uncle David</li></ul>';
-    intro.querySelector('.in').appendChild(wsn); }
   var introClip=new Audio(); introClip.preload='auto'; introClip.src=DATA.INTRO.clip;   // loaded with the page, so Start answers at once
   function introParts(){ var l=intro.querySelectorAll('.ln'); return [l[0],l[1],intro.querySelector('.attr'),intro.querySelector('.sub'),intro.querySelector('.sig'),null,intro.querySelector('.face'),intro.querySelector('.promise')]; }
   function openingCard(){
@@ -1194,13 +1052,13 @@
     intro.hidden=false; intro.classList.remove('out','started'); document.body.classList.add('at-intro');
     introParts().forEach(function(x){ if(x) x.classList.add('on'); });
     try{ map.fitBounds([[45.2,8],[54.5,26.5]],{padding:[40,40],animate:false}); }catch(e){}
-    paintCtl(); tell({at:'intro'});   // the presenter shows the launch notes while the opening card is up (Sam, 15 Oct 2026)
+    paintCtl();
   }
   // iOS lets an audio element play later only if it first played inside a click
   // phones: start each player silently inside the tap, then stop it at once; it stays silent until a stop really uses it
   // (fix, 8 Oct 2026: on phones the unmute ran before the pause, so Sam's and Helen's first clips played together)
   function unlock(a,src){ try{ if(!a.getAttribute('src')) a.src=src; a.dataset.unlocking='1'; a.muted=true; a.volume=0;
-    var u=a.src, done=function(){ if(a.src===u){ try{ a.pause(); a.currentTime=0; }catch(e){} } delete a.dataset.unlocking; a.volume=1; a.muted=muted||(AUTO&&a===narr); };   // a real clip that started meanwhile keeps playing
+    var u=a.src, done=function(){ if(a.src===u){ try{ a.pause(); a.currentTime=0; }catch(e){} } delete a.dataset.unlocking; a.volume=1; a.muted=muted; };   // a real clip that started meanwhile keeps playing
     var pr=a.play(); if(pr&&pr.then) pr.then(done,done); else done(); }catch(e){} }
   async function begin(){
     applyMute(); if(!introClip.getAttribute('src')) introClip.src=DATA.INTRO.clip;
@@ -1247,15 +1105,15 @@
           ['Yiddel Helman','4','brother','Auschwitz, May 1944'],['Feige Dikker Helman','77','grandmother','Auschwitz, May 1944'],['Cecilie Dikker M\u00fcller','','great-aunt, also written Petranker','murdered on arrival at the camps'],
           ['Miksa Helman','','uncle','Auschwitz, May 1944'],['Hudia Petranker Helman','','aunt, also written Dikker','Auschwitz, May 1944'],['Moshe Helman','','cousin','labor service, 1943'],
           ['David Helman','40','uncle','Stalingrad, 1943'],['Cecilie Helman','2','sister','died in 1940','last']],
-    tab2:[['Szymszon Lebovits','','grandfather','taken by the Nazis'],['Eidl Landau Lebovits','','aunt','taken by the Nazis'],['Hinda Landau Lebovits','','aunt','taken by the Nazis'],
-          ['Gitl Landau Lebovits','','aunt','taken by the Nazis'],['Jen\u0151 Helman','','uncle','F\u00fcnfteichen, 1945'],['Zheni Herskovics Helman','','aunt by marriage','Auschwitz, 1944'],
+    tab2:[['Szymszon Lebovits','','grandfather','taken by the Nazis'],['Eidl Lebovits','','aunt','taken by the Nazis'],['Hinda Lebovits','','aunt','taken by the Nazis'],
+          ['Gitl Lebovits','','aunt','taken by the Nazis'],['Jen\u0151 Helman','','uncle','F\u00fcnfteichen, 1945'],['Zheni Herskovics Helman','','aunt by marriage','Auschwitz, 1944'],
           ['Hanna Helman','13','cousin','Auschwitz, 1944'],['Itzik Helman','9','cousin','Auschwitz, 1944'],['Dvora Helman','7','cousin','Auschwitz, 1944'],
           ['Yosef (Joszel) Helman','','cousin','labor service, 1943']],
     unnamed:[['Malka\u2019s husband','','uncle by marriage','most likely Kamenets-Podolsk, 1941'],['Malka\u2019s son','','cousin','most likely Kamenets-Podolsk, 1941'],
              ['Malka\u2019s son','','cousin','most likely Kamenets-Podolsk, 1941'],['Roza\u2019s brother','','uncle','not yet known'],['Her mother\u2019s sisters\u2019 husbands','','uncles by marriage','names not yet found'],['Her mother\u2019s sisters\u2019 children','','cousins','names not yet found']]};
   var WALL_HEAD={tab1:'Helen\u2019s family on the map',tab2:'And the rest of Helen\u2019s family',unnamed:'Not yet named'};
   var ROLL_HE={'And the family she married into: Tibi Katz\u2019s mother Eszter, his father Aharon, his sister Perl, his sister-in-law Margit, six more brothers and sisters, and others not yet found.':'והמשפחה שאליה נישאה: אמו של טיבי כץ אסתר, אביו אהרון, אחותו פרל, גיסתו מרגיט, שישה אחים ואחיות נוספים, ואחרים שעוד לא נמצאו.','Helen Lando Helman, 1929\u20132013, survived. These are the family she lost.':'הלן לנדו הלמן, 1929–2013, שרדה. אלה בני המשפחה שאיבדה.','Bogdan, about 1941\u201342. Her father\u2019s horses were taken twice. Ghetto Fighters\u2019 House Archives, 16165.':'בוגדן, בערך 1941–42. הסוסים של אביה נלקחו פעמיים. בית לוחמי הגיטאות, 16165.','Her mother\u2019s sisters\u2019 husbands':'בעלי אחיותיה של אמה','uncles by marriage':'דודים מנישואין','(Joszel)':'(יוסל)','great-aunt, also written Petranker':'דודה רבתא, נרשמה גם פטרנקר','aunt, also written Dikker':'דודה, נרשמה גם דיקר','Dikker':'דיקר','Petranker':'פטרנקר','Herskovics':'הרשקוביץ','Her mother\u2019s sisters\u2019 children':'ילדי אחיותיה של אמה','cousins':'בני דודים','names not yet found':'השמות עדיין לא נמצאו','Behind the stones: the Pietrosz and Hoverla above the White Tisza, drawn by G\u00e9za Paur, 1900.':'מאחורי האבנים: פסגות פייטרוס והוברלה מעל הטיסה הלבנה, ציור של גזה פאור, 1900.','Lando':'לנדו','Hear El Malei Rachamim':'אל מלא רחמים','Stop the prayer':'עצירת התפילה','murdered on arrival at the camps':'נרצחה עם הגעתה למחנות','Helen\u2019s family on the map':'משפחתה של הלן שעל המפה','And the rest of Helen\u2019s family':'ושאר משפחתה של הלן','Auschwitz, October 1944':'אושוויץ, אוקטובר 1944','Pause':'השהיה','Resume':'המשך','Go to the end':'לסיום','name not yet found':'השם עדיין לא נמצא','A memorial wall: the gravestones they never had':'קיר זיכרון: המצבות שמעולם לא היו להם','Her cousins, and an aunt by marriage':'בני דודיה, ודודה מנישואין','Not yet named':'עדיין ללא שם','The gravestones they never had':'המצבות שמעולם לא היו להם','May their souls be bound up in the bond of life':'תהא נשמתם צרורה בצרור החיים','Tibi\u2019s brother or sister':'אח או אחות של טיבי','not yet named':'עדיין ללא שם','fate not yet confirmed':'גורלם עדיין לא אושר','Memorial wall':'קיר הזיכרון','uncle by marriage':'דוד מנישואין','most likely Kamenets-Podolsk, 1941':'כנראה קמניץ-פודולסק, 1941','Roza\u2019s brother':'אחיה של רוזה','not yet known':'עדיין לא ידוע','Naming the nameless':'לתת שם לאלה שאין להם שם','Helen\u2019s circle':'המעגל של הלן','Her cousins and her aunt by marriage':'בני דודיה ודודתה מנישואין','Tibi\u2019s family':'המשפחה של טיבי','Names not yet found':'שמות שעדיין לא נמצאו',
-  'Helman':'הלמן','Lebovits':'לבוביץ','Landau':'לנדאו','M\u00fcller':'מילר','Katz':'כ״ץ','Szymszon':'שמשון','Eszter':'אסתר','Aharon':'אהרון','Perl':'פרל','Margit':'מרגיט','Yosef':'יוסף','Moshe':'משה','Zheni':'ז׳ני','Hanna':'חנה','Itzik':'איציק','Dvora':'דבורה','Jen\u0151':'ינו','David':'דוד','Eidl':'איידל','Gitl':'גיטל',
+  'Helman':'הלמן','Lebovits':'לבוביץ','M\u00fcller':'מילר','Katz':'כ״ץ','Szymszon':'שמשון','Eszter':'אסתר','Aharon':'אהרון','Perl':'פרל','Margit':'מרגיט','Yosef':'יוסף','Moshe':'משה','Zheni':'ז׳ני','Hanna':'חנה','Itzik':'איציק','Dvora':'דבורה','Jen\u0151':'ינו','David':'דוד','Eidl':'איידל','Gitl':'גיטל',
   'mother':'אם','father':'אב','sister':'אחות','brother':'אח','grandmother':'סבתא','grandfather':'סבא','great-aunt':'דודה רבתא','uncle':'דוד','aunt':'דודה','cousin':'בן או בת דוד','aunt by marriage':'דודה מנישואין',
   'Tibi\u2019s mother':'אמו של טיבי','Tibi\u2019s father':'אביו של טיבי','Tibi\u2019s sister':'אחותו של טיבי','Tibi\u2019s sister-in-law':'גיסתו של טיבי','deported with their mother':'גורשו עם אמם','number not yet known':'מספרם עדיין לא ידוע',
   'Malka\u2019s husband':'בעלה של מלכה','Malka\u2019s son':'בנה של מלכה','Tibi\u2019s brothers and sisters':'אחיו ואחיותיו של טיבי','in the camps':'במחנות','Auschwitz, Oct 1944':'אושוויץ, אוקטובר 1944','Satu Mare, March 1944':'סאטו מארה, מרץ 1944','death march, Nov 1944':'צעדת מוות, נובמבר 1944','Auschwitz, 7 to 10 October 1944':'אושוויץ, בין 7 ל-10 באוקטובר 1944','Auschwitz, May 1944':'אושוויץ, מאי 1944','Her aunt Malka’s husband and their two sons':'בעלה של דודתה מלכה ושני בניהם','And more of her family, whose names are still being found.':'ועוד מבני משפחתה, ששמותיהם עדיין נמצאים.','Her mother’s family':'המשפחה של אמה','her cousin':'בן או בת דודה','her grandfather':'סבה','Simon':'שמשון','Eidl':'איידל','Gitl':'גיטל','taken by the Nazis':'נלקחו על ידי הנאצים','Malka’s husband':'בעלה של מלכה','and two sons':'ושני בניהם','her cousins':'בני דודה','during the war':'במלחמה','her mother, about 40':'אמה, כבת 40','her sister, 17':'אחותה, בת 17','her brother, 12':'אחיה, בן 12','her brother, 10':'אחיה, בן 10','her sister, 7':'אחותה, בת 7','her brother, 4':'אחיה, בן 4','her grandmother, about 77':'סבתה, כבת 77','her sister, 2':'אחותה, בת 2','Her family':'המשפחה שלה','Her father’s family':'המשפחה של אביה','Roza':'רוזה','her mother':'אמה','Hinda':'הינדה','Izak':'איזק','Majer':'מאיר','Adela':'אדלה','Yiddel':'יידל',
@@ -1271,7 +1129,7 @@
   function RN(x){ return HE_ON?(ROLL_HE[x]||x.split(' ').map(function(w){ return ROLL_HE[w]||w; }).join(' ')):x; }   // names: word by word in Hebrew
   var rollEl=null, rollT=[], rollKey=null, rollStopAudio=null, rollVoice=null, rollCtl=null, ctlHome=null, ctlNext=null;
   function stopRoll(){ if(rollCtl){ ctl.removeEventListener('click',rollCtl,true); rollCtl=null; paintCtl(); } if(ctlHome){ ctlHome.insertBefore(ctl,ctlNext); ctlHome=null; ctlNext=null; } if(rollVoice){ try{ rollVoice.pause(); }catch(e){} rollVoice=null; } if(rollStopAudio){ rollStopAudio(); rollStopAudio=null; } rollT.forEach(clearTimeout); rollT=[]; if(rollKey){ document.removeEventListener('keydown',rollKey,true); rollKey=null; } if(rollEl){ rollEl.remove(); rollEl=null; } document.body.classList.remove('rolling'); }
-  function rollCall(done){ tell({at:'wall'});
+  function rollCall(done){
     stopRoll(); if(REDUCED||MODE!=='web'){ done(); return; }
     var step=FAST?120:420, k=0;
     var li=function(r,cls){ return '<li class="'+cls+'" data-k="'+(k++)+'"><b>'+RN(r[0])+'</b><span>'+RT(r[2])+(r[1]?', '+r[1]:'')+(r[3]?'<em>'+RT(r[3])+'</em>':'')+'</span></li>'; };
@@ -1306,8 +1164,8 @@
     va.addEventListener('ended',function(){ rollT.push(setTimeout(showFound,900)); });
     var startCoda=function(){ if(!rollEl) return; if(held){ rollT.push(setTimeout(startCoda,300)); return; } rollEl.classList.add('coda');
       rollT.push(setTimeout(function(){ var pr=va.play(); if(pr&&pr.catch) pr.catch(function(){}); },400)); };
-    if(!AUTO) rollT.push(setTimeout(startCoda,600+(n-1)*step+1000));   // workshop: her quote waits for my click (Sam, 14 Oct 2026)   // all the names up, a second of quiet, then her voice (Sam)
-    var arm=function(ms){ if(AUTO) return; clearTimeout(endT); endT=setTimeout(end,ms); rollT.push(endT); t0=Date.now(); left=ms; };
+    rollT.push(setTimeout(startCoda,600+(n-1)*step+1000));   // all the names up, a second of quiet, then her voice (Sam)
+    var arm=function(ms){ clearTimeout(endT); endT=setTimeout(end,ms); rollT.push(endT); t0=Date.now(); left=ms; };
     var bar=el('div','rbar','<button type="button" class="rpause">'+RT('Pause')+'</button><button type="button" class="rskip">'+RT('Go to the end')+'</button>'); rollEl.appendChild(bar);
     var pb=bar.querySelector('.rpause');
     // El Malei Rachamim, the memorial prayer (Sam, 10 Oct 2026). Offered, never automatic; the button appears only when the recording is on the site.
@@ -1325,17 +1183,7 @@
       else { rollEl.classList.remove('held'); pb.textContent=RT('Pause'); arm(left); if(va.currentTime>0&&!va.ended){ var pr=va.play(); if(pr&&pr.catch) pr.catch(function(){}); } } };
     pb.addEventListener('click',function(e){ e.stopPropagation(); toggle(); });
     bar.querySelector('.rskip').addEventListener('click',function(e){ e.stopPropagation(); end(); });
-    var key=function(e){ if(!rollEl) return;
-      if(AUTO){ var k=e.key;   // workshop: the wall stays; click brings her quote on, click takes it off, click goes on (Sam, 14 Oct 2026)
-        if(/^(PageDown|ArrowRight|ArrowDown|Enter| |Spacebar)$/.test(k)){ e.preventDefault(); e.stopPropagation();
-          if(!rollEl.classList.contains('coda')) startCoda();
-          else if(!rollEl.classList.contains('codaoff')){ rollEl.classList.add('codaoff'); try{ va.pause(); }catch(x){} }
-          else { stopRoll(); leave(window.ROAD_AFTER); }
-          return; }
-        if(/^(PageUp|ArrowLeft|ArrowUp)$/.test(k)){ e.preventDefault(); e.stopPropagation(); if(rollEl.classList.contains('codaoff')) rollEl.classList.remove('codaoff'); else { stopRoll(); go(DATA.STOPS.length-1); } return; }
-        if(/^(p|P|k|K)$/.test(k)){ e.preventDefault(); e.stopPropagation(); toggle(); return; }
-        return; }
-      if(e.key===' '||e.key==='p'||e.key==='P'){ e.preventDefault(); e.stopPropagation(); toggle(); var kq=$('kPlay'); if(kq){ kq.innerHTML=held?IC.play:IC.pause; kq.setAttribute('aria-label',held?'Play':'Pause'); } } else if(e.key==='ArrowLeft'){ e.preventDefault(); e.stopPropagation(); stopRoll(); go(DATA.STOPS.length-1); } else if(e.key==='Escape'||e.key==='Enter'||e.key==='ArrowRight'){ e.preventDefault(); e.stopPropagation(); end(); } };
+    var key=function(e){ if(!rollEl) return; if(e.key===' '||e.key==='p'||e.key==='P'){ e.preventDefault(); e.stopPropagation(); toggle(); var kq=$('kPlay'); if(kq){ kq.innerHTML=held?IC.play:IC.pause; kq.setAttribute('aria-label',held?'Play':'Pause'); } } else if(e.key==='ArrowLeft'){ e.preventDefault(); e.stopPropagation(); stopRoll(); go(DATA.STOPS.length-1); } else if(e.key==='Escape'||e.key==='Enter'||e.key==='ArrowRight'){ e.preventDefault(); e.stopPropagation(); end(); } };
     document.addEventListener('keydown',key,true); rollKey=key;
     var kp=$('kPlay'), paintRoll=function(){ kp.innerHTML=held?IC.play:IC.pause; kp.setAttribute('aria-label',held?'Play':'Pause'); };
     rollCtl=function(e){ var b=e.target.closest('button'); if(!b||!rollEl) return;
@@ -1346,9 +1194,7 @@
     ctlHome=ctl.parentNode; ctlNext=ctl.nextSibling; document.body.appendChild(ctl);   // above the wall, not under it
     arm(left);
   }
-  var liveRolling=false;
-  function finish(){ if(LIVE&&window.ROAD_AFTER){ if(liveRolling){ stopRoll(); location.href=window.ROAD_AFTER; return; }   // workshop: the memorial wall, then the next press goes back to the slides
-      liveRolling=true; clearAdv(); playing=false; paintCtl(); endCard.hidden=true; moving=false; fadeMusic(); rollCall(function(){}); return; } if(MODE!=='web'){ hereScene(); return; } clearAdv(); playing=false; paintCtl(); endCard.hidden=true; document.body.classList.remove('at-end'); rollCall(showEnd); }
+  function finish(){ if(MODE!=='web'){ hereScene(); return; } clearAdv(); playing=false; paintCtl(); endCard.hidden=true; document.body.classList.remove('at-end'); rollCall(showEnd); }
   function showEnd(){ endCard.hidden=false; document.body.classList.add('at-end');
     // centered (Sam, 10 Oct 2026), unless that would put it on the last photograph: then it moves beside it
     endCard.style.left=''; var dr=doc.getBoundingClientRect(), ew=endCard.offsetWidth;
@@ -1359,29 +1205,30 @@
   function hideEnd(){ stopRoll(); endCard.hidden=true; endCard.style.left=''; document.body.classList.remove('at-end'); }
 
   /* ---------- talk and loop: "You are here", Philadelphia, with the QR code to the homepage ---------- */
-  var PHILLY=[34.0753,-118.3546]   /* Robin's talk: Holocaust Museum LA */, hereMk=null, atHere=false;
-  var hereCard=el('div','herecard robinend','<img src="road/img/robin/helen_tibi_robin_1970s_colgate_ave_los_angeles.jpg" alt="Helen, Tibi and Robin, Los Angeles, 1970s" width="657" height="960"><p class="rc">Helen, Tibi and me (Robin) &middot; Los Angeles, 1970s</p>');
+  var PHILLY=[39.9526,-75.1652], hereMk=null, atHere=false;
+  var hereCard=el('div','herecard','<p class="ek">Recovering families from the records that were meant to erase them</p>'+
+    '<div class="hrow"><img class="qr" src="road/qr-home.svg" alt="QR code: engineeringremembrance.org" width="220" height="220">'+
+    '<div class="ht"><p class="ek2">Start with one name and one town.</p><p class="url">engineeringremembrance.org</p>'+
+    '<p class="sm">The free guide, the databases, and Helen’s Road to watch again</p></div></div>');
   hereCard.hidden=true;
   function hereScene(){
     var g=++gen; clearAdv(); skipPart=null; stopAudio(); clearLoupe(); hideVoice(); atHere=true; tell({at:'here'});
     cap.classList.add('out'); doc.classList.remove('in'); setRing({ring:null}); markPlace(null,false);
     document.body.classList.remove('night','evidence','stop-done'); document.body.classList.add('at-here');
-    setEra('today'); setYear(2026); $('yK').textContent=''; $('yM').textContent='November';
-    try{ var STILL=document.documentElement.classList.contains('still'); map.flyToBounds(AUTO?[[17,-160],[58,30]]:[[30,-125],[56,30]],STILL?{paddingTopLeft:[10,20],paddingBottomRight:[10,20],duration:REDUCED?0:3.2}:{paddingTopLeft:[60,90],paddingBottomRight:[60,Math.round(innerHeight*.36)],duration:REDUCED?0:3.2}); }catch(e){}   // still: the cropped band, Hawaii to her village   // the card sits below, over the ocean; the workshop also shows Hawaii, where I did the research
+    setEra('today'); setYear(2026); $('yK').textContent=''; $('yM').textContent='October';
+    try{ map.flyToBounds([[36,-80],[56,26]],{paddingTopLeft:[60,90],paddingBottomRight:[60,Math.round(innerHeight*.36)],duration:REDUCED?0:3.2}); }catch(e){}   // the card sits below, over the ocean
     setTimeout(function(){ if(!alive(g)) return;
       hereMk=L.marker(PHILLY,{interactive:false,keyboard:false,zIndexOffset:3300,icon:L.divIcon({className:'',
-        html:'<div class="here"><i></i><i class="r2"></i><b></b><span>You are here<small>Holocaust Museum LA · November 2026</small></span></div>',iconSize:[0,0]})}).addTo(map);
-      if(AUTO){ hiMk=L.marker([21.40,-157.74],{interactive:false,keyboard:false,zIndexOffset:3300,icon:L.divIcon({className:'',html:'<div class="here hi"><i></i><b></b><span>Where I did the research<small>Kailua, Hawaiʻi · about 12,300 km from her village</small></span></div>',iconSize:[0,0]})}).addTo(map); }
+        html:'<div class="here"><i></i><i class="r2"></i><b></b><span>You are here<small>Philadelphia · October 2026</small></span></div>',iconSize:[0,0]})}).addTo(map);
       hereCard.hidden=false; void hereCard.offsetWidth; hereCard.classList.add('in');
     },REDUCED?0:3000);
     if(MODE==='loop') advTimer=setTimeout(function(){ if(alive(g)) restartLoop(); },REDUCED?20000:40000);   // then the road starts again
   }
-  var hiMk=null;
-  function leaveHere(){ if(!atHere) return; atHere=false; if(hiMk){ map.removeLayer(hiMk); hiMk=null; } if(hereMk){ map.removeLayer(hereMk); hereMk=null; } hereCard.classList.remove('in'); hereCard.hidden=true; document.body.classList.remove('at-here'); }
+  function leaveHere(){ if(!atHere) return; atHere=false; if(hereMk){ map.removeLayer(hereMk); hereMk=null; } hereCard.classList.remove('in'); hereCard.hidden=true; document.body.classList.remove('at-here'); }
   function restartLoop(){ leaveHere(); openingCard(); setTimeout(function(){ if(cur===-1) begin(); },2500); }
 
   /* ---------- the visitor's input ---------- */
-  function applyMute(){ [narr,hv,introClip,music].forEach(function(a){ if(!a.dataset.unlocking) a.muted=muted||(AUTO&&a===narr); }); paintCtl(); }   // workshop-auto: my recordings stay silent
+  function applyMute(){ [narr,hv,introClip,music].forEach(function(a){ if(!a.dataset.unlocking) a.muted=muted; }); paintCtl(); }
   // the tap that turns the sound on also unlocks the players for later stops (iOS needs a tap per player)
   function hearHelen(){
     var firstNarr=STOPS.filter(function(x){ return x.audio; })[0];
@@ -1449,19 +1296,7 @@
   document.addEventListener('keydown',function(e){
     if(e.ctrlKey||e.metaKey||e.altKey) return;
     if(MODE==='loop'){ e.preventDefault(); return; }   // the table: nothing a visitor presses does anything
-    if(AUTO&&!EMBED&&!autoNotes&&!/^(n|N)$/.test(e.key)){ autoNotes=true; try{ if(localStorage.getItem('er-pres')==='1') window.open('workshop-notes.html','er-presenter','width=980,height=760'); }catch(_){} }   // my notes follow me from the deck (Sam, 14 Oct 2026)
-    var ak=AUTO?({ArrowRight:'PageDown',' ':'PageDown',Spacebar:'PageDown',ArrowLeft:'PageUp'}[e.key]||e.key):e.key;   // arrows and Space work like the clicker
-    if(AUTO&&/^(PageDown|Enter)$/.test(ak)){ e.preventDefault(); goFull();
-      if(atHere&&window.ROAD_AFTER_HERE){ leave(window.ROAD_AFTER_HERE); return; }   // You are here, then the questions slide
-      if(document.body.classList.contains('rolling')||document.body.classList.contains('at-end')){ stopRoll(); if(window.ROAD_AFTER) leave(window.ROAD_AFTER); return; }
-      if(!intro.hidden&&!intro.classList.contains('started')){ hearHelen(); begin(); fadeMusic(); return; }
-      if(ak==='PageDown'&&intro.hidden&&(voice.classList.contains('playing')||!playing)){ toggle(); return; }   // while Helen speaks, the clicker pauses her; the next press resumes (Sam, 14 Oct 2026)
-      if(ak==='PageDown'){ if(!intro.hidden) skipIntro(); else nextPart(); return; } }
-    if(AUTO&&/^(p|P|k|K)$/.test(e.key)){ e.preventDefault(); if(intro.hidden) toggle(); return; }
-    if(AUTO&&/^(s|S)$/.test(e.key)){ e.preventDefault(); if(!intro.hidden) skipIntro(); else{ if(!playing) toggle(); nextPart(); } return; }   // S skips ahead, even past Helen: for reviewing, not presenting
-    if(AUTO&&ak==='PageUp'){ e.preventDefault(); if(EMBED&&(!intro.hidden||atHere||cur<=0)){ try{ parent.postMessage({er:'prev'},'*'); }catch(_){} return; } if(intro.hidden) prev(); return; }
-    if(AUTO&&(e.key==='n'||e.key==='N')){ window.open('workshop-notes.html','er-presenter','width=980,height=760'); return; }
-    if(MODE==='talk'){ var kt=e.key; goFull(); if(LIVE&&!liveHeard){ liveHeard=true; hearHelen(); fadeMusic(); try{ if(localStorage.getItem('er-pres')==='1') window.open('workshop-notes.html','er-presenter'); }catch(_){} }
+    if(MODE==='talk'){ var kt=e.key; goFull();
       // a presentation clicker sends PageDown / PageUp (some send arrows, Space, or B / . for a black screen)
       if(kt==='b'||kt==='B'||kt==='.'){ e.preventDefault(); document.body.classList.toggle('curtain'); return; }
       if(/^(PageDown|ArrowRight|ArrowDown|Enter| )$/.test(kt)){ e.preventDefault();
@@ -1471,7 +1306,7 @@
         if(who&&!who.hidden) whoBack(); else if(atHere){ show(STOPS.length-1,true); } else if(intro.hidden) prev(); return; }
       if(kt==='p'||kt==='P'||kt==='k'||kt==='K'){ e.preventDefault(); toggle(); return; }
       if(kt==='m'||kt==='M'){ soundKey(); return; }
-      if(kt==='n'||kt==='N'){ window.open(LIVE?'workshop-notes.html':'notes.html',LIVE?'er-presenter':'hr-notes','width=980,height=760'); return; }   // speaker notes, on the laptop screen
+      if(kt==='n'||kt==='N'){ window.open('notes.html','hr-notes','width=980,height=760'); return; }   // speaker notes, on the laptop screen
       if(kt==='Home'){ e.preventDefault(); go(0); return; }
       return; }
     var d=document.getElementById('credits'); if(d&&d.open) return;
@@ -1499,18 +1334,16 @@
     try{ var t=new Audio(); t.src=DATA.INTRO.clip; t.volume=0; var pr=t.play(); if(pr&&pr.then) pr.then(function(){ t.pause(); setTimeout(goLoop,1500); },function(){}); }catch(e){}
   }
   // talk: full screen on the first click or clicker press (browsers allow it only after one); Esc leaves it
-  function goFull(){ if(EMBED) return; try{ if(!document.fullscreenElement&&document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function(){}); }catch(e){} }
+  function goFull(){ try{ if(!document.fullscreenElement&&document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function(){}); }catch(e){} }
   // talk: a mouse click moves the slides on too
-  if(MODE==='talk') document.addEventListener('click',function(e){ if(e.target.closest('dialog,.lightbox')) return; goFull(); if(LIVE){ if(!liveHeard){ liveHeard=true; hearHelen(); fadeMusic(); } if(e.target.closest('.frame,.ctl,button,a,.tick')) return; if(!intro.hidden){ if(!intro.classList.contains('started')){ hearHelen(); begin(); fadeMusic(); } else skipIntro(); } else nextPart(); return; } if(who&&!who.hidden) whoNext(); });
+  if(MODE==='talk') document.addEventListener('click',function(e){ if(e.target.closest('dialog,.lightbox')) return; goFull(); if(who&&!who.hidden) whoNext(); });
 
   /* ---------- go ---------- */
   setEra('1930',true); paintVillage();
   var start=q.get('start');
-  if(AUTO&&q.get('here')==='1'){ intro.hidden=true; rebuildTo(STOPS.length); hereScene(); start='here'; }   // workshop: You are here, Philadelphia, near the end of the talk
-  else if(start!==null){ var si=isNaN(+start)?STOPS.findIndex(function(x){return x.id===start;}):+start; intro.hidden=true; show(Math.max(0,si),true); }
+  if(start!==null){ var si=isNaN(+start)?STOPS.findIndex(function(x){return x.id===start;}):+start; intro.hidden=true; show(Math.max(0,si),true); }
   else if(q.get('still')==='1'){ intro.hidden=true; document.body.classList.add('still'); setEra('1942',true); rebuildTo(STOPS.length); wheel.setLatLng(P.boh); wheelState('gone');
     map.fitBounds([[45.6,9.2],[53.8,25.2]],{animate:false}); }
-  else if(LIVE){ openingCard(); }   // workshop: opens on her words, “We all have stories to tell”; press once to hear her, again for the first stop
   else if(MODE==='talk'){ openingCard(); whoStart(); }   // the slides about me, then her quote, then the road
   else if(MODE==='loop'){ openingCard(); loopStart(); }
   else openingCard();   // waits for Start (Sam, 8 Oct 2026)

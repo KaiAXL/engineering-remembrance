@@ -1,105 +1,446 @@
 <!doctype html>
-<html lang="en" translate="no">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="google" content="notranslate">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Helen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engineering Remembrance &middot; recovering Holocaust families from the archive</title>
+<meta name="description" content="Recovering Holocaust family histories from fragmented, multilingual archives. A repeatable method, and the case it was built on.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Engineering Remembrance">
+<meta property="og:title" content="Engineering Remembrance &middot; recovering Holocaust families from the archive">
+<meta property="og:description" content="Recovering families from the records that were meant to erase them.">
+<meta property="og:url" content="https://engineeringremembrance.org/">
+<meta property="og:image" content="https://engineeringremembrance.org/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Buchenwald intake photographs of three men of one family, 2 June 1944">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="robots" content="noindex">
-<meta name="theme-color" content="#0d0f12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="road/leaflet/leaflet.css">
-<link rel="stylesheet" href="road/fonts-local/fonts.css">
-<link rel="stylesheet" href="road/road.css?v=live1">
-<style>
-  /* shown only if the map can't start (no JavaScript, a script that failed to load) */
-  .fallback{position:fixed;inset:0;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px;background:#0d0f12;color:#f3ecdf;text-align:center}
-  .fallback.on{display:flex}
-  .fallback img{max-width:min(1200px,100%);max-height:70vh;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-  .fallback h1{margin:0;font:500 13px/1 "IBM Plex Mono",Consolas,monospace;letter-spacing:.3em;text-transform:uppercase;color:#cf9f63}
-  .fallback p{margin:0;max-width:640px;font:400 17px/1.5 Newsreader,Georgia,serif;color:#bdb3a2}
-  .fallback a{color:#f3ecdf}
-</style>
+<link rel="stylesheet" href="styles.css?v=20261014a">
+<link rel="stylesheet" href="home.css?v=20261014a">
+<script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
+
 </head>
 <body>
-<div id="map" aria-hidden="true"></div>
-<div class="vignette" aria-hidden="true"></div>
-<main id="ui" aria-label="Helen’s Road"></main>
 
-<div class="fallback" id="fallback">
-  <h1>Helen’s Road</h1>
-  <img loading="lazy" src="road/still-route.jpg" alt="A map of Europe with Helen’s road from Tiszabogdány to Budapest, Bavaria and Bremen, and her family’s roads to Auschwitz, Buchenwald, Magdeburg, Rehmsdorf and Terezín" width="1600" height="900">
-  <p>The map could not start in this browser. <a href="journey.html">Try again</a>, or read <a href="case.html">the case</a> and see <a href="records.html">the records</a>.</p>
-</div>
-<noscript><style>.fallback{display:flex}</style></noscript>
+<button class="sidetoggle" type="button" aria-label="Show menu">&#9776;</button>
 
-<dialog class="credits" id="credits" aria-labelledby="credTitle">
-  <div class="cin">
-    <form method="dialog"><button class="x" aria-label="Close">&times;</button></form>
-    <h2 id="credTitle">Sources and credits</h2>
-    <p>Helen’s Road was made by Samantha Seligman-Grajewski.</p>
-
-    <h3>Helen’s voice</h3>
-    <p>Every word Helen speaks here is cut from her own recordings: tapes made in 2008, and a talk she gave in the early 2000s. The words on screen are transcripts of those clips.</p>
-
-    <h3>My voice and the music</h3>
-    <p>Every voice here is a real recording: my own, Samantha Seligman-Grajewski, and Helen&rsquo;s. Music: Antonín Dvořák, “Goin’ Home,” performed by the United States Air Force Band (public domain).</p>
-
-    <h3>Records and photographs</h3>
-    <ul>
-      <li>Tap or click a record to see it full size.</li>
-      <li>Buchenwald prisoner cards, rolls and intake photographs, and Szerene Sperber’s Dachau registration: <a href="https://arolsen-archives.org/en/">Arolsen Archives</a>.</li>
-      <li>Helen’s birth entry, Tiszabogdány civil register, 1929: a copy bought through Subcarpathian Genealogy.</li>
-      <li>Michal’s and Lajos’s Budapest registration forms, June 1945: <a href="https://www.yadvashem.org/">Yad Vashem</a>.</li>
-      <li>Her 1946 U.S. Zone registration: <a href="https://www.ushmm.org/">United States Holocaust Memorial Museum</a>.</li>
-      <li>Her DP card, Chiemsee, December 1946, and the Marine Marlin sailing list of the U.S. Committee for the Care of European Children, April 1947: <a href="https://arolsen-archives.org/en/">Arolsen Archives</a> (the sailing list also on Ancestry).</li>
-      <li>The Müller family photograph and Szerene’s belt: courtesy of Alfred Sperber and his family.</li>
-      <li>Lajos’s and Michal’s Terezín cards: <a href="https://www.pamatnik-terezin.cz/">Památník Terezín</a> (Terezín Memorial).</li>
-      <li>Helen at Indersdorf, 1946: photo, Charles Haacker.</li>
-      <li>Sports day at Indersdorf, summer 1946, and the names of the children in it: courtesy of Anna Andlauer and Shoshan Porat.</li>
-      <li>The Dror Habonim group at Indersdorf, 29 November 1946: Ghetto Fighters’ House Archives, Israel; also shown at <a href="https://museen-in-bayern.de/en/museums/museum-details/augustiner-chorherrenmuseum" target="_blank" rel="noopener">the museum of Kloster Indersdorf</a>.</li>
-      <li>The Rachov district list of the deported: Yad Vashem.</li>
-      <li>David Helman’s Soviet record: György Dupka, <i>Do Not Judge Me!</i>, p.&nbsp;125. Stalingrad: <i>Sefer Marmaros</i>, the Bogdan chapter.</li>
-      <li>The road from Budapest to Bavaria in December 1945 follows <i>Love Survives</i> (2001), the unpublished memoir of Helen’s best friend, Ibi Weinberger, shared by her son.</li>
-    </ul>
-
-    <h3>The map</h3>
-    <ul>
-      <li>Borders of 1930 and 1942 to 1944: A. Ourednik, <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a>, adapted and corrected with <a href="https://www.naturalearthdata.com/">Natural Earth</a> (public domain). The adapted border files are licensed under the <a href="road/LICENSE-borders.txt">GNU General Public License v3.0</a>; the script that builds them is <a href="road/borders/build_borders_1930_1942.py">their source</a>. Wartime borders are approximate.</li>
-      <li>Yellow-star houses of Budapest, June 1944: <a href="https://www.csillagoshazak.hu">Csillagos házak</a> (OSA Archivum), <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>; positions located with OpenStreetMap.</li>
-<li>Keleti station, the platform hall: photo by Andras Sz, 2015, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</li>
-      <li>Király utca 6 today: photo by Globetrotter19, 2015, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</li>
-      <li>Bohdan (Tiszabogdány), 2019: photo by Ork Tesla, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</li>
-      <li>The memorial board near Reitzenhain: photo by <a href="http://de.wikipedia.org/wiki/Benutzer:Ch_ivk">Ch ivk</a>, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</li>
-      <li>The family photograph, Bogdan, 1939: also published by <a href="https://www.centropa.org">Centropa</a>.</li>
-      <li>Street maps and railway station positions: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (ODbL).</li>
-      <li>Train routes follow the rail lines of 1944. Sources: the Auschwitz-Birkenau State Museum’s online lesson on the transports; DEGOB (the Kassa list); 45aid.org (the Rehmsdorf evacuation); JewishGen KehilaLinks, Rakhiv; and the histories of each line. Each route says on screen whether it is documented, from survivors’ accounts, or reconstructed.</li>
-      <li>Built with <a href="https://leafletjs.com">Leaflet</a>.</li>
-    </ul>
-
-    <h3>Privacy</h3>
-    <p>Living relatives are named or shown only with their permission. With thanks to the descendants of Miksa and Hudia Helman in Israel, who kept the 1939 photograph and shared their memories.</p>
+<aside class="sidebar">
+  <a class="brandwrap" href="/">
+    <svg class="wheel" viewBox="0 0 64 64" width="46" height="46" role="img" aria-label="Engineering Remembrance">
+      <circle class="rim" cx="32.0" cy="32.0" r="28.0" fill="none" stroke="currentColor" stroke-width="2.6"/>
+      <circle cx="32.0" cy="32.0" r="23.6" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+      <line x1="32.00" y1="25.40" x2="32.00" y2="8.40" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="32.00" cy="4.00" r="1.9"/>
+      <line x1="35.30" y1="26.28" x2="43.80" y2="11.56" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="46.00" cy="7.75" r="1.9"/>
+      <line x1="37.72" y1="28.70" x2="52.44" y2="20.20" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="56.25" cy="18.00" r="1.9"/>
+      <line x1="38.60" y1="32.00" x2="55.60" y2="32.00" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="60.00" cy="32.00" r="1.9"/>
+      <line x1="37.72" y1="35.30" x2="52.44" y2="43.80" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="56.25" cy="46.00" r="1.9"/>
+      <line x1="35.30" y1="37.72" x2="43.80" y2="52.44" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="46.00" cy="56.25" r="1.9"/>
+      <line x1="32.00" y1="38.60" x2="32.00" y2="55.60" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="32.00" cy="60.00" r="1.9"/>
+      <line x1="28.70" y1="37.72" x2="20.20" y2="52.44" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="18.00" cy="56.25" r="1.9"/>
+      <line x1="26.28" y1="35.30" x2="11.56" y2="43.80" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="7.75" cy="46.00" r="1.9"/>
+      <line x1="25.40" y1="32.00" x2="8.40" y2="32.00" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="4.00" cy="32.00" r="1.9"/>
+      <line x1="26.28" y1="28.70" x2="11.56" y2="20.20" stroke="currentColor" stroke-width="1.50" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="7.75" cy="18.00" r="1.9"/>
+      <line x1="28.70" y1="26.28" x2="20.20" y2="11.56" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity=".9"/>
+      <circle class="node" cx="18.00" cy="7.75" r="1.9"/>
+      <circle cx="32.0" cy="32.0" r="6.6" fill="none" stroke="currentColor" stroke-width="2.3"/>
+      <circle class="node" cx="32.0" cy="32.0" r="2.5"/>
+    </svg>
+    <span class="brand"><span>Engineering</span><span>Remembrance</span></span></a>
+  <p class="tagline">Recovering families from the records that were meant to erase them.</p>
+<button class="helenbtn" type="button" data-open="helen"><span class="hplay">&#9654;</span> Hear Helen</button>
+  <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
+  <nav id="sitenav">
+    <a href="/" aria-current="page"><span class="k">01</span> Home</a>
+    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road</a>
+    <a href="/method.html"><span class="k">03</span> The Method <span class="soon now">available now</span></a>
+    <a href="/try.html"><span class="k">04</span> Archive Detective <span class="soon now">new</span></a>
+    <a href="/balagula.html"><span class="k">05</span> Balagula <span class="soon">coming soon</span></a>
+    <a href="/databases.html"><span class="k">06</span> Databases</a>
+    <a href="/about.html"><span class="k">07</span> The Researcher</a>
+    <a href="/contact.html"><span class="k">08</span> Contact</a>
+    <button class="navhelen" type="button" data-open="helen"><span class="k">&#9654;</span> Hear Helen</button>
+  </nav>
+  <div class="sidefoot">
+    <button class="themetoggle" type="button">Light mode</button>
+    <button class="sidehide" type="button">Hide menu &larr;</button>
+    <p>Samantha Seligman-Grajewski</p>
+    <p><a href="mailto:sam@engineeringremembrance.org">sam@engineeringremembrance.org</a></p>
   </div>
+</aside>
+
+<main class="main">
+<div class="wrap">
+
+  <aside class="philly" id="philly" aria-label="For visitors from the Philadelphia conference">
+    <b>At the Philadelphia conference?</b>
+    <span><a href="/journey.html">Follow Helen&rsquo;s road</a> &middot; <a href="/method.html">The free guide</a> &middot; <a href="/engineering-remembrance-handout.pdf">The handout (PDF)</a> &middot; <a href="/contact.html?topic=balagula">Join the wait list for Balagula, the app</a></span>
+  </aside>
+  <script>(function(){var e=document.getElementById('philly');if(!e)return;if(Date.now()>Date.parse('2026-11-01')){e.hidden=true;return;}document.addEventListener('DOMContentLoaded',function(){if(window.matchMedia&&matchMedia('(max-width: 760px)').matches){var h=document.querySelector('.hhero');if(h&&h.parentNode){h.parentNode.insertBefore(e,h.nextSibling);e.classList.add('philly-low');var c=document.querySelector('.hintro2');if(c){h.parentNode.insertBefore(c,h.nextSibling);c.classList.add('hintro2-low');}var t=document.querySelector('.hintro:not(.hintro2)');if(t){h.parentNode.insertBefore(t,h.nextSibling);t.classList.add('hintro-low');}}}});})();</script>
+  <p class="eyebrow">Tiszabogd&aacute;ny &middot; Subcarpathia</p>
+  <h1 class="hclaim">I use the records <em>meant to erase them</em> to find family.</h1>
+  <p class="hintro">My grandmother, Helen, was the sole survivor of her immediate family in the Holocaust. For decades we had only stories. Then one prisoner card grew into more than 300 documents. This is how I reconnected with family lost for more than 80 years, and how you can look for yours.</p>
+  <p class="hintro hintro2">This site uses her family as a case study. Everything here was found from home, online, by mail and through family, and every step can be repeated for another family.</p>
+
+  <!-- 1 · HERO: Helen's Road beside the 1946 portrait -->
+  <div class="hhero solo">
+    <a class="roadcard" href="/journey.html" aria-label="Helen&rsquo;s Road. At 15, her letters home came back. No one was there. Follow my grandmother&rsquo;s road: an animated map of her journey, 1929 to 1947, in her own voice">
+      <img src="road/road-card-map.jpg" alt="A dark map of Europe with Helen&rsquo;s road in gold from her village to Budapest, Bavaria and the sea, and her family&rsquo;s roads in red and blue to Auschwitz, Buchenwald and Terez&iacute;n" width="1600" height="840" loading="eager" decoding="async" fetchpriority="high">
+      <span class="rcover">
+        <span class="rcpor"><img src="images/helen-haacker-1946.jpg" alt="Helen at Indersdorf, 1946" width="900" height="1368" loading="eager" decoding="async" fetchpriority="high"><span class="rctag">Photo found &middot; 2026<br>after her death</span></span>
+        <span class="rctext">
+        <span class="rck">Helen&rsquo;s Road &middot; a mapped case study</span>
+        <span class="rct">At 15, her letters home came back. <span class="rcred">No one was there.</span></span>
+        <span class="rcvoice"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Hear it in her own voice</span>
+        <span class="rcgo"><span class="tri">&#9654;</span> <span class="lg">Follow my grandmother&rsquo;s road</span><span class="sm">Follow her road</span></span>
+        </span>
+      </span>
+    </a>
+  <div class="hhelm" style="container-type:inline-size">
+            <p class="together" style="margin:0 0 .45em;max-width:none;text-align:left;font-family:var(--serif,Newsreader,Georgia,serif);font-size:clamp(13px,2.6cqi,18px);background:rgba(0,0,0,.42);padding:.22em .55em;border-radius:2px"><span style="font-style:italic;font-weight:700;font-size:1.25em;color:var(--accent)">Together again, 80+ years later.</span> <span class="sametrade" style="display:inline-block;font-size:1.08em;color:var(--warm)">One surname. One shtetl. One trade.</span></p>
+            <div class="herohead"><span class="hht" id="herotitle" style="font-size:clamp(1.05rem,1.45vw,1.3rem)">Three Helmans</span><span class="rck">Buchenwald &middot; 2 June 1944</span></div>
+            
+            <figure class="hero" aria-labelledby="herotitle herocap">
+              <div class="faces">
+                <img src="images/hero-three-men.jpg" alt="Buchenwald intake photographs of Lajos, Michal and Zacharias Helman, 2 June 1944, boards 322, 323 and 324" loading="eager" decoding="async" width="1418" height="762" fetchpriority="high">
+                <button class="face" type="button" data-man="lajos"     aria-label="Lajos Helman, board 322"></button>
+                <button class="face" type="button" data-man="michal"    aria-label="Michal Helman, board 323"></button>
+                <button class="face" type="button" data-man="zacharias" aria-label="Zacharias Helman, board 324"></button>
+              </div>
+          <div class="ftrow" aria-label="When each photo was found"><span>Photo found<br>2026</span><span>Photo found<br>2026</span><span class="old">Photo found<br>2019</span></div>
+            </figure>
+            <p class="facehint">Tap or click a face for his record</p>
+            <div class="facecard" id="facecard" hidden>
+              <button class="fcclose" type="button" aria-label="Close">&times;</button>
+              <p class="fcname"></p>
+              <p class="fcwho"></p>
+              <p class="fcnum"></p>
+              <div class="fcbody"></div>
+              <p class="fcfate"></p>
+            </div>
+            <p class="herocap" id="herocap">Buchenwald intake, 2 June 1944: two brothers and their uncle, Helen&rsquo;s father. All three were Helmans from Tiszabogd&aacute;ny, all three were wagon drivers, and they were photographed one after another. Their cards were then filed apart for more than eighty years. Here they are side by side again. In 2019 my mother found Zacharias&rsquo;s card; in 2026 I found his nephews beside him.
+                <span class="cite">Arolsen Archives &middot; prisoner cards 56906, 57103, 57101</span></p>
+    <p class="rarity">Rare: most families find a prisoner card with no photograph, if they find one at all.</p>
+      </div>
+    <p class="hhero-note">The map opens full screen. Press start to hear Helen&rsquo;s voice, or watch without sound.</p>
+  </div>
+
+
+
+
+  <!-- 3 · THE JOURNEY -->
+  <section class="hsec" id="journey">
+    <span class="sk">The journey</span>
+    <h2>Helen, in brief</h2>
+    <div class="brief">
+      <div class="brieftext">
+    
+      <p>Helen Lando Helman was born in Tiszabogd&aacute;ny, a village in the Carpathians, in 1929. She was the sole survivor of her immediate family. In 1943 her mother took her to Budapest, and she lived through 1944 there, in the city&rsquo;s dispersed ghetto of yellow-star houses and then hidden in a children&rsquo;s safe house. Her mother, her father and her five brothers and sisters were murdered in 1944. Another little sister, Cecilie, had died in 1940, aged two. After the war she came to America, reaching New York in May 1947, aged 18. For decades there was nothing of them: no photograph, no grave, no dates.</p>
+      <p>In 2019 the Arolsen Archives put their records online, and my mother found one prisoner card: Helen&rsquo;s father, Zacharias. The family assumed that was the end of it. The research began in 2026, and it has grown from there. None of it required travel. <a href="/journey.html">Follow her road on the map</a>, or see <a href="/method.html#helpful">the hints and mistakes it taught me</a>.</p>
+      </div>
+      <figure class="briefpic">
+        <span class="ftagwrap"><span class="ptag" style="right:5%;top:6%">Photo found 2019</span><img src="images/helen-white-gown.jpg" alt="Helen as a young woman in a white off-shoulder gown, smiling, sitting on the grass of a park" loading="lazy" decoding="async"></span>
+        <figcaption>Helen in America, 1950s. Courtesy of Alfred Sperber, who sent it to our family in 2019.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="stitch">
+
+  <!-- 1b · WHAT THE RECORDS GAVE BACK (Sam, 9 Oct 2026: the photographs, each explained) -->
+  <section class="hsec gave" id="found">
+    <span class="sk">What the records gave back</span>
+    <h2>What came back</h2>
+    <p>From the archives, one record at a time.</p>
+    <div class="onecard"><p class="ocn"><b>1</b> card <span>&rarr;</span> <b>300+</b> documents</p><p class="ocs">One prisoner card in 2019. Then hundreds more in 2026.</p></div>
+    <div class="gave-grid">
+        <figure class="gave-item gave-dror">
+          <div class="herohead"><span class="hht">Helen and Ibi, found in a crowd</span><span class="rck">Dror Habonim &middot; 29 November 1946</span></div>
+          <a class="ftagwrap" href="images/dror-1946-helen-ibi.jpg"><span class="ptag" style="right:3%;top:7%">Photo found 2026</span><img src="images/dror-1946-helen-ibi.jpg" alt="A group photograph of about sixty young people in front of a Dror Habonim banner at Indersdorf, 1946, with arrows marking Helen in the front and Ibi behind her" width="1400" height="908" loading="lazy" decoding="async"></a>
+          <figcaption>The Dror Habonim group, a Zionist youth movement, at the Indersdorf children&rsquo;s center. Helen is in front; her best friend Ibi Weinberger is just behind her, a little to the left. Ibi&rsquo;s son picked out his mother himself, without being told where she was. <a href="/method.html#faces">How I found them in it &rarr;</a>
+            <span class="cite">Ghetto Fighters&rsquo; House Archives, Israel, photo 19650 &middot; also shown at <a href="https://museen-in-bayern.de/en/museums/museum-details/augustiner-chorherrenmuseum" target="_blank" rel="noopener">the museum of Kloster Indersdorf</a> &middot; arrows added</span>
+          </figcaption>
+        </figure>
+        <figure class="gave-item gave-la">
+          <div class="herohead"><span class="hht">Forty years later</span><span class="rck">Los Angeles &middot; mid-1980s</span></div>
+          <a class="ftagwrap" href="images/ibi-helen-zahava-la.jpg"><span class="ptag" style="right:5%;top:4%">Photo found 2026</span><img src="images/ibi-helen-zahava-la.jpg" alt="Helen in the center with her best friend Ibi and their friend Zahava, smiling together in Los Angeles in the mid-1980s" width="908" height="1017" loading="lazy" decoding="async"></a>
+          <figcaption>Helen (center) with her best friend Ibi and Zahava, friends from Indersdorf, still together forty years later.
+            <span class="cite">Courtesy of Anna Andlauer</span>
+          </figcaption>
+        </figure>
+    </div>
+  </section>
+
+  <hr class="stitch">
+
+  <!-- 2 · WHAT I DO: three doors (Sam, 9 Oct 2026: the free method and Balagula first, then talks, then research) -->
+  <section class="hsec doorsec" id="what">
+    <span class="sk">What I do</span>
+    <h2>I find Holocaust families, and show you how to find yours.</h2>
+    <div class="doors">
+      <div class="door">
+        <span class="dk">01 &middot; Free, always</span>
+        <b>The method</b>
+        <span class="dl">The four steps I used for Helen, with my hints, my mistakes and every database.</span>
+        <a class="dsub" href="/balagula.html">Next: the <em>Balagula</em> app &middot; coming soon &rarr;</a>
+        <a class="dgo" href="/method.html">Start with the method &rarr;</a>
+      </div>
+      <a class="door" href="/contact.html?topic=talk">
+        <span class="dk">02 &middot; Talks and workshops</span>
+        <b>Helen&rsquo;s story, and how to find yours</b>
+        <span class="dl">For museums, schools, synagogues and conferences.</span>
+        <span class="dnext">Next &middot; Philadelphia &middot; 24 October 2026</span>
+        <i>Invite me &rarr;</i>
+      </a>
+      <a class="door" href="/contact.html?topic=research">
+        <span class="dk">03 &middot; Records research</span>
+        <b>Research for your family</b>
+        <span class="dl">I follow the records for you. Paid, because it takes real time, and I take on a few families at a time.</span>
+        <i>Ask about research &rarr;</i>
+      </a>
+    </div>
+  </section>
+
+
+  <hr class="stitch">
+
+  <!-- 4 · THE METHOD, AS A PROCESS FLOW -->
+  <section class="hsec" id="method">
+    <span class="sk">The method, drawn the way an engineer would</span>
+    <h2>One card in. A family out.</h2>
+    <p>I work in process engineering, so this is how I see it. One record goes in. It passes through four steps. What comes out verified goes straight back in as the next search. What doesn&rsquo;t hold up is set aside, and I keep a list of those too. That loop ran hundreds of times. <strong>Tap any box</strong> for real examples from Helen&rsquo;s case.</p>
+
+    <figure class="pfd" aria-label="The method as a process flow: one card in, four steps, a family out, with every find added back to the matrix as the next search, and a list of leads set aside">
+      <svg class="wide" viewBox="-34 0 990 395" role="group" aria-labelledby="pfdw-t">
+        <title id="pfdw-t">One card in, then Normalize, Reconstruct, Correlate and Verify, then a family out. Every find goes back in as the next search; unconfirmed leads are set aside.</title>
+        <defs>
+          <marker id="ahw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+          <marker id="ahwp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+        <g class="u u1">
+          <text x="-34" y="158" class="io">IN</text>
+          <text x="-34" y="186" class="iot">one card</text>
+          <text x="-34" y="208" class="ios">2019</text>
+        </g>
+        <a href="/method.html#stage-normalize" class="u u2">
+          <path class="flow" d="M78,180 L86,180" marker-end="url(#ahw)"/>
+          <rect class="box" x="92" y="110" width="156" height="140" rx="10"/>
+          <text x="108" y="140" class="num">STEP 1</text>
+          <text x="108" y="172" class="ttl">Normalize</text>
+          <text x="108" y="204" class="dsc">every form</text>
+          <text x="108" y="226" class="dsc">of the name</text>
+        </a>
+        <a href="/method.html#stage-reconstruct" class="u u3">
+          <path class="flow" d="M250,180 L266,180" marker-end="url(#ahw)"/>
+          <rect class="box" x="272" y="110" width="156" height="140" rx="10"/>
+          <text x="288" y="140" class="num">STEP 2</text>
+          <text x="288" y="172" class="ttl">Reconstruct</text>
+          <text x="288" y="204" class="dsc">the road,</text>
+          <text x="288" y="226" class="dsc">stage by stage</text>
+        </a>
+        <a href="/method.html#stage-correlate" class="u u4">
+          <path class="flow" d="M430,180 L446,180" marker-end="url(#ahw)"/>
+          <rect class="box" x="452" y="110" width="156" height="140" rx="10"/>
+          <text x="468" y="140" class="num">STEP 3</text>
+          <text x="468" y="172" class="ttl">Correlate</text>
+          <text x="468" y="204" class="dsc">archives and</text>
+          <text x="468" y="226" class="dsc">languages + AI</text>
+        </a>
+        <a href="/method.html#stage-verify" class="u u5">
+          <path class="flow" d="M610,180 L626,180" marker-end="url(#ahw)"/>
+          <rect class="box" x="632" y="110" width="156" height="140" rx="10"/>
+          <text x="648" y="140" class="num">STEP 4</text>
+          <text x="648" y="172" class="ttl">Verify</text>
+          <text x="648" y="204" class="dsc">keep it only if</text>
+          <text x="648" y="226" class="dsc">sources agree</text>
+        </a>
+        <g class="u u6">
+          <path class="flow" d="M790,180 L810,180" marker-end="url(#ahw)"/>
+          <text x="816" y="158" class="io">OUT</text>
+          <text x="816" y="186" class="iot">a family</text>
+          <text x="816" y="208" class="ios">300+ documents</text>
+        </g>
+        <g class="u u7">
+          <path class="flow rec" d="M710,106 C710,22 170,22 170,100" marker-end="url(#ahw)"/>
+          <text x="440" y="34" text-anchor="middle" class="rl">Add to the matrix: every find becomes the next search</text>
+        </g>
+        <a href="/method.html#mistakes" class="u u8">
+          <path class="flow pur" d="M710,252 L710,292" marker-end="url(#ahwp)"/>
+          <text x="700" y="280" text-anchor="end" class="pl">not confirmed across sources</text>
+          <rect class="box purgebox" x="632" y="298" width="156" height="84" rx="10"/>
+          <text x="648" y="330" class="ttl">Set aside</text>
+          <text x="648" y="354" class="dsc">as unconfirmed,</text>
+          <text x="648" y="373" class="dsc">kept on a list</text>
+        </a>
+        <g class="u u8 reopen">
+          <path class="flow reo" d="M628,342 C430,342 172,336 172,258" marker-end="url(#ahw)"/>
+          <text x="400" y="368" text-anchor="middle" class="rl2">reopen if new evidence turns up</text>
+        </g>
+        <g class="u u8 crossed">
+          <path class="flow reo" d="M791,340 L808,340" marker-end="url(#ahw)"/>
+          <text x="814" y="326" class="xo">Crossed off</text>
+          <text x="814" y="346" class="xs">sources show</text>
+          <text x="814" y="364" class="xs">someone else</text>
+        </g>
+        <g class="pfd-dot" aria-hidden="true"><circle r="7" class="dot"><animateMotion dur="11s" repeatCount="indefinite" calcMode="paced" path="M-20,180 L710,180 L710,106 C710,22 170,22 170,104 L170,180 L800,180"/></circle></g>
+      </svg>
+
+      <svg class="tall" viewBox="0 0 360 935" role="group" aria-labelledby="pfdt-t">
+        <title id="pfdt-t">One card in, then Normalize, Reconstruct, Correlate and Verify, then a family out. Every find goes back in as the next search; unconfirmed leads are set aside.</title>
+        <defs>
+          <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+          <marker id="ahtp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+        <g class="u u1">
+          <text x="150" y="22" text-anchor="middle" class="io">IN</text>
+          <text x="150" y="48" text-anchor="middle" class="iot">one card</text>
+          <text x="150" y="68" text-anchor="middle" class="ios">2019</text>
+        </g>
+        <a href="/method.html#stage-normalize" class="u u2">
+          <path class="flow" d="M150,76 L150,104" marker-end="url(#aht)"/>
+          <rect class="box" x="30" y="110" width="240" height="120" rx="10"/>
+          <text x="46" y="140" class="num">1</text><text x="70" y="140" class="ttl">Normalize</text>
+          <text x="46" y="166" class="dsc">every form of the name</text>
+          <text x="46" y="208" class="ex">She was a Lando, not a Helman</text>
+        </a>
+        <a href="/method.html#stage-reconstruct" class="u u3">
+          <path class="flow" d="M150,232 L150,264" marker-end="url(#aht)"/>
+          <rect class="box" x="30" y="270" width="240" height="120" rx="10"/>
+          <text x="46" y="300" class="num">2</text><text x="70" y="300" class="ttl">Reconstruct</text>
+          <text x="46" y="326" class="dsc">arrest, ghetto, transport,</text>
+          <text x="46" y="346" class="dsc">camp, ship</text>
+          <text x="46" y="372" class="ex">2 June 1944 &#183; Buchenwald</text>
+        </a>
+        <a href="/method.html#stage-correlate" class="u u4">
+          <path class="flow" d="M150,392 L150,424" marker-end="url(#aht)"/>
+          <rect class="box" x="30" y="430" width="240" height="120" rx="10"/>
+          <text x="46" y="460" class="num">3</text><text x="70" y="460" class="ttl">Correlate</text>
+          <text x="46" y="486" class="dsc">archives, languages, scripts.</text>
+          <text x="46" y="506" class="dsc">AI reads, I check</text>
+          <text x="46" y="532" class="ex">the cousins &#183; Gelman &#183; the three faces</text>
+        </a>
+        <a href="/method.html#stage-verify" class="u u5">
+          <path class="flow" d="M150,552 L150,584" marker-end="url(#aht)"/>
+          <rect class="box" x="30" y="590" width="240" height="120" rx="10"/>
+          <text x="46" y="620" class="num">4</text><text x="70" y="620" class="ttl">Verify</text>
+          <text x="46" y="646" class="dsc">keep it only when</text>
+          <text x="46" y="666" class="dsc">sources agree</text>
+          <text x="46" y="692" class="ex">her own words, confirmed</text>
+        </a>
+        <g class="u u6">
+          <path class="flow" d="M90,712 L90,752" marker-end="url(#aht)"/>
+          <text x="30" y="780" class="io">OUT</text>
+          <text x="30" y="806" class="iot">a family</text>
+          <text x="30" y="826" class="ios">300+ documents</text>
+        </g>
+        <g class="u u7">
+          <path class="flow rec" d="M274,650 C345,650 345,170 278,170" marker-end="url(#aht)"/>
+          <text transform="translate(352,410) rotate(-90)" text-anchor="middle" class="rl">Add to the matrix: every find becomes the next search</text>
+        </g>
+        <a href="/method.html#mistakes" class="u u8">
+          <path class="flow pur" d="M220,712 L220,752" marker-end="url(#ahtp)"/>
+          <rect class="box purgebox" x="160" y="758" width="170" height="76" rx="10"/>
+          <text x="176" y="786" class="ttl">Set aside</text>
+          <text x="176" y="808" class="dsc">as unconfirmed,</text>
+          <text x="176" y="825" class="dsc">kept on a list</text>
+        </a>
+        <g class="u u8 reopen">
+          <path class="flow reo" d="M332,796 C358,796 358,668 300,654" marker-end="url(#aht)"/>
+          <text x="30" y="856" class="rl2">reopen if new evidence turns up</text>
+        </g>
+        <g class="u u8 crossed">
+          <path class="flow reo" d="M300,836 L300,872" marker-end="url(#aht)"/>
+          <text x="176" y="898" class="xo">Crossed off</text>
+          <text x="176" y="920" class="xs">sources show someone else</text>
+        </g>
+        <g class="pfd-dot" aria-hidden="true"><circle r="7" class="dot"><animateMotion dur="11s" repeatCount="indefinite" calcMode="paced" path="M150,80 L150,650 L274,650 C345,650 345,170 278,170 L150,170 L150,712 L90,712 L90,752"/></circle></g>
+      </svg>
+          <div class="pfd-recs" aria-label="One real record from each step">
+        <a class="pr pr1" href="/method.html#step-normalize"><img src="images/th-normalize.jpg" alt="Helen&rsquo;s 1929 birth entry" width="330" height="110" loading="lazy" decoding="async"><span>Helena, filed under her mother&rsquo;s name, Land&oacute;</span></a>
+        <a class="pr pr2" href="/method.html#step-reconstruct"><img src="images/th-reconstruct.jpg" alt="Zacharias&rsquo;s Buchenwald card" width="330" height="110" loading="lazy" decoding="async"><span>sent to Buchenwald, 2 June 1944</span></a>
+        <a class="pr pr3" href="/method.html#step-correlate"><img src="images/th-correlate-helen.jpg" alt="A Russian-language list: Гелман Гелена (Helen Helman) and Гелман Захариаш (Zacharias Helman)" width="429" height="119" loading="lazy" decoding="async"><span>Helman becomes &#1043;&#1077;&#1083;&#1084;&#1072;&#1085;</span></a>
+        <a class="pr pr4" href="/method.html#step-verify"><img src="images/th-verify.jpg" alt="Helen&rsquo;s 1946 displaced persons (DP) card" width="480" height="160" loading="lazy" decoding="async"><span>wrong year, wrong town; the parents are right</span></a>
+      </div>
+    </figure>
+    <p class="pfd-cap">Each box links to its examples on the method page. A set-aside lead can come back, or be crossed off once the sources show it&rsquo;s someone else. &ldquo;Set aside&rdquo; links to my mistakes.</p>
+
+    <a class="dbdoor" href="/method.html"><span><b>Read the method</b><span>The four steps in detail, my hints, the walls I hit, my mistakes, and every database I used.</span></span><i>Open the method &rarr;</i></a>
+  </section>
+
+  <hr class="stitch">
+
+  <!-- 5 · WHO I AM, AND WHY (last: the survivors first, then me) -->
+  <section class="hsec" id="why">
+    <span class="sk">Who I am, and why</span>
+    <h2>Why I do this</h2>
+    <div class="intro">
+      <div>
+        <p class="big">I do this research from Hawai&lsquo;i, about as far from Europe as you can get.</p>
+        <p>I speak only English, so AI helps me read the records, and I check every one against the page. I was never trained in this; I work in process engineering, and engineers take a finished thing apart to see how it was made. I do the same with a family.</p>
+        <p>Both of my grandparents on my mother&rsquo;s side survived the Holocaust: Helen Lando Helman and Tibi Katz. Helen helped raise me. I was the youngest, and when she stayed with us, she shared my room.</p>
+        
+      </div>
+      <figure>
+        <img src="images/sam-wedding-2025.jpg" alt="Samantha on her wedding day in Hawai&lsquo;i, laughing, in a crown of tropical flowers, holding a lei and a bouquet" width="1100" height="1429" loading="lazy" decoding="async">
+        <figcaption>Samantha Seligman-Grajewski, Hawai&lsquo;i, on my wedding day, December 2025.</figcaption>
+      </figure>
+    </div>
+    <a class="dbdoor" href="/about.html"><span><b>More about me</b><span>How I started, what I found, and what Helen said about me on tape in 2008.</span></span><i>The researcher &rarr;</i></a>
+  </section>
+
+  <!-- 8 · CALL TO ACTION -->
+  <section class="cta hsec" id="start">
+    <p class="line">The records made to erase them can find them.</p>
+    <p class="line">The story does not end with them. Now it is our turn, the second and third generations, to carry it on.</p>
+    <p>Start with one name and one town. Write every form of the name. Then follow the four steps.</p>
+    <div class="acts">
+      <a class="pri" href="/method.html">The free guide</a>
+      <a href="/databases.html">The databases</a>
+      <a href="/contact.html?topic=research">Records research</a>
+    </div>
+    <p class="small">The guide is free, and so are most of the databases. I&rsquo;m one person, and I can&rsquo;t research every family, but I help where I can, and I hope you&rsquo;ll try it yourself.</p>
+  </section>
+
+  <figure class="sig">
+    <img src="images/signature-zacharias.png" alt="The signature of Zacharias Helman" width="939" height="171">
+    <figcaption>Zacharias Helman &middot; Buchenwald registration form, 2 June 1944 &middot; Arolsen Archives</figcaption>
+  </figure>
+
+  <footer class="page">
+    <p>Ongoing research. Documents cited on request.</p>
+    <p class="wheelnote">The wheel is a wagon wheel, my family&rsquo;s trade: Helen&rsquo;s father and her cousins were wagon drivers. Twelve spokes, for the twelve tribes.</p>
+    <p class="place">O&lsquo;ahu, Hawai&lsquo;i</p>
+  </footer>
+
+</div>
+</main>
+
+<dialog id="helen" class="helen">
+  <button class="hclose" type="button" aria-label="Close">&times;</button>
+  <p class="hlabel">In her own voice</p>
+  <blockquote class="hquote">&ldquo;We all have stories to tell. You know, all of us have some kind of story to tell.&rdquo;</blockquote>
+  <p class="hattr">Helen Lando Helman, speaking at the Orange County High School of the Arts, about 2002</p>
+  <audio class="hear" controls preload="none" src="audio/helen-testimony.mp3">
+    <a href="audio/helen-testimony.mp3">Download the clip</a>
+  </audio>
 </dialog>
 
-<script src="road/leaflet/leaflet.js"></script>
-<script>window.L||document.write('<link rel="stylesheet" href="road/leaflet/leaflet.css"><script src="road/leaflet/leaflet.js"><\/script>')</script>
-<script src="road/borders/borders-1930.js"></script>
-<script src="road/borders/borders-1942.js"></script>
-<script src="road/borders/borders-today.js"></script>
-<script src="road/borders/labels.js"></script>
-<script src="road/road-data.js?v=live1"></script>
-<script src="road/he.js?v=live1" onerror="void 0"></script>
-<script>/* workshop: I'm introduced at the start, so the road ends at the museum (Sam, 14 Oct 2026) */ window.ROAD.STOPS=window.ROAD.STOPS.filter(function(s){ return s.id!=='hawaii'; });</script>
-<script src="road/robin-stops.js?v=20261110085632"></script><script src="road/robin-notes.js?v=20261110085632"></script><script src="road/robin-names.js?v=20261110085632"></script>
-<script>window.ROAD_MODE='talk';window.ROAD_LIVE=true;</script>
-<script src="road/road.js?v=20261110085632"></script>
-<script>
-  // if the player didn't start (a script failed to load), show the still picture instead of a blank page
-  (function(){ function check(){ if(!document.documentElement.classList.contains('road-ready')) document.getElementById('fallback').classList.add('on'); }
-    if(document.readyState==='complete') check(); else window.addEventListener('load',check); })();
-</script>
-<link rel="stylesheet" href="road/robin.css?v=20261110085632"><script src="road/robin-scenes.js?v=20261110085632"></script>
+<script src="theme.js?v=20261011c"></script>
+<script src="home.js?v=20261011a"></script>
+<script data-goatcounter="https://engineeringremembrance.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
