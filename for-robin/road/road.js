@@ -725,7 +725,7 @@
     clearLoupe(); doc.classList.remove('in'); setTimeout(fitDoc,60);
     var m=s.media||[]; document.body.classList.toggle('has-doc',!!m.length); document.body.classList.toggle('has-stack',!!(s.stack&&m.length)); doc.dataset.leadw=s.leadW||''; document.body.classList.toggle('drawn-on',!!(m[0]&&m[0].html));
     if(!m.length){ $('dF').innerHTML=''; return; }
-    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.docSmall?' petite':'')+(s.wideDoc?' wide':'')+(s.row?' row':'')+(s.stack?' stack':'')+(!s.row&&!s.stack&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
+    doc.className='doc'+(s.tallDoc?' tall':'')+(s.docLow?' low':'')+(s.docLeft?' left':'')+(s.sideCol?' sidecol':'')+(s.docRight?' right':'')+(s.docSmall?' petite':'')+(s.wideDoc?' wide':'')+(s.bigPhotos?' big':'')+' at-'+s.id+(s.row?' row':'')+(s.stack?' stack':'')+(!s.row&&!s.stack&&m.length>1?' many':'')+(m[0]&&m[0].html?' flowdoc':'')+((s.night||s.end)&&!s.row&&m.length===1&&!(m[0]&&m[0].html)?' snug':'');
     // a title over a group of records sits above them all, not inside the first one (Sam, 8 Oct 2026)
     if(s.docTitle){ $('dK').innerHTML='<span class="rk">'+s.docTitle+'</span>'; $('dK').classList.add('titled'); }
     else { $('dK').classList.remove('titled'); $('dK').textContent=s.voice&&s.witness?'The record':(s.part===2?'The record':''); }
@@ -790,7 +790,7 @@
       doc.classList.remove('g2','strow','strow2');
       var CW=parseFloat(doc.dataset.leadw)||0.68, wt=function(i){ return i===0?CW:1; }, sumA=0, sumP=0; ims.forEach(function(im,i){ sumA+=wt(i)*ar(im); if(i) sumP+=ar(im); });
       var Hrow=Math.min((boxW-4-GAP*(ims.length-1))/sumA, avail-60);
-      var A2=avail-150, H1=Math.min(A2*0.56,(boxW-4-GAP*(rest.length-1))/sumP), Hc=Math.min(A2-H1,(boxW-4)/a0);
+      var A2=avail-150, H1=Math.min(A2*((doc.classList.contains('at-visit2005')||doc.classList.contains('at-bremen'))?0.72:0.56),(boxW-4-GAP*(rest.length-1))/sumP), Hc=Math.min(A2-H1,(boxW-4)/a0);
       var two=H1>Hrow*1.04;   // a narrower screen: the card on top, the photographs beneath it, whichever shows the photographs bigger (Sam)
       doc.classList.add(two?'strow2':'strow');
       var hs=function(i,f){ return Math.floor(two?(i?H1:Hc)*f:Hrow*wt(i)*f); };
@@ -1160,7 +1160,7 @@
     if(!alive(g)) return;
     if(s.voice2&&s.voiceFirst&&s.voiceSplit){ if(!LIVE) await wait(900); await gate(); if(!alive(g)) return; cap.classList.add('dim'); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; cap.classList.remove('dim'); }   // workshop Király: Helen, then me, then Helen again (Sam, 24 Oct 2026)
     if(s.voice&&!s.voiceFirst){ if(!LIVE) await wait(900); await gate(); if(!alive(g)) return; cap.classList.add('dim'); await helenSays(s.voice,s,g); if(!alive(g)) return;
-      if(s.voice2){ await wait(400); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; }   // a second clip after the first (Sam)
+      if(s.voice2){ if(s.voice2Gate){ await gate(); if(!alive(g)) return; } else await wait(400); await helenSays(s.voice2,s,g,'“'+(s.voiceKeep||s.voice.text)+'”'); if(!alive(g)) return; }   // a second clip after the first (Sam)
       cap.classList.remove('dim'); }
     schedule(3200);
   }
@@ -1360,10 +1360,7 @@
 
   /* ---------- talk and loop: "You are here", Philadelphia, with the QR code to the homepage ---------- */
   var PHILLY=[34.0753,-118.3546]   /* Robin's talk: Holocaust Museum LA */, hereMk=null, atHere=false;
-  var hereCard=el('div','herecard','<p class="ek">Recovering families from the records that were meant to erase them</p>'+
-    '<div class="hrow"><img class="qr" src="road/qr-home.svg" alt="QR code: engineeringremembrance.org" width="220" height="220">'+
-    '<div class="ht"><p class="ek2">Start with one name and one town.</p><p class="url">engineeringremembrance.org</p>'+
-    '<p class="sm">The free guide, the databases, and Helen’s Road to watch again</p></div></div>');
+  var hereCard=el('div','herecard robinend','<img src="road/img/robin/helen_tibi_robin_1970s_colgate_ave_los_angeles.jpg" alt="Helen, Tibi and Robin, Los Angeles, 1970s" width="657" height="960"><p class="rc">Helen, Tibi and me (Robin) &middot; Los Angeles, 1970s</p>');
   hereCard.hidden=true;
   function hereScene(){
     var g=++gen; clearAdv(); skipPart=null; stopAudio(); clearLoupe(); hideVoice(); atHere=true; tell({at:'here'});

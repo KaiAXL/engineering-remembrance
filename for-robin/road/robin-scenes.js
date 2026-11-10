@@ -17,5 +17,5 @@
     [].forEach.call(box.querySelectorAll('.n'),function(e,i){ timers.push(setTimeout(function(){ e.classList.add('on'); },1400+i*1100)); });
     timers.push(setTimeout(function(){ box.querySelector('.last').classList.add('on'); },1400+N.length*1100+1200));
   }
-  window.addEventListener('road-stop',function(e){ clear(); if(e.detail&&e.detail.s&&e.detail.s.scene==='graves') show(); });
+  window.addEventListener('road-stop',function(e){ clear(); document.body.classList.toggle('big-photos',!!(e.detail&&e.detail.s&&e.detail.s.bigPhotos)); document.body.setAttribute('data-stop',(e.detail&&e.detail.s&&e.detail.s.id)||''); if(e.detail&&e.detail.s&&e.detail.s.scene==='graves') show(); });
 })();

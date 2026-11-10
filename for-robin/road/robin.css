@@ -22,3 +22,18 @@
 .graves .gcredit{position:absolute;right:30px;bottom:66px;font:400 11px/1.2 var(--mono);color:#787d86}
 /* the stop's own title box would repeat the heading on the stones */
 body.at-graves .cap{opacity:0!important}
+/* photo stops for the kids: the village and her family, as big as the screen allows (Sam, 10 Nov 2026) */
+@media (min-width:900px){ body .doc.big{width:min(64vw,1500px)!important;right:24px!important;top:calc(min(6vw,104px) + 80px)!important} }
+/* keep the map labels clear: Bancroft in LA, the Bremen label (Sam, 9 Nov 2026) */
+@media (min-width:900px){ body .doc.big.at-la{width:min(51vw,1180px)!important} body .doc.big.at-bremen{width:min(58vw,1340px)!important} body .doc.big.at-europe{width:min(46vw,1060px)!important} html body .doc.at-kiraly,html body .doc.at-keleti{top:150px!important} }
+/* stacked photo boxes start below the year, never over it (Sam, 10 Nov 2026) */
+@media (min-width:900px){ html body .doc.stack{top:150px!important} }
+/* the closing screen: the family photo where the website card was */
+.herecard.robinend{padding:14px 14px 10px;max-width:none;left:50%!important;right:auto!important;bottom:auto!important;top:50%!important;transform:translate(-50%,calc(-50% + 16px))!important}
+.herecard.robinend.in{transform:translate(-50%,-50%)!important}
+.herecard.robinend img{display:block;height:min(62vh,660px);width:auto;border-radius:4px}
+.herecard.robinend .rc{margin:10px 2px 0;text-align:center;font:400 clamp(15px,1.15vw,20px)/1.3 var(--serif);color:var(--cream)}
+/* layout check, 10 Nov 2026: no empty tag boxes; Keleti and Kiraly start below the year's lines; the Auschwitz photos leave the road into Tiszabogdany clear */
+.doc .mk .tag:empty{display:none!important}
+@media (min-width:900px){ html body .doc.at-kiraly,html body .doc.at-keleti{top:185px!important} body .doc.big.at-family{width:min(56vw,1300px)!important} }
+html body .doc.at-kiraly.sidecol figure:not([data-side]):not(.lesser) .frame .sheet img{max-height:calc(100vh - 540px)!important}
