@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speaker notes · Helen’s Road</title>
+<link rel="stylesheet" href="road/fonts-local/fonts.css">
+<style>
+  :root{--bg:#0d0f12;--panel:#15181d;--cream:#f3ecdf;--dim:#bdb3a2;--faint:#8a8273;--gold:#e6b66e;--red:#e2554a;--green:#7fc49a;
+    --serif:Newsreader,Georgia,serif;--mono:"IBM Plex Mono",Consolas,monospace}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--cream);font:400 20px/1.5 var(--serif)}
+  header{display:flex;align-items:center;gap:18px;padding:14px 22px;border-bottom:1px solid #262a31;position:sticky;top:0;background:var(--bg);z-index:2}
+  header b{font:600 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  header .clock{margin-left:auto;font:500 26px/1 var(--mono);color:var(--cream)}
+  header .el{font:500 14px/1 var(--mono);color:var(--dim)}
+  header button{font:500 12px/1 var(--mono);background:none;border:1px solid #3a3f47;color:var(--dim);padding:7px 10px;border-radius:4px;cursor:pointer}
+  main{padding:22px 26px 60px;max-width:1100px}
+  .state{font:600 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px;color:var(--faint)}
+  .state.done{color:var(--green)}
+  h1{font:400 38px/1.15 var(--serif);margin:0 0 6px}
+  .k{font:500 13px/1.3 var(--mono);color:var(--dim);letter-spacing:.06em;margin:0 0 18px}
+  .say{background:rgba(230,182,110,.09);border-left:4px solid var(--gold);padding:14px 18px;margin:0 0 20px;font-size:25px;line-height:1.45}
+  .say:empty{display:none}
+  /* workshop script: what I say, what I press, what I point at (Sam, 14 Oct 2026) */
+  .say.script{background:none;border:0;padding:0;font-size:24px}
+  .ln{margin:0 0 10px;padding:8px 14px;border-radius:4px}
+  .ln.say{background:rgba(230,182,110,.10);border-left:4px solid var(--gold);color:var(--cream)}
+  .ln.click{font:600 17px/1.4 var(--mono);color:#9fc6df;background:rgba(159,198,223,.08);border-left:4px solid #9fc6df;letter-spacing:.04em}
+  .ln.point{font-style:italic;font-size:20px;color:#7fc49a;background:rgba(127,196,154,.08);border-left:4px solid #7fc49a}
+  .ln.time{font:600 15px/1 var(--mono);color:var(--red);letter-spacing:.1em;background:none;padding:0 0 4px}
+  .legend{font:500 13px/1.6 var(--mono);color:var(--faint);margin:0 0 16px}
+  .legend i{font-style:normal;padding:1px 6px;border-radius:3px;margin-right:8px}
+  h3{font:600 11px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin:20px 0 8px}
+  .plays p{margin:0 0 8px;color:var(--dim);font-size:19px}
+  .plays .helen{color:var(--gold);font-style:italic}
+  .lesson{color:var(--cream);font-style:italic}
+  ul{margin:0;padding-left:20px;color:var(--dim);font-size:17px}
+  .next{margin-top:28px;padding-top:14px;border-top:1px solid #262a31;color:var(--faint);font:500 15px/1.4 var(--mono)}
+  .next span{color:var(--cream);font-family:var(--serif);font-size:20px}
+  .keys{margin-top:26px;font:400 13px/1.7 var(--mono);color:var(--faint)}
+  /* the printed script: every item, one after another */
+  body.print header{display:none}
+  body.print section{page-break-inside:avoid;border-bottom:1px solid #262a31;padding:0 0 18px;margin:0 0 22px}
+  @media print{
+    body{background:#fff;color:#111;font-size:13pt}
+    header,.keys,.noprint{display:none!important}
+    h1{font-size:20pt} .k,.plays p,ul,.state{color:#333!important} .plays .helen{color:#7a5410!important}
+    .say{background:#f6efe2;border-left-color:#b8862f;font-size:15pt}
+    section{border-bottom:1px solid #bbb!important}
+  }
+</style>
+<script>/* embedded in the deck's presenter window: hide my own header (Sam, 14 Oct 2026) */ if(/[?&]embed=1/.test(location.search)) document.documentElement.classList.add("embed");</script>
+<style>.embed header{display:none!important} .embed body{padding-top:0}</style>
+</head>
+<body>
+<header>
+  <b>Speaker notes</b><span class="el" id="el">0:00</span>
+  <button type="button" id="tZero">Restart timer</button>
+  <button type="button" id="tPrint">Print the script</button>
+  <span class="clock" id="clock"></span>
+</header>
+<main id="m"><p class="state">Waiting for the map. In the talk window, press N.</p></main>
+
+<script src="road/road-data.js"></script>
+<script src="road/robin-stops.js"></script>
+
+<script src="road/robin-notes.js?v=20261110085632"></script>
+<script>
+(function(){
+  var STOPS=window.ROAD.STOPS, TALK=window.TALK||{who:[],say:{}}, m=document.getElementById('m');
+  var strip=function(h){ var d=document.createElement('div'); d.innerHTML=h||''; return d.textContent.trim(); };
+  var esc=function(t){ return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); };
+  function items(){ var L=[];
+    TALK.who.forEach(function(w,i){ L.push({kind:'who',n:i,title:w.h,k:'Slide '+(i+1)+' of '+TALK.who.length+'',say:w.say,on:w.p}); });
+    L.push({kind:'intro',title:'Her words: “We all have stories to tell.”',k:'Helen’s voice, then the map starts',say:'',on:[]});
+    STOPS.forEach(function(s,i){ L.push({kind:'stop',n:i,s:s,title:strip(s.t),k:(s.k||'')+(s.when?' · '+s.when:'')+(s.age?' · '+strip(s.age):''),say:(TALK.say||{})[s.id]||''}); });
+    L.push({kind:'here',title:'You are here: Holocaust Museum LA',k:'The end. Questions.',say:TALK.here||'',on:[]});
+    return L; }
+  var ALL=items();
+  function find(msg){ for(var i=0;i<ALL.length;i++){ var it=ALL[i];
+    if(msg.at==='who'&&it.kind==='who'&&it.n===msg.n) return i; if(msg.at==='intro'&&it.kind==='intro') return i;
+    if(msg.at==='stop'&&it.kind==='stop'&&it.n===msg.n) return i; if(msg.at==='here'&&it.kind==='here') return i; } return -1; }
+  function body(it){
+    var lines=String(it.say||'').split(String.fromCharCode(10)).filter(function(x){ return x.trim(); }).map(function(x){
+      var m2=x.match(/^(SAY|CLICK|POINT|TIME):\s*(.*)$/), k=m2?m2[1].toLowerCase():'say', t=m2?m2[2]:x;
+      return '<p class="ln '+k+'">'+(k==='click'?'▶ CLICK · ':k==='point'?'☞ ':'')+esc(t)+'</p>'; }).join('');
+    var h='<h1>'+esc(it.title)+'</h1><p class="k">'+esc(it.k)+'</p><p class="legend"><i style="background:rgba(230,182,110,.18);color:#e6b66e">say aloud</i><i style="background:rgba(159,198,223,.16);color:#9fc6df">press the clicker</i><i style="background:rgba(127,196,154,.16);color:#7fc49a">point · don’t say</i></p><div class="say script">'+lines+'</div>';
+    if(it.kind==='stop'){ var s=it.s, pl=[];
+      if(s.voice&&s.voiceFirst) pl.push('<p class="helen">Helen: “'+esc(s.voice.text)+'”</p>');
+      if(s.voice2&&s.voiceFirst) pl.push('<p class="helen">Helen: “'+esc(s.voice2.text)+'”</p>');
+      /* the box is my SAY line now (Sam, 17 Oct 2026) */
+      if(s.voice&&!s.voiceFirst) pl.push('<p class="helen">Helen: “'+esc(s.voice.text)+'”</p>');
+      if(s.voice2&&!s.voiceFirst) pl.push('<p class="helen">Helen: “'+esc(s.voice2.text)+'”</p>');
+      if(s.lesson) pl.push('<p class="lesson">Lesson on screen: '+esc(strip(s.lesson))+'</p>');
+      h+='<h3>What plays</h3><div class="plays">'+pl.join('')+'</div>';
+      var recs=(s.media||[]).map(function(md){ return strip(md.kt||md.c||''); }).filter(Boolean);
+      if(recs.length) h+='<h3>On screen</h3><ul>'+recs.map(function(r){ return '<li>'+esc(r)+'</li>'; }).join('')+'</ul>';
+    } else if(it.on&&it.on.length) h+='<h3>On the slide</h3><ul>'+it.on.map(function(r){ return '<li>'+esc(r)+'</li>'; }).join('')+'</ul>';
+    return h; }
+  function render(msg){ var i=find(msg); if(i<0) return; var it=ALL[i], nx=ALL[i+1];
+    m.innerHTML='<p class="state'+(msg.done?' done':'')+'">'+(msg.done?'Recording finished · click when ready':it.kind==='stop'?'Playing':'Now')+' · '+(i+1)+' of '+ALL.length+'</p>'+body(it)+
+      (nx?'<p class="next">Next: <span>'+esc(nx.title)+'</span></p>':'')+
+      '<p class="keys">In the talk window: clicker or → next · ← back · B black screen · P pause · M sound</p>';
+    document.title=(msg.done?'✓ ':'')+it.title+' · notes'; }
+  if(/[?&]print=1/.test(location.search)){ document.body.classList.add('print');
+    m.innerHTML='<h1 style="margin-bottom:22px">Helen · Robin’s script</h1>'+ALL.map(function(it,i){ return '<section><p class="state">'+(i+1)+' of '+ALL.length+'</p>'+body(it)+'</section>'; }).join(''); return; }
+  try{ var ch=new BroadcastChannel('helens-road-talk'); ch.onmessage=function(e){ if(e.data&&e.data.at) render(e.data); }; ch.postMessage({hello:1}); }catch(e){}
+  var t0=Date.now(); document.getElementById('tZero').onclick=function(){ t0=Date.now(); };
+  document.getElementById('tPrint').onclick=function(){ window.open('workshop-notes.html?print=1','hr-script'); };
+  setInterval(function(){ var d=new Date(); document.getElementById('clock').textContent=d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+    var e=Math.floor((Date.now()-t0)/1000); document.getElementById('el').textContent=Math.floor(e/60)+':'+('0'+e%60).slice(-2); },500);
+})();
+</script>
+</body>
+</html>
