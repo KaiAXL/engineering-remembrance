@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Helen</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0f12">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="road/leaflet/leaflet.css">
+<link rel="stylesheet" href="road/fonts-local/fonts.css">
+<link rel="stylesheet" href="road/road.css?v=live1">
+<style>
+  /* shown only if the map can't start (no JavaScript, a script that failed to load) */
+  .fallback{position:fixed;inset:0;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px;background:#0d0f12;color:#f3ecdf;text-align:center}
+  .fallback.on{display:flex}
+  .fallback img{max-width:min(1200px,100%);max-height:70vh;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  .fallback h1{margin:0;font:500 13px/1 "IBM Plex Mono",Consolas,monospace;letter-spacing:.3em;text-transform:uppercase;color:#cf9f63}
+  .fallback p{margin:0;max-width:640px;font:400 17px/1.5 Newsreader,Georgia,serif;color:#bdb3a2}
+  .fallback a{color:#f3ecdf}
+</style>
+</head>
+<body>
+<div id="map" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<main id="ui" aria-label="Helen’s Road"></main>
+
+<div class="fallback" id="fallback">
+  <h1>Helen’s Road</h1>
+  <img loading="lazy" src="road/still-route.jpg" alt="A map of Europe with Helen’s road from Tiszabogdány to Budapest, Bavaria and Bremen, and her family’s roads to Auschwitz, Buchenwald, Magdeburg, Rehmsdorf and Terezín" width="1600" height="900">
+  <p>The map could not start in this browser. <a href="journey.html">Try again</a>, or read <a href="case.html">the case</a> and see <a href="records.html">the records</a>.</p>
+</div>
+<noscript><style>.fallback{display:flex}</style></noscript>
+
+<dialog class="credits" id="credits" aria-labelledby="credTitle">
+  <div class="cin">
+    <form method="dialog"><button class="x" aria-label="Close">&times;</button></form>
+    <h2 id="credTitle">Sources and credits</h2>
+    <p>Helen’s Road was made by Samantha Seligman-Grajewski.</p>
+
+    <h3>Helen’s voice</h3>
+    <p>Every word Helen speaks here is cut from her own recordings: tapes made in 2008, and a talk she gave in the early 2000s. The words on screen are transcripts of those clips.</p>
+
+    <h3>My voice and the music</h3>
+    <p>Every voice here is a real recording: my own, Samantha Seligman-Grajewski, and Helen&rsquo;s. Music: Antonín Dvořák, “Goin’ Home,” performed by the United States Air Force Band (public domain).</p>
+
+    <h3>Records and photographs</h3>
+    <ul>
+      <li>Tap or click a record to see it full size.</li>
+      <li>Buchenwald prisoner cards, rolls and intake photographs, and Szerene Sperber’s Dachau registration: <a href="https://arolsen-archives.org/en/">Arolsen Archives</a>.</li>
+      <li>Helen’s birth entry, Tiszabogdány civil register, 1929: a copy bought through Subcarpathian Genealogy.</li>
+      <li>Michal’s and Lajos’s Budapest registration forms, June 1945: <a href="https://www.yadvashem.org/">Yad Vashem</a>.</li>
+      <li>Her 1946 U.S. Zone registration: <a href="https://www.ushmm.org/">United States Holocaust Memorial Museum</a>.</li>
+      <li>Her DP card, Chiemsee, December 1946, and the Marine Marlin sailing list of the U.S. Committee for the Care of European Children, April 1947: <a href="https://arolsen-archives.org/en/">Arolsen Archives</a> (the sailing list also on Ancestry).</li>
+      <li>The Müller family photograph and Szerene’s belt: courtesy of Alfred Sperber and his family.</li>
+      <li>Lajos’s and Michal’s Terezín cards: <a href="https://www.pamatnik-terezin.cz/">Památník Terezín</a> (Terezín Memorial).</li>
+      <li>Helen at Indersdorf, 1946: photo, Charles Haacker.</li>
+      <li>Sports day at Indersdorf, summer 1946, and the names of the children in it: courtesy of Anna Andlauer and Shoshan Porat.</li>
+      <li>The Dror Habonim group at Indersdorf, 29 November 1946: Ghetto Fighters’ House Archives, Israel; also shown at <a href="https://museen-in-bayern.de/en/museums/museum-details/augustiner-chorherrenmuseum" target="_blank" rel="noopener">the museum of Kloster Indersdorf</a>.</li>
+      <li>The Rachov district list of the deported: Yad Vashem.</li>
+      <li>David Helman’s Soviet record: György Dupka, <i>Do Not Judge Me!</i>, p.&nbsp;125. Stalingrad: <i>Sefer Marmaros</i>, the Bogdan chapter.</li>
+      <li>The road from Budapest to Bavaria in December 1945 follows <i>Love Survives</i> (2001), the unpublished memoir of Helen’s best friend, Ibi Weinberger, shared by her son.</li>
+    </ul>
+
+    <h3>The map</h3>
+    <ul>
+      <li>Borders of 1930 and 1942 to 1944: A. Ourednik, <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a>, adapted and corrected with <a href="https://www.naturalearthdata.com/">Natural Earth</a> (public domain). The adapted border files are licensed under the <a href="road/LICENSE-borders.txt">GNU General Public License v3.0</a>; the script that builds them is <a href="road/borders/build_borders_1930_1942.py">their source</a>. Wartime borders are approximate.</li>
+      <li>Yellow-star houses of Budapest, June 1944: <a href="https://www.csillagoshazak.hu">Csillagos házak</a> (OSA Archivum), <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>; positions located with OpenStreetMap.</li>
+<li>Keleti station, the platform hall: photo by Andras Sz, 2015, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</li>
+      <li>Király utca 6 today: photo by Globetrotter19, 2015, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</li>
+      <li>Bohdan (Tiszabogdány), 2019: photo by Ork Tesla, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</li>
+      <li>The memorial board near Reitzenhain: photo by <a href="http://de.wikipedia.org/wiki/Benutzer:Ch_ivk">Ch ivk</a>, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</li>
+      <li>The family photograph, Bogdan, 1939: also published by <a href="https://www.centropa.org">Centropa</a>.</li>
+      <li>Street maps and railway station positions: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (ODbL).</li>
+      <li>Train routes follow the rail lines of 1944. Sources: the Auschwitz-Birkenau State Museum’s online lesson on the transports; DEGOB (the Kassa list); 45aid.org (the Rehmsdorf evacuation); JewishGen KehilaLinks, Rakhiv; and the histories of each line. Each route says on screen whether it is documented, from survivors’ accounts, or reconstructed.</li>
+      <li>Built with <a href="https://leafletjs.com">Leaflet</a>.</li>
+    </ul>
+
+    <h3>Privacy</h3>
+    <p>Living relatives are named or shown only with their permission. With thanks to the descendants of Miksa and Hudia Helman in Israel, who kept the 1939 photograph and shared their memories.</p>
+  </div>
+</dialog>
+
+<script src="road/leaflet/leaflet.js"></script>
+<script>window.L||document.write('<link rel="stylesheet" href="road/leaflet/leaflet.css"><script src="road/leaflet/leaflet.js"><\/script>')</script>
+<script src="road/borders/borders-1930.js"></script>
+<script src="road/borders/borders-1942.js"></script>
+<script src="road/borders/borders-today.js"></script>
+<script src="road/borders/labels.js"></script>
+<script src="road/road-data.js?v=live1"></script>
+<script src="road/he.js?v=live1" onerror="void 0"></script>
+<script>/* workshop: I'm introduced at the start, so the road ends at the museum (Sam, 14 Oct 2026) */ window.ROAD.STOPS=window.ROAD.STOPS.filter(function(s){ return s.id!=='hawaii'; });</script>
+<script src="road/robin-stops.js?v=20261109211808"></script><script src="road/robin-notes.js?v=20261109211808"></script><script src="road/robin-names.js?v=20261109211808"></script>
+<script>window.ROAD_MODE='talk';window.ROAD_LIVE=true;</script>
+<script src="road/road.js?v=auto1"></script>
+<script>
+  // if the player didn't start (a script failed to load), show the still picture instead of a blank page
+  (function(){ function check(){ if(!document.documentElement.classList.contains('road-ready')) document.getElementById('fallback').classList.add('on'); }
+    if(document.readyState==='complete') check(); else window.addEventListener('load',check); })();
+</script>
+<link rel="stylesheet" href="road/robin.css"><script src="road/robin-scenes.js"></script>
+</body>
+</html>

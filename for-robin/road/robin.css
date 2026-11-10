@@ -1,0 +1,24 @@
+/* Robin's talk on Helen's Road: the gravestones scene, in the road's own colours and type */
+.graves{position:fixed;inset:0;z-index:450;opacity:0;pointer-events:none;transition:opacity 1.6s}
+.graves.on{opacity:1}
+.graves .bg{position:absolute;inset:0;overflow:hidden}
+.graves .bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) brightness(.62) contrast(1.05);transform:scale(1.08);transition:transform 40s linear}
+.graves.on .bg img{transform:scale(1)}
+.graves .shade{position:absolute;inset:0;background:radial-gradient(ellipse 70% 65% at 58% 50%,rgba(13,15,18,.5),rgba(13,15,18,.88))}
+.graves .inner{position:absolute;left:34vw;right:4vw;top:9vh;bottom:12vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.graves h3{margin:0 0 3.2vh;font:italic 400 clamp(18px,1.6vw,32px)/1.2 var(--serif);color:#bdb3a2;text-shadow:0 1px 8px #000}
+.graves .stones{display:flex;gap:3vw;align-items:flex-end;justify-content:center}
+.graves .stone{list-style:none;margin:0;width:clamp(220px,22vw,440px);padding:4.4vh 0 2.8vh;display:flex;flex-direction:column;gap:1.9vh;
+  border-radius:50% 50% 6px 6px/clamp(60px,8vw,170px) clamp(60px,8vw,170px) 6px 6px;
+  background:linear-gradient(180deg,rgba(150,148,142,.30),rgba(92,90,86,.36));border:1px solid rgba(243,236,223,.28);
+  box-shadow:0 18px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(3px) brightness(.7);-webkit-backdrop-filter:blur(3px) brightness(.7)}
+.graves .n{opacity:0;transform:translateY(8px);transition:opacity 1.8s,transform 1.8s}
+.graves .n.on{opacity:1;transform:none}
+.graves .n b{display:block;font:400 clamp(26px,2.7vw,56px)/1.05 var(--serif);color:var(--cream);text-shadow:0 2px 14px rgba(0,0,0,.9)}
+.graves small{display:block;font:500 clamp(10px,.85vw,16px)/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#bdb3a2;margin-top:.5em;text-shadow:0 1px 6px #000}
+.graves .last{margin-top:4.5vh;opacity:0;transition:opacity 2s}
+.graves .last.on{opacity:1}
+.graves .last b{display:block;font:400 clamp(28px,3vw,60px)/1 var(--serif);color:var(--gold);text-shadow:0 2px 14px rgba(0,0,0,.9)}
+.graves .gcredit{position:absolute;right:30px;bottom:66px;font:400 11px/1.2 var(--mono);color:#787d86}
+/* the stop's own title box would repeat the heading on the stones */
+body.at-graves .cap{opacity:0!important}
