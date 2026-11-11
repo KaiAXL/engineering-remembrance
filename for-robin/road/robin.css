@@ -39,3 +39,5 @@ body.at-graves .cap{opacity:0!important}
 html body .doc.at-kiraly.sidecol figure:not([data-side]):not(.lesser) .frame .sheet img{max-height:calc(100vh - 540px)!important}
 /* Adela: her birth record across the panel, below the year; the village photo under it (Sam, 10 Nov 2026) */
 @media (min-width:900px){ html body .doc.at-adela{top:185px!important} html body .doc.at-adela figure:nth-child(2) .frame .sheet img{max-height:calc(100vh - 500px)!important} }
+/* Helen's words never cover her photos: on the big-photo stops her box stops short of the pictures (Sam, 10 Nov 2026) */
+@media (min-width:900px){ html body:has(#ui .doc.big) #ui .voice,html body:has(#ui .doc.wide) #ui .voice{width:calc(36vw - 72px)!important;max-width:none!important;right:auto!important} }
