@@ -72,7 +72,7 @@ document.addEventListener('close', function(e){
         'Auschwitz 26 May. Buchenwald 2 June. Rehmsdorf, then the evacuation and the march.',
         'At Terez\u00edn he was billeted in block C III/257.'
       ],
-      fate: 'Survived. He and Lajos are most likely the two cousins who found Helen in Budapest in 1945.',
+      fate: 'Survived. He and Lajos were in Budapest in the summer of 1945, when a cousin found Helen; which cousin is still open.',
       cls: 'lived'
     },
     zacharias: {
@@ -80,7 +80,7 @@ document.addEventListener('close', function(e){
       who: 'Helen\u2019s father.',
       num: 'Board 324 \u00b7 Buchenwald 57101',
       body: [
-        'Born 1901 in Tiszabogd\u00e1ny. A carter. Married to Roza Land\u00f3, six children.',
+        'Born 1901 in Tiszabogd\u00e1ny. A carter. Married to Roza Land\u00f3, seven children.',
         'Auschwitz 26 May. Buchenwald 2 June. Magdeburg-Rothensee on 23 July.',
         'Sent back to Auschwitz that October, most likely judged unfit for work.'
       ],

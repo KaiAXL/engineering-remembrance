@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="road/road.css?v=20261020m">
+<link rel="stylesheet" href="road/road.css?v=20261111h">
 <style>
   /* shown only if the map can't start (no JavaScript, a script that failed to load) */
   .fallback{position:fixed;inset:0;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px;background:#0d0f12;color:#f3ecdf;text-align:center}
@@ -42,7 +42,7 @@
 <div class="fallback" id="fallback">
   <h1>Helen’s Road</h1>
   <img loading="lazy" src="road/still-route.jpg" alt="A map of Europe with Helen’s road from Tiszabogdány to Budapest, Bavaria and Bremen, and her family’s roads to Auschwitz, Buchenwald, Magdeburg, Rehmsdorf and Terezín" width="1600" height="900">
-  <p>The map could not start in this browser. <a href="journey.html">Try again</a>, or read <a href="case.html">the case</a> and see <a href="records.html">the records</a>.</p>
+  <p>The map could not start in this browser. <a href="journey.html">Try again</a>, or read <a href="index.html#journey">her story</a> and see <a href="method.html">the records in the method</a>.</p>
 </div>
 <noscript><style>.fallback{display:flex}</style></noscript>
 
@@ -62,12 +62,12 @@
     <ul>
       <li>Tap or click a record to see it full size.</li>
       <li>Buchenwald prisoner cards, rolls and intake photographs, and Szerene Sperber’s Dachau registration: <a href="https://arolsen-archives.org/en/">Arolsen Archives</a>.</li>
-      <li>Helen’s birth entry, Tiszabogdány civil register, 1929: a copy bought through Subcarpathian Genealogy.</li>
+      <li>Helen’s birth entry, Tiszabogdány civil register, 1929: a copy bought through Sub-Carpathia Genealogy.</li>
       <li>Michal’s and Lajos’s Budapest registration forms, June 1945: <a href="https://www.yadvashem.org/">Yad Vashem</a>.</li>
       <li>Her 1946 U.S. Zone registration: <a href="https://www.ushmm.org/">United States Holocaust Memorial Museum</a>.</li>
       <li>Her displaced persons (DP) card, Chiemsee, December 1946, and the Marine Marlin sailing list of the U.S. Committee for the Care of European Children, April 1947: <a href="https://arolsen-archives.org/en/">Arolsen Archives</a> (the sailing list also on Ancestry).</li>
       <li>The Müller family photograph and Szerene’s belt: courtesy of Alfred Sperber and his family.</li>
-      <li>Lajos’s and Michal’s Terezín cards: <a href="https://www.pamatnik-terezin.cz/">Památník Terezín</a> (Terezín Memorial).</li>
+      <li>Lajos’s and Michal’s green Terezín cards: Národní archiv (National Archives), Okupační vězeňské spisy (Occupation Prison Penitentiary Files), inventory number 13, box 54; reproduced with the archive’s consent, NA-5701-2/03-2026. First found through <a href="https://www.pamatnik-terezin.cz/">Památník Terezín</a> (Terezín Memorial). The other two Terezín cards: Arolsen Archives.</li>
       <li>Helen at Indersdorf, 1946: photo, Charles Haacker.</li>
       <li>Sports day at Indersdorf, summer 1946, and the names of the children in it: courtesy of Anna Andlauer and Shoshan Porat.</li>
       <li>Research on Kibbutz Mahapecha, the Hungarian Dror Habonim group at Indersdorf: Shoshan Porat.</li>
@@ -95,15 +95,72 @@
     <p>Living relatives are named or shown only with their permission. With thanks to the descendants of Miksa and Hudia Helman in Israel, who shared their memories, and to Dalia (Isikovitch) Levy, daughter of Sara Helman, who kept the 1939 photograph.</p>
   </div>
 </dialog>
+<dialog class="credits family" id="family" aria-labelledby="famTitle">
+  <div class="cin">
+    <form method="dialog"><button class="x" aria-label="Close">&times;</button></form>
+    <h2 id="famTitle">Who is who</h2>
+    <p>The people on Helen&rsquo;s road, and how each was related to her. The road pauses while this is open.</p>
+    <p class="famgo"><button type="button" class="famlink" data-fam="tree">See the family tree &rarr;</button></p>
+    <div class="famtree" hidden>
+      <div class="famsvg"></div>
+      <p class="famcap">The family on one page, from the registers, the 1921 census and Pages of Testimony. Liba Koppelman as Miksa&rsquo;s mother is probable; Feige&rsquo;s first husband is not known; Yaffa is known from family testimony.</p>
+      <p class="famgo"><button type="button" class="famlink" data-fam="list">&larr; Back to the list</button></p>
+    </div>
+    <div class="famlist">
+
+    <ul class="fam">
+      <li class="her"><b>Helen</b>: Helena Land&oacute; Helman, later Helen Katz. Born 13 April 1929 in Tiszabogd&aacute;ny, the only survivor of her family. Died 2013.</li>
+    </ul>
+
+    <h3>Her parents</h3>
+    <ul class="fam">
+      <li><b>Zacharias Helman</b>, her father, 1901&ndash;1944. A wagon driver in the village. Buchenwald, then Magdeburg, then sent back to Auschwitz and killed in October 1944.</li>
+      <li><b>Roza Land&oacute;</b>, her mother, born about 1903. Murdered at Auschwitz with five of her children, 26 May 1944. After the war Helen registered under her surname.</li>
+    </ul>
+
+    <h3>Her sisters and brothers</h3>
+    <ul class="fam">
+      <li><b>Hinda</b> (Hermina), born 1927 &middot; <b>Izak</b>, 1932 &middot; <b>Majer</b>, 1934 &middot; <b>Adela</b>, 1936 &middot; <b>Yiddel</b>, 1940. Murdered at Auschwitz, 26 May 1944.</li>
+      <li><b>Cecilie</b>, born 1938, died in 1940, aged two.</li>
+    </ul>
+
+    <h3>Her father&rsquo;s family</h3>
+    <ul class="fam">
+      <li><b>David Helman</b>, her uncle, her father&rsquo;s younger brother, born 1902. Crossed into the Soviet Union; according to the village&rsquo;s yizkor book, he fell at Stalingrad.</li>
+      <li><b>Lajos</b> (born 1924) <b>and Michal</b> (born 1925) <b>Helman</b>, her cousins. Their father, Miksa, was her father&rsquo;s half-brother; their mother, Hudia, was her father&rsquo;s half-sister. Photographed at Buchenwald on the same day as her father; both survived. Their aid forms place them in Budapest in the summer of 1945, when a cousin found Helen and told her what had happened to her family; which cousin it was is still open.</li>
+      <li><b>Their brothers and sisters</b>: Miksa and Hudia had fourteen children. Three of them, Sara, Tzvi and Yaakov, had helped found a kibbutz in Israel. Helen lost touch with them after she came to America; we found each other again in 2026.</li>
+    </ul>
+
+    <h3>In Budapest</h3>
+    <ul class="fam">
+      <li><b>Cecilie M&uuml;ller, born Dikker</b>, her great-aunt, who took her in when her mother brought her to Budapest in 1943.</li>
+      <li><b>Szerene Sperber</b>, Cecilie&rsquo;s daughter, whom Helen lived with at Kir&aacute;ly utca 6. Deported to Dachau in 1944; she survived.</li>
+    </ul>
+
+    <h3>Her best friend</h3>
+    <ul class="fam">
+      <li><b>Ibi Weinberger</b>, her best friend. They met in the Dror youth group in 1945 and were together at Indersdorf. Helen sailed for America in 1947; tuberculosis kept Ibi in Germany until 1951. They stayed best friends for nearly seventy years.</li>
+    </ul>
+
+    <h3>Her husband&rsquo;s family</h3>
+    <ul class="fam">
+      <li><b>Tibi Katz</b>, my grandfather. Helen met him around 1966 and married him a few years later.</li>
+      <li><b>Ibi Katz</b>, Tibi&rsquo;s sister, who lived a few doors up at Kir&aacute;ly utca 12 in 1944. A different Ibi from her best friend.</li>
+      <li><b>Eva</b>, Helen&rsquo;s friend and Tibi&rsquo;s niece, who introduced them.</li>
+    </ul>
+    </div>
+  </div>
+</dialog>
+
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="road/borders/borders-1930.js"></script>
 <script src="road/borders/borders-1942.js"></script>
 <script src="road/borders/borders-today.js"></script>
 <script src="road/borders/labels.js"></script>
-<script src="road/road-data.js?v=20261020k"></script>
-<script src="road/he.js?v=20261020i" onerror="void 0"></script>
-<script src="road/road.js?v=20261020k"></script>
+<script src="road/road-data.js?v=20261111h"></script>
+<script src="road/he.js?v=20261111h" onerror="void 0"></script>
+<script src="road/road.js?v=20261111h"></script>
 <script>
   // if the player didn't start (a script failed to load), show the still picture instead of a blank page
   (function(){ function check(){ if(!document.documentElement.classList.contains('road-ready')) document.getElementById('fallback').classList.add('on'); }

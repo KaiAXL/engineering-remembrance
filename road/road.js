@@ -194,7 +194,7 @@
   var brand=el('a','brand',wheelSvg(34)+'<div><b>Helen’s Road</b><small>Engineering Remembrance</small></div>'); brand.href='index.html'; brand.title='Engineering Remembrance: home';
   var yearBox=el('div','year','<div class="mo" id="yM"></div><div class="n" id="yN">1929</div><div class="k" id="yK"></div><div class="era"><span id="eraK"></span></div>');
   var voice=el('div','voice out','<div class="vk"><span class="bars"><i></i><i></i><i></i><i></i></span><span id="vK">In her own words</span></div><blockquote id="vT"></blockquote><div class="vnote" id="vN"></div>');
-  var cap=el('div','cap out','<div class="k"><span class="dot" id="cDot"></span><span id="cK"></span></div><h2 id="cT"></h2><p id="cP"></p><div class="lesson" id="cL"></div><div class="rnote" id="cR"></div><div class="attr" id="cX"></div>');
+  var cap=el('div','cap out','<div class="k"><span class="dot" id="cDot"></span><span id="cK"></span><span class="cyr" id="cYr"></span></div><h2 id="cT"></h2><p id="cP"></p><div class="lesson" id="cL"></div><div class="rnote" id="cR"></div><div class="attr" id="cX"></div>');
   cap.setAttribute('aria-live','polite');
   var doc=el('div','doc','<div class="dk" id="dK">The record</div><div class="figs" id="dF"></div><div class="reader" id="dR"><div class="crop" id="dRc"></div><div class="rt"><b id="dRl"></b><span id="dRg"></span></div></div>');
   var witness=el('div','witness','<span>Her memory</span><i></i><span>The record</span>');
@@ -229,6 +229,7 @@
     '<button type="button" id="kNext" aria-label="Next stop" title="Next stop (Right arrow)">'+IC.next+'</button>'+
     '<span class="cnt" id="kN" aria-live="off"></span>'+
     '<button type="button" id="kMute">'+IC.sound+'</button>'+
+    '<button type="button" id="kFam" class="txt" aria-haspopup="dialog" title="Who is who (F)">Family</button>'+
     '<button type="button" id="kCred" class="txt" aria-haspopup="dialog" title="Sources and credits (C)">Credits</button>'+
     (window.HE_MAP?'<button type="button" id="kLang" class="txt" lang="'+(HE_ON?'en':'he')+'">'+(HE_ON?'English':'עברית')+'</button>':''));
   ctl.setAttribute('role','group'); ctl.setAttribute('aria-label','Helen’s Road player');
@@ -300,7 +301,7 @@
     if(s.mapBox==='tr'&&!PHONE()){ var w1=W(), h1=H(), cr1=cap.getBoundingClientRect(), x0=cr1.right+30+(w1-cr1.right-54)*0.44; return {tl:[Math.round(x0),70],br:[24,Math.round(h1*0.56)]}; }
     if(s.stack&&s.bounds){ var w=W(), h=H(), cr0=cap.getBoundingClientRect(), ct=ctl.getBoundingClientRect(), fl=ct.height?ct.top-14:h-100, dbot=0;
       [].forEach.call(doc.querySelectorAll('.doc figcaption,.doc .frame'),function(e){ var r=e.getBoundingClientRect(); if(r.height) dbot=Math.max(dbot,r.bottom); }); if(!dbot) dbot=h*0.64;
-      var cs=[{l:cr0.right+30,t:dbot+20,r:w-24,b:fl},{l:30,t:84,r:cr0.right,b:cr0.top-16}], bb=L.latLngBounds(s.bounds), best=null, bz=-99;
+      var cs=[{l:cr0.right+30,t:dbot+20,r:w-24,b:fl},{l:30,t:(s.voice&&voice.getBoundingClientRect().height?Math.max(84,voice.getBoundingClientRect().bottom+20):84),r:cr0.right,b:cr0.top-16}], bb=L.latLngBounds(s.bounds), best=null, bz=-99;
       var lf=doc.querySelector('figure[data-lead]'); if(lf&&doc.classList.contains('strow2')){ var lr=lf.getBoundingClientRect(); if(lr.width) cs.push({l:lr.right+30,t:60,r:w-24,b:lr.bottom}); }   // beside the top record, when it leaves room (Budapest)
       cs.forEach(function(c){ var cw=c.r-c.l, ch=c.b-c.t; if(cw<160||ch<110) return; var z=map.getBoundsZoom(bb,false,L.point(w-cw,h-ch)); if(z>bz){ bz=z; best=c; } });
       if(best) return {tl:[best.l,best.t],br:[w-best.r,h-best.b]}; }
@@ -458,6 +459,12 @@
       html:'<div class="endlbl '+e.kind+' '+e.who+'"><span>'+(e.kind==='from'?'from ':'to ')+'</span>'+e.n+'</div>',iconSize:[0,0]})}).addTo(fxLayer);
     setTimeout(keepEndsOn,60); setTimeout(keepEndsOn,900);
   }
+  // a small town or region name under a big stop name steps aside while the stop name is up (Buchenwald over Leipzig, review 14 Oct; fixed 10 Nov 2026)
+  function unbury(){ [].forEach.call(document.querySelectorAll('[data-under]'),function(e){ e.style.visibility=''; delete e.dataset.under; }); }
+  function buryUnder(){ unbury(); var B=[].map.call(document.querySelectorAll('.endlbl'),function(l){ return l.getBoundingClientRect(); }).filter(function(r){ return r.width; }); if(!B.length) return;
+    [].forEach.call(document.querySelectorAll('.leaflet-marker-icon.place:not(.cur), .leaflet-marker-icon.plabel'),function(m){ var t=m.querySelector('span')||m, r=t.getBoundingClientRect(); if(!r.width) return;
+      for(var i=0;i<B.length;i++){ var b=B[i]; if(r.right>b.left-4&&r.left<b.right+4&&r.bottom>b.top-2&&r.top<b.bottom+2){ m.style.visibility='hidden'; m.dataset.under='1'; break; } } });
+  }
   // a place name at the edge of a small screen slides back on so no letter is cut ("to AUSCHWITZ", "to STALINGRAD", Sam 10 Oct 2026)
   function keepEndsOn(){
     [].forEach.call(document.querySelectorAll('.endlbl,.meet span'),function(l){
@@ -465,6 +472,7 @@
       var pad=8, shift=0; if(r.left<pad) shift=pad-r.left; else if(r.right>innerWidth-pad) shift=(innerWidth-pad)-r.right;
       if(shift) l.style.marginLeft=shift+'px';
     });
+    buryUnder();
   }
   // a place name hidden behind a panel (the caption, the records, her words) swaps to the other side of its light
   function panelRects(){ return [].map.call(document.querySelectorAll('.cap,.doc.in,.voice,.brand,.year'),function(e){ var cs=getComputedStyle(e); if(cs.display==='none'||cs.visibility==='hidden'||e.hidden||e.classList.contains('out')) return null; var r=e.getBoundingClientRect(); return r.width?r:null; }).filter(Boolean); }
@@ -832,6 +840,8 @@
     t.style.marginTop='';
     // a record too thin to hold its labels: a label may step off the record, but never onto a title or another label
     for(var j=0;j<SPOTS.length;j++){ m.className=keep+(SPOTS[j]?' '+SPOTS[j]:''); if(!hits(t,m,true)) return; }
+    // nowhere free: at least keep every word on the screen (phone, stop 9, 10 Nov 2026)
+    for(var q=0;q<SPOTS.length;q++){ m.className=keep+(SPOTS[q]?' '+SPOTS[q]:''); var rq=t.getBoundingClientRect(); if(rq.left>=2&&rq.right<=innerWidth-2) return; }
     m.className=keep;
   }
   // phones show one record at a time, full size (Sam, 9 Oct 2026: before, a stop's second record never showed on a phone).
@@ -851,6 +861,7 @@
     for(var j=0;j<f.length;j++){ var on=+f[j].dataset.i===i; f[j].classList.toggle('ph-on',on); if(on) k=j; }
     var n=doc.querySelector('.phn'); if(n) n.textContent=(k+1)+' / '+f.length;
     setTimeout(layoutPins,60);   // a record shown for the first time places its names now (they can't be measured while hidden)
+    setTimeout(function(){ [].forEach.call(doc.querySelectorAll('figure.ph-on .mk.on:not(.headpin)'),untangle); },90);   // and its notes, measured now that it shows (phone, stop 9, 10 Nov 2026)
   }
   function runLoupe(s,g,total){
     var m=s.media||[], regs=[];
@@ -972,10 +983,10 @@
     document.body.classList.toggle('zoom-on',!!s.zoom);   // the enlarged strip, only where a record is too small to read (Sam)
     document.body.classList.toggle('night',!!s.night); document.body.classList.toggle('evidence',!!s.evidence); document.body.classList.remove('boardview');
     if(!s.night) { lightLayer.clearLayers(); litKeys={}; }
-    fxLayer.clearLayers();
+    fxLayer.clearLayers(); unbury();
     wheelState(n===0&&prev<0&&!jump?'gone':(s.other&&!s.helen?'waiting':null));
     wheelNote(s.wheelNote||'');   // a note that travels with her wheel, this stop only (Sam: Dror)
-    tweenYear(s,g); $('yK').textContent=s.age||''; $('yM').textContent=s.when||''; paintPfd(s); document.body.classList.toggle('show-legend',s.part===1||!!s.legend);
+    tweenYear(s,g); $('yK').textContent=s.age||''; var cy=$('cYr'); if(cy) cy.textContent=(s.stack&&(s.media||[]).length)?[(function(y){ return !s.when?y:String(s.when).indexOf(String(s.y))>=0?s.when:s.when+' '+y; })(s.yl||s.y),s.age].filter(Boolean).join(' · '):'';   /* the year corner is hidden under stacked records (stops 13, 14): carry it in the story card instead (10 Nov 2026) */ $('yM').textContent=s.when||''; paintPfd(s); document.body.classList.toggle('show-legend',s.part===1||!!s.legend);
     setEra(eraFor(s),jump);
 
     var hop=[]; if(s.helen) hop=hop.concat([wheelPos],[].concat.apply([],s.helen.map(function(l){return l.pts;})));
@@ -1090,7 +1101,7 @@
   /* ---------- the end ---------- */
   var endCard=el('div','endcard','<p class="ek">Recovering families from the records that were meant to erase them</p><p class="ek2">Start with one name and one town.</p>'+
     '<div class="eb"><button type="button" id="eAgain">Start over</button>'+
-    '<a href="index.html">Home</a><a href="method.html">Method</a><a href="databases.html">Databases</a><a href="about.html">Researcher</a><a href="contact.html">Contact</a></div>');   // Sam, 8 Oct 2026
+    '<a href="index.html">Home</a><a href="method.html">Method</a><a href="databases.html">Databases</a><a href="try.html">Archive Detective</a><a href="balagula.html">Balagula</a><a href="about.html">Researcher</a><a href="books.html">Library</a><a href="contact.html">Contact</a></div>');   // Sam, 8 Oct 2026
   endCard.hidden=true;
   /* ---------- the roll call: her family, by name, before the end menu (Sam, 10 Oct 2026). Ages from their birth records. ---------- */
   // two columns: her own family, then her father's family. '#' = a small heading, '@' = where and when.
@@ -1102,7 +1113,7 @@
   var WALL={
     tab1:[['Roza Lando','40','mother','Auschwitz, May 1944'],['Zacharias Helman','43','father','Auschwitz, October 1944'],['Hinda Helman','17','sister','Auschwitz, May 1944'],
           ['Izak Helman','12','brother','Auschwitz, May 1944'],['Majer Helman','10','brother','Auschwitz, May 1944'],['Adela Helman','7','sister','Auschwitz, May 1944'],
-          ['Yiddel Helman','4','brother','Auschwitz, May 1944'],['Feige Dikker Helman','77','grandmother','Auschwitz, May 1944'],['Cecilie Dikker M\u00fcller','','great-aunt, also written Petranker','murdered on arrival at the camps'],
+          ['Yiddel Helman','4','brother','Auschwitz, May 1944'],['Feige Dikker Helman','77','grandmother','Auschwitz, May 1944'],['Cecilie Dikker M\u00fcller','','great-aunt, also written Petranker','not yet known'],
           ['Miksa Helman','','uncle','Auschwitz, May 1944'],['Hudia Petranker Helman','','aunt, also written Dikker','Auschwitz, May 1944'],['Moshe Helman','','cousin','labor service, 1943'],
           ['David Helman','40','uncle','Stalingrad, 1943'],['Cecilie Helman','2','sister','died in 1940','last']],
     tab2:[['Szymszon Lebovits','','grandfather','taken by the Nazis'],['Eidl Lebovits','','aunt','taken by the Nazis'],['Hinda Lebovits','','aunt','taken by the Nazis'],
@@ -1112,7 +1123,7 @@
     unnamed:[['Malka\u2019s husband','','uncle by marriage','most likely Kamenets-Podolsk, 1941'],['Malka\u2019s son','','cousin','most likely Kamenets-Podolsk, 1941'],
              ['Malka\u2019s son','','cousin','most likely Kamenets-Podolsk, 1941'],['Roza\u2019s brother','','uncle','not yet known'],['Her mother\u2019s sisters\u2019 husbands','','uncles by marriage','names not yet found'],['Her mother\u2019s sisters\u2019 children','','cousins','names not yet found']]};
   var WALL_HEAD={tab1:'Helen\u2019s family on the map',tab2:'And the rest of Helen\u2019s family',unnamed:'Not yet named'};
-  var ROLL_HE={'And the family she married into: Tibi Katz\u2019s mother Eszter, his father Aharon, his sister Perl, his sister-in-law Margit, six more brothers and sisters, and others not yet found.':'והמשפחה שאליה נישאה: אמו של טיבי כץ אסתר, אביו אהרון, אחותו פרל, גיסתו מרגיט, שישה אחים ואחיות נוספים, ואחרים שעוד לא נמצאו.','Helen Lando Helman, 1929\u20132013, survived. These are the family she lost.':'הלן לנדו הלמן, 1929–2013, שרדה. אלה בני המשפחה שאיבדה.','Bogdan, about 1941\u201342. Her father\u2019s horses were taken twice. Ghetto Fighters\u2019 House Archives, 16165.':'בוגדן, בערך 1941–42. הסוסים של אביה נלקחו פעמיים. בית לוחמי הגיטאות, 16165.','Her mother\u2019s sisters\u2019 husbands':'בעלי אחיותיה של אמה','uncles by marriage':'דודים מנישואין','(Joszel)':'(יוסל)','great-aunt, also written Petranker':'דודה רבתא, נרשמה גם פטרנקר','aunt, also written Dikker':'דודה, נרשמה גם דיקר','Dikker':'דיקר','Petranker':'פטרנקר','Herskovics':'הרשקוביץ','Her mother\u2019s sisters\u2019 children':'ילדי אחיותיה של אמה','cousins':'בני דודים','names not yet found':'השמות עדיין לא נמצאו','Behind the stones: the Pietrosz and Hoverla above the White Tisza, drawn by G\u00e9za Paur, 1900.':'מאחורי האבנים: פסגות פייטרוס והוברלה מעל הטיסה הלבנה, ציור של גזה פאור, 1900.','Lando':'לנדו','Hear El Malei Rachamim':'אל מלא רחמים','Stop the prayer':'עצירת התפילה','murdered on arrival at the camps':'נרצחה עם הגעתה למחנות','Helen\u2019s family on the map':'משפחתה של הלן שעל המפה','And the rest of Helen\u2019s family':'ושאר משפחתה של הלן','Auschwitz, October 1944':'אושוויץ, אוקטובר 1944','Pause':'השהיה','Resume':'המשך','Go to the end':'לסיום','name not yet found':'השם עדיין לא נמצא','A memorial wall: the gravestones they never had':'קיר זיכרון: המצבות שמעולם לא היו להם','Her cousins, and an aunt by marriage':'בני דודיה, ודודה מנישואין','Not yet named':'עדיין ללא שם','The gravestones they never had':'המצבות שמעולם לא היו להם','May their souls be bound up in the bond of life':'תהא נשמתם צרורה בצרור החיים','Tibi\u2019s brother or sister':'אח או אחות של טיבי','not yet named':'עדיין ללא שם','fate not yet confirmed':'גורלם עדיין לא אושר','Memorial wall':'קיר הזיכרון','uncle by marriage':'דוד מנישואין','most likely Kamenets-Podolsk, 1941':'כנראה קמניץ-פודולסק, 1941','Roza\u2019s brother':'אחיה של רוזה','not yet known':'עדיין לא ידוע','Naming the nameless':'לתת שם לאלה שאין להם שם','Helen\u2019s circle':'המעגל של הלן','Her cousins and her aunt by marriage':'בני דודיה ודודתה מנישואין','Tibi\u2019s family':'המשפחה של טיבי','Names not yet found':'שמות שעדיין לא נמצאו',
+  var ROLL_HE={'And the family she married into: Tibi Katz\u2019s mother Eszter, his sister Perl, his sister-in-law Margit, six more brothers and sisters, and others not yet found.':'והמשפחה שאליה נישאה: אמו של טיבי כץ אסתר, אחותו פרל, גיסתו מרגיט, שישה אחים ואחיות נוספים, ואחרים שעוד לא נמצאו.','Helen Lando Helman, 1929\u20132013, survived. These are the family she lost.':'הלן לנדו הלמן, 1929–2013, שרדה. אלה בני המשפחה שאיבדה.','Bogdan, about 1941\u201342. Her father\u2019s horses were taken twice. Ghetto Fighters\u2019 House Archives, 16165.':'בוגדן, בערך 1941–42. הסוסים של אביה נלקחו פעמיים. בית לוחמי הגיטאות, 16165.','Her mother\u2019s sisters\u2019 husbands':'בעלי אחיותיה של אמה','uncles by marriage':'דודים מנישואין','(Joszel)':'(יוסל)','great-aunt, also written Petranker':'דודה רבתא, נרשמה גם פטרנקר','aunt, also written Dikker':'דודה, נרשמה גם דיקר','Dikker':'דיקר','Petranker':'פטרנקר','Herskovics':'הרשקוביץ','Her mother\u2019s sisters\u2019 children':'ילדי אחיותיה של אמה','cousins':'בני דודים','names not yet found':'השמות עדיין לא נמצאו','Behind the stones: the Pietrosz and Hoverla above the White Tisza, drawn by G\u00e9za Paur, 1900.':'מאחורי האבנים: פסגות פייטרוס והוברלה מעל הטיסה הלבנה, ציור של גזה פאור, 1900.','Lando':'לנדו','Hear El Malei Rachamim':'אל מלא רחמים','Stop the prayer':'עצירת התפילה','murdered on arrival at the camps':'נרצחה עם הגעתה למחנות','Helen\u2019s family on the map':'משפחתה של הלן שעל המפה','And the rest of Helen\u2019s family':'ושאר משפחתה של הלן','Auschwitz, October 1944':'אושוויץ, אוקטובר 1944','Pause':'השהיה','Resume':'המשך','Go to the end':'לסיום','name not yet found':'השם עדיין לא נמצא','A memorial wall: the gravestones they never had':'קיר זיכרון: המצבות שמעולם לא היו להם','Her cousins, and an aunt by marriage':'בני דודיה, ודודה מנישואין','Not yet named':'עדיין ללא שם','The gravestones they never had':'המצבות שמעולם לא היו להם','May their souls be bound up in the bond of life':'תהא נשמתם צרורה בצרור החיים','Tibi\u2019s brother or sister':'אח או אחות של טיבי','not yet named':'עדיין ללא שם','fate not yet confirmed':'גורלם עדיין לא אושר','Memorial wall':'קיר הזיכרון','uncle by marriage':'דוד מנישואין','most likely Kamenets-Podolsk, 1941':'כנראה קמניץ-פודולסק, 1941','Roza\u2019s brother':'אחיה של רוזה','not yet known':'עדיין לא ידוע','Naming the nameless':'לתת שם לאלה שאין להם שם','Helen\u2019s circle':'המעגל של הלן','Her cousins and her aunt by marriage':'בני דודיה ודודתה מנישואין','Tibi\u2019s family':'המשפחה של טיבי','Names not yet found':'שמות שעדיין לא נמצאו',
   'Helman':'הלמן','Lebovits':'לבוביץ','M\u00fcller':'מילר','Katz':'כ״ץ','Szymszon':'שמשון','Eszter':'אסתר','Aharon':'אהרון','Perl':'פרל','Margit':'מרגיט','Yosef':'יוסף','Moshe':'משה','Zheni':'ז׳ני','Hanna':'חנה','Itzik':'איציק','Dvora':'דבורה','Jen\u0151':'ינו','David':'דוד','Eidl':'איידל','Gitl':'גיטל',
   'mother':'אם','father':'אב','sister':'אחות','brother':'אח','grandmother':'סבתא','grandfather':'סבא','great-aunt':'דודה רבתא','uncle':'דוד','aunt':'דודה','cousin':'בן או בת דוד','aunt by marriage':'דודה מנישואין',
   'Tibi\u2019s mother':'אמו של טיבי','Tibi\u2019s father':'אביו של טיבי','Tibi\u2019s sister':'אחותו של טיבי','Tibi\u2019s sister-in-law':'גיסתו של טיבי','deported with their mother':'גורשו עם אמם','number not yet known':'מספרם עדיין לא ידוע',
@@ -1139,7 +1150,7 @@
       var last=WALL[key].filter(function(r){ return r[4]==='last'; }); if(last.length){ h+='<ol class="rlast">'; last.forEach(function(r){ h+=li(r,'rc-'+key); }); h+='</ol>'; }   // little Cecilie, alone in the middle at the foot (Sam, 10 Oct 2026)
       if(extra){ h+='<h4>'+RT(WALL_HEAD[extra])+'</h4><ol class="un">'; WALL[extra].forEach(function(r){ h+=li(r,'rc-un'); }); h+='</ol>'; } return h+EP+'</section>'; };
     var html='<div class="rcin"><div class="rwheel">'+wheelSvg(40)+'</div><p class="ryz" lang="he" dir="rtl">\u05D9\u05B4\u05D6\u05B0\u05DB\u05BC\u05B9\u05E8</p><h2 class="rtitle">'+RT('Naming the nameless')+'</h2><p class="rsub">'+RT('The gravestones they never had')+'</p><p class="rsurv">'+RT('Helen Lando Helman, 1929\u20132013, survived. These are the family she lost.')+'</p>'+
-      '<div class="rtablets">'+tablet('tab1')+tablet('tab2','unnamed')+'</div><p class="rkatz">'+RT('And the family she married into: Tibi Katz\u2019s mother Eszter, his father Aharon, his sister Perl, his sister-in-law Margit, six more brothers and sisters, and others not yet found.')+'</p><p class="rtnzbh">'+RT('May their souls be bound up in the bond of life')+'</p></div>';
+      '<div class="rtablets">'+tablet('tab1')+tablet('tab2','unnamed')+'</div><p class="rkatz">'+RT('And the family she married into: Tibi Katz\u2019s mother Eszter, his sister Perl, his sister-in-law Margit, six more brothers and sisters, and others not yet found.')+'</p><p class="rtnzbh">'+RT('May their souls be bound up in the bond of life')+'</p></div>';
     rollEl=el('div','rollcall',html+'<p class="rcredit">'+RT('Behind the stones: the Pietrosz and Hoverla above the White Tisza, drawn by G\u00e9za Paur, 1900.')+'</p>'+
       '<figure class="rhorses"><img src="road/extra/gfh-16165-bogdan-horses.png?v=3" alt=""><figcaption>'+RT('Bogdan, about 1941\u201342. Her father\u2019s horses were taken twice. Ghetto Fighters\u2019 House Archives, 16165.')+'</figcaption></figure>'+
       '<div class="rcoda"><blockquote>\u201C'+RT('I don\u2019t have a single picture, not a single picture from home. I never knew that I will never see my parents again.')+'\u201D</blockquote><cite>'+RT('Helen, 2008')+'</cite>'+
@@ -1274,6 +1285,15 @@
   $('lbS').addEventListener('click',function(){ $('lbS').classList.toggle('zoom'); });
   lb.addEventListener('click',function(e){ if(e.target===lb) closeRecord(); });
   function credits(){ var d=document.getElementById('credits'); if(d&&d.showModal&&!d.open) d.showModal(); }
+  // Family: who is who on the road; the road waits while it is open, then goes on where it was (Sam, 14 Oct 2026)
+  var famWas=false;
+  function family(){ var d=document.getElementById('family'); if(!d||!d.showModal||d.open) return; famWas=playing; if(playing) pause(); d.showModal(); }
+  (function(){ var d=document.getElementById('family'); if(d) d.addEventListener('close',function(){ if(famWas){ famWas=false; resume(); } }); })();
+  // the tree view inside the panel: one view at a time, list or tree, never both (Sam, 11 Nov 2026: "not too busy")
+  (function(){ var d=document.getElementById('family'); if(!d) return; var go=d.querySelector('.famgo'), tr=d.querySelector('.famtree'); if(!go||!tr) return; if(!DATA.TREE){ go.hidden=true; return; }
+    function view(on){ if(on){ var w=tr.querySelector('.famsvg'); if(w&&!w.firstChild) w.innerHTML=treeSvg(); } d.classList.toggle('treeon',on); tr.hidden=!on; d.querySelector('.cin').scrollTop=0; }
+    d.addEventListener('click',function(e){ var b=e.target.closest('.famlink'); if(!b) return; view(b.dataset.fam==='tree'); var f=d.querySelector(b.dataset.fam==='tree'?'[data-fam=list]':'[data-fam=tree]'); if(f) f.focus({preventScroll:true}); });
+    d.addEventListener('close',function(){ view(false); }); })();
 
   // Start = the tap the browser needs for sound, so it starts with sound on; the quiet link starts muted
   $('goStart').addEventListener('click',function(){ hearHelen(); begin(); fadeMusic(); });   // music from the first tap
@@ -1283,13 +1303,14 @@
   $('kBack').addEventListener('click',function(){ if(intro.hidden) prev(); });
   $('kMute').addEventListener('click',soundKey);
   $('kCred').addEventListener('click',credits);
+  if($('kFam')) $('kFam').addEventListener('click',family);
   // Hebrew / English: the words on screen change, the voices stay English (Sam, 8 Oct 2026)
   function switchLang(){
     var to=HE_ON?'en':'he'; try{ localStorage.setItem('er-lang',to); }catch(e){}
     var u=new URL(location.href); u.searchParams.set('lang',to); if(cur>=0) u.searchParams.set('start',STOPS[cur].id); else u.searchParams.delete('start'); location.href=u.toString(); }
   if($('kLang')) $('kLang').addEventListener('click',switchLang);
   if($('goLang')) $('goLang').addEventListener('click',switchLang);   // on the opening card, beside 'watch without sound' (Sam)
-  if(HE_ON&&window.HE_UI) [].forEach.call(document.querySelectorAll('.intro .attr,.intro .go span,.intro .help .quiet,.endcard .ek,.endcard .ek2,.endcard .eb a,.endcard .eb button,#kCred,#vK,.brand small'),function(e){ var t=e.textContent.trim(); if(HE_UI[t]) e.textContent=HE_UI[t]; });
+  if(HE_ON&&window.HE_UI) [].forEach.call(document.querySelectorAll('.intro .attr,.intro .go span,.intro .help .quiet,.endcard .ek,.endcard .ek2,.endcard .eb a,.endcard .eb button,#kCred,#kFam,#vK,.brand small'),function(e){ var t=e.textContent.trim(); if(HE_UI[t]) e.textContent=HE_UI[t]; });
   $('eAgain').addEventListener('click',function(){ playing=true; paused=false; go(0); paintCtl(); });
   road.addEventListener('click',function(e){ var t=e.target.closest('.tick'); if(t) go(+t.dataset.n); });
 
@@ -1309,7 +1330,7 @@
       if(kt==='n'||kt==='N'){ window.open('notes.html','hr-notes','width=980,height=760'); return; }   // speaker notes, on the laptop screen
       if(kt==='Home'){ e.preventDefault(); go(0); return; }
       return; }
-    var d=document.getElementById('credits'); if(d&&d.open) return;
+    var d=document.getElementById('credits'), df=document.getElementById('family'); if((d&&d.open)||(df&&df.open)) return;
     if(!lb.hidden){ if(e.key==='Escape'){ e.preventDefault(); closeRecord(); } return; }
     var k=e.key, onCtl=e.target.closest&&e.target.closest('button,a,input,textarea,select');
     if((k===' '||k==='Enter')&&onCtl) return;   // a focused button does its own thing
@@ -1319,6 +1340,7 @@
     else if(k==='m'||k==='M'){ soundKey(); }
     else if(k==='Home'){ e.preventDefault(); go(0); }
     else if(k==='c'||k==='C'){ credits(); }
+    else if(k==='f'||k==='F'){ family(); }
   });
   var rz=null;
   // the timeline always ends before the controls, however wide they are (Hebrew, Hear Helen)

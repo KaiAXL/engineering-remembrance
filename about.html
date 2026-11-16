@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Researcher &middot; Engineering Remembrance</title>
-<meta name="description" content="Samantha Seligman-Grajewski, founder of Engineering Remembrance, and how to get in touch.">
+<meta name="description" content="Samantha Seligman-Grajewski. Their names are in the records; I connect them to their families. My story, what I&rsquo;ve found, and how to work with me.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Engineering Remembrance">
-<meta property="og:title" content="About · Engineering Remembrance">
-<meta property="og:description" content="Samantha Seligman-Grajewski. Founder. 3G.">
+<meta property="og:title" content="The Researcher · Engineering Remembrance">
+<meta property="og:description" content="Samantha Seligman-Grajewski. Their names are in the records; I connect them to their families. My story, what I&rsquo;ve found, and how to work with me.">
 <meta property="og:url" content="https://engineeringremembrance.org/about.html">
 <meta property="og:image" content="https://engineeringremembrance.org/images/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -20,9 +20,115 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css?v=20261014a">
-<link rel="stylesheet" href="home.css?v=20261014a">
+<link rel="stylesheet" href="home.css?v=20261111c">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
+<style>
+.tr-row{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:1.4rem;align-items:start;margin:1.6rem 0 2rem}
+.tr-row h3{font-family:var(--serif);font-weight:400;font-size:1.2rem;line-height:1.3;margin:0 0 .4rem;color:var(--ink);text-transform:none;letter-spacing:-.005em}
+.tr-row p{margin:0 0 .6rem}
+.tr-img{margin:0}.tr-img img{display:block;width:100%;height:auto;border-radius:3px;border:1px solid var(--rule)}
+.tr-cover{max-width:11rem}
+.tr-row .cite{display:block;font:400 .72rem/1.45 var(--mono);color:var(--muted);margin-top:.2rem}
+.tr-mark{display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;max-width:11rem;border:1px solid var(--rule);border-radius:3px;font:500 .68rem/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--warm-dim)}
+.tr-kind{font:500 .66rem/1 var(--mono)!important;letter-spacing:.2em;text-transform:uppercase;color:var(--warm-dim);margin:0 0 .5rem!important}
+.tr-by{color:var(--ink-dim);font-style:italic}
+.tr-list{padding-left:1.1rem}.tr-list li{margin:0 0 .75rem;line-height:1.55}
+.tr-pending{border:2px dashed #b4532a;border-radius:6px;padding:.6rem 1.1rem;margin:2.4rem 0}
+.tr-flag{font:600 .7rem/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#b4532a}
+.pr-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;margin:1.8rem 0 2.4rem;overflow:hidden}
+.pr-stats div{background:var(--bg);padding:1rem .9rem}.pr-stats b{display:block;font:400 2.1rem/1 var(--serif);color:var(--ink)}.pr-stats span{display:block;margin-top:.45rem;font:500 .62rem/1.35 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--warm-dim)}
+.pr-video{display:block;width:100%;height:auto;border-radius:3px;border:1px solid var(--rule);background:#000}
+.pr-talks{width:100%;border-collapse:collapse;margin:.6rem 0 1.8rem}.pr-talks td{border-top:1px solid var(--rule);padding:.8rem .6rem .8rem 0;vertical-align:top;line-height:1.5}.pr-talks tr:last-child td{border-bottom:1px solid var(--rule)}
+.pr-talks td span{display:block;color:var(--muted);font-size:.9rem}.pr-date{white-space:nowrap;font:500 .7rem/1.9 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--warm-dim);width:9rem}
+.pr-list{padding-left:1.1rem}.pr-list li{margin:0 0 .75rem;line-height:1.55}
+.pr-quotes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:.6rem 0}.pr-q{margin:0;border-left:2px solid var(--warm);padding:.2rem 0 .2rem .9rem}.pr-q p{font-style:italic;color:var(--muted);margin:0 0 .5rem}.pr-q cite{font:500 .66rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--warm-dim);font-style:normal}
+.pr-kit{display:grid;grid-template-columns:repeat(2,minmax(0,13rem));gap:1.2rem;margin:.8rem 0 1.4rem}.pr-kit figure{margin:0}.pr-kit img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:3px;border:1px solid var(--rule)}.pr-kit figcaption{font-size:.82rem;color:var(--muted);margin-top:.4rem}
+.pr-links{margin:1.2rem 0 2rem;line-height:1.9}
+.bk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr));gap:1.4rem;margin:1.8rem 0 2.2rem}
+.bk{display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:5px;padding:1rem 1.05rem 1.1rem;background:var(--panel)}
+.bk-top{height:11rem;margin:-.2rem 0 .9rem;display:flex;align-items:center;justify-content:center}.bk-top img{max-height:100%;width:auto;border-radius:2px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.bk-mark{width:100%;background:var(--rule-soft);border:1px solid var(--rule);border-radius:3px;font:italic 400 1.15rem/1.3 var(--serif);color:var(--muted)}
+.bk-logo img{box-shadow:none;border-radius:3px;max-height:8rem}
+.bk-still img{width:100%;height:100%;object-fit:cover;box-shadow:none;border:1px solid var(--rule)}.bk-still a{display:block;width:100%;height:100%}.bk-fit img{object-fit:contain;background:#000}
+.bk h3{font-family:var(--serif);font-weight:400;font-size:1.15rem;line-height:1.3;margin:0 0 .2rem;color:var(--ink);text-transform:none;letter-spacing:0}
+.bk p{margin:0 0 .55rem;font-size:.95rem;line-height:1.5}.bk-kind{font:500 .62rem/1 var(--mono)!important;letter-spacing:.2em;text-transform:uppercase;color:var(--warm-dim);margin-bottom:.5rem!important}
+.bk-by{color:var(--ink-dim);font-style:italic}.bk-why{color:var(--ink-dim)}.bk-why b{font-weight:500;color:var(--ink)}
+.bk-go{margin-top:auto!important;padding-top:.4rem;display:flex;flex-wrap:wrap;gap:.3rem 1rem;font:500 .7rem/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase}.bk-soon{color:var(--muted)}
+.px-hero{margin:.4rem 0 1.6rem}.px-hero img{display:block;width:100%;height:auto;aspect-ratio:16/8.8;object-fit:cover;border-radius:4px}
+.px-hero figcaption{font-size:.85rem;color:var(--muted);margin-top:.5rem}
+.px-h1{font:400 clamp(1.7rem,3.6vw,2.6rem)/1.18 var(--serif);letter-spacing:-.01em;color:var(--ink);margin:0 0 .9rem;max-width:30ch;text-transform:none}
+.px-who{color:var(--ink-dim);font-size:1.05rem;margin:0 0 1.3rem;max-width:56ch}
+.px-cta{display:flex;flex-wrap:wrap;gap:.7rem;margin:0 0 2.6rem}
+.px-btn{display:inline-block;padding:.65rem 1.15rem;border-radius:3px;background:var(--accent);color:var(--bg)!important;text-decoration:none!important;font:500 .95rem/1.2 var(--serif)}
+.px-btn:hover{background:var(--ink)}.px-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.px-ghost{background:transparent;color:var(--accent)!important;border:1px solid var(--accent-deep)}.px-ghost:hover{background:var(--panel)}
+.px-quotes{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.8rem 0 1.4rem;margin:0 0 2.6rem}
+.px-big{margin:.4rem 0 1.8rem}.px-big p{font:italic 400 clamp(1.15rem,1.7vw,1.4rem)/1.45 var(--serif);color:var(--ink);margin:0 0 .8rem}.px-quotes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 2.6rem;align-items:start}.px-quotes .tr-flag{grid-column:1/-1}@media (max-width:760px){.px-quotes{grid-template-columns:1fr}}
+.px-big cite,.px-small cite{font-style:normal;color:var(--accent);font-size:.92rem}
+.px-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.6rem}
+.px-small{margin:0}.px-small p{font-style:italic;color:var(--ink-dim);margin:0 0 .5rem;line-height:1.55}
+.px-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem;align-items:center;margin:0 0 2.4rem}
+.px-split h2{margin-top:0}.px-doc{margin:0}.px-doc img{display:block;width:100%;height:auto;border-radius:3px;border:1px solid var(--rule)}
+.px-doc figcaption{font-size:.88rem;color:var(--ink-dim);margin-top:.5rem}.px-doc .cite{display:block;font:400 .72rem/1.45 var(--mono);color:var(--muted);margin-top:.2rem}
+.px-topics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4rem;margin:.8rem 0 2.6rem}
+.px-topics img{display:block;width:100%;height:9.5rem;object-fit:cover;object-position:center top;border-radius:3px;border:1px solid var(--rule);background:var(--paper)}
+.px-topics h3{font:400 1.15rem/1.3 var(--serif);color:var(--ink);margin:.8rem 0 .35rem;text-transform:none;letter-spacing:0}
+.px-topics p{margin:0;font-size:.95rem;line-height:1.5;color:var(--ink-dim)}
+.px-talks{list-style:none;padding:0;margin:.6rem 0 2.6rem}.px-talks li{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:1rem;padding:.8rem 0;border-top:1px solid var(--rule);line-height:1.5}
+.px-talks li:last-child{border-bottom:1px solid var(--rule)}.px-talks span{color:var(--accent);font-size:.92rem}.px-talks b{font-weight:500;color:var(--ink)}
+.px-talkrow{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:1.8rem;align-items:start;margin:.6rem 0 2.6rem}.px-talkrow .px-talks{margin:0}
+.px-team{margin:0}.px-team img{display:block;width:100%;height:auto;border-radius:3px;border:1px solid var(--rule)}.px-team figcaption{font-size:.85rem;color:var(--muted);margin-top:.4rem}
+.px-rec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem;margin:.8rem 0 2.6rem}
+.px-rec a{display:block;color:var(--ink-dim);text-decoration:none}.px-rec img{display:block;width:100%;height:12rem;object-fit:cover;object-position:center top;border-radius:3px;border:1px solid var(--rule);margin-bottom:.6rem}
+.px-rec a:hover span{color:var(--ink)}.px-rec span{font-size:.95rem;line-height:1.5}
+.px-kit{display:grid;grid-template-columns:minmax(0,11rem) minmax(0,11rem) minmax(0,1fr);gap:1.4rem;margin:.8rem 0 2.6rem;align-items:start}
+.px-kit figure{margin:0}.px-kit img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:3px;border:1px solid var(--rule)}
+.px-kit figcaption{font-size:.82rem;color:var(--muted);margin-top:.4rem}.px-bio p{margin:0 0 .8rem;font-size:.97rem;line-height:1.6}
+.px-more{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-size:.92rem}
+.px-invite{background:var(--panel);border-radius:5px;padding:1.6rem 1.6rem .4rem;margin:0 0 2rem}.px-invite p{max-width:60ch}
+@media (max-width:760px){.px-talkrow,.px-two,.px-split,.px-topics,.px-rec{grid-template-columns:minmax(0,1fr)}.px-kit{grid-template-columns:repeat(2,minmax(0,1fr))}.px-bio{grid-column:1/-1}.px-talks li{grid-template-columns:minmax(0,1fr);gap:.1rem}.px-hero img{aspect-ratio:4/3}}
+.wrap:has(.im-hero)>*,.wrap:has(.px-hero)>*,.wrap:has(.bk-grid)>*{grid-column:1/-1}
+.wrap:has(.im-hero)>p,.wrap:has(.px-hero)>p{max-width:46rem}
+.im-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:3rem;align-items:center;margin:.6rem 0 2.4rem}
+.im-lede{color:var(--ink-dim);font-size:1.08rem;line-height:1.6;margin:0 0 1.4rem;max-width:58ch}
+.im-proof{margin:0}.im-proof img{display:block;width:100%;height:auto;border-radius:4px;border:1px solid var(--rule)}
+.im-proof figcaption{font-size:.88rem;color:var(--ink-dim);margin-top:.55rem}.im-proof .cite,.im-case .cite{display:block;font:400 .72rem/1.45 var(--mono);color:var(--muted);margin-top:.2rem}
+.im-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:0}
+.im-stats div{padding:1.3rem 1.2rem 1.2rem 0}.im-stats div+div{padding-left:1.4rem;border-left:1px solid var(--rule)}
+.im-stats b{display:block;font:400 clamp(1.9rem,3.4vw,2.6rem)/1 var(--serif);color:var(--accent);margin-bottom:.5rem}.im-stats span{color:var(--ink-dim);font-size:.95rem;line-height:1.45}
+.im-src{font-size:.8rem;color:var(--muted);margin:.5rem 0 2.8rem}
+.im-case{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2.2rem;align-items:start;margin:.6rem 0 2.8rem}
+.im-big{font:400 1.45rem/1.35 var(--serif);color:var(--ink);margin:0 0 1rem}.im-big b{color:var(--accent);font-weight:400}
+.im-out{padding-left:1.1rem;margin:0 0 1rem}.im-out li{margin:0 0 .55rem;line-height:1.5;color:var(--ink-dim)}
+.im-time{list-style:none;padding:0;margin:.6rem 0 2.8rem;border-left:2px solid var(--accent-deep)}
+.im-time li{display:grid;grid-template-columns:6.5rem minmax(0,1fr);gap:1rem;padding:.7rem 0 .7rem 1.2rem;position:relative;line-height:1.5;color:var(--ink-dim)}
+.im-time li::before{content:"";position:absolute;left:-.42rem;top:1.15rem;width:.7rem;height:.7rem;border-radius:50%;background:var(--accent)}
+.im-time span{color:var(--accent);font-size:.95rem}.im-time b{color:var(--ink);font-weight:500}
+.im-offer{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.1rem;margin:.6rem 0 1rem}
+.im-card{display:block;background:var(--panel);border-radius:5px;overflow:hidden;color:var(--ink-dim)!important;text-decoration:none!important;border:1px solid var(--rule)}
+.im-card:hover{border-color:var(--accent-deep)}.im-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.im-card img{display:block;width:100%;height:8.5rem;object-fit:cover;object-position:center top}
+.im-card h3{font:400 1.12rem/1.3 var(--serif);color:var(--ink);margin:.8rem .9rem .3rem;text-transform:none;letter-spacing:0}.im-card p{margin:0 .9rem 1rem;font-size:.92rem;line-height:1.5}
+.im-next{color:var(--ink-dim);margin:0 0 3rem}.im-next b{color:var(--ink);font-weight:500}
+.im-founder{display:grid;grid-template-columns:minmax(0,13rem) minmax(0,1fr);gap:2rem;align-items:start;margin:0 0 2.8rem}
+.im-founder img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px}.im-founder h2{margin-top:0}
+.im-photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem;margin:0}.im-photos figure{margin:0}.im-photos img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:3px;border:1px solid var(--rule)}.im-photos figcaption{font-size:.85rem;color:var(--ink-dim);margin-top:.45rem;line-height:1.45}@media (max-width:560px){.im-photos{grid-template-columns:1fr}}.im-adam{max-width:17rem;margin-top:1.4rem}.im-finds{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1.6rem 1.3rem;margin:1rem 0 1.2rem}@media (max-width:1560px){.im-finds{grid-template-columns:repeat(6,minmax(0,1fr))}.im-find{grid-column:span 2}.im-find:nth-child(n+4){grid-column:span 3}}@media (max-width:640px){.im-finds{grid-template-columns:1fr}.im-find,.im-find:nth-child(n+4){grid-column:auto}}.im-find.im-doc img{object-fit:contain;object-position:center}.im-find{margin:0;display:flex;flex-direction:column}.im-find img{display:block;width:100%;height:12rem;object-fit:cover;object-position:center top;border-radius:3px;border:1px solid var(--rule);background:#0d0b09}.im-find figcaption{font-size:.9rem;line-height:1.5;color:var(--ink-dim);margin-top:.6rem}.im-find figcaption b{display:block;color:var(--ink);font-weight:500;font-size:1rem;margin-bottom:.2rem}.im-find .cite{display:block;font:400 .7rem/1.45 var(--mono);color:var(--muted);margin-top:.35rem}.im-std{max-width:46rem;margin:0 0 2.8rem;color:var(--ink-dim)}.im-found{background:var(--panel);border-radius:6px;padding:1.8rem 1.8rem .4rem;margin:.4rem 0 2.6rem}.im-found h2{margin-top:0}.im-found .im-std{margin-bottom:1.4rem}@media (max-width:760px){.im-found{padding:1.3rem 1.1rem .2rem}}.im-video{max-width:52rem;margin:.6rem 0 2.8rem}.im-video figcaption{font-size:.88rem;color:var(--ink-dim);margin-top:.5rem}
+.im-kit{margin:0 0 2rem}.im-talks-note{font-size:.88rem;color:var(--muted);max-width:60rem}
+.im-modelnote{color:var(--ink-dim);margin:0 0 .4rem;max-width:60ch}
+.im-nextsec{margin:0 0 2.8rem}.im-nextsec h3 a{color:var(--ink)}
+.im-kit2{grid-template-columns:minmax(0,13rem) minmax(0,1fr)!important}
+.im-help{background:var(--panel);border-radius:6px;padding:1.8rem 1.8rem .6rem;margin:0 0 2rem}.im-help h2{margin-top:0}
+.im-ways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.6rem;margin:.4rem 0 1.4rem}
+.im-ways h3{font:400 1.12rem/1.3 var(--serif);color:var(--ink);margin:0 0 .35rem;text-transform:none;letter-spacing:0}.im-ways p{margin:0;font-size:.95rem;line-height:1.5;color:var(--ink-dim)}
+@media (max-width:1000px){.im-offer{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.im-offer{grid-template-columns:minmax(0,1fr)}.im-card img{height:10rem}}
+@media (max-width:760px){.im-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}.im-stats div,.im-stats div+div{padding:.8rem .5rem .8rem 0;border-top:0!important}.im-stats div+div{padding-left:.6rem;border-left:1px solid var(--rule)!important}.im-stats b{font-size:1.25rem}.im-stats span{font-size:.78rem;display:block;line-height:1.35}}
+@media (max-width:760px){.im-hero,.im-case,.im-ways,.im-founder{grid-template-columns:minmax(0,1fr)}.im-founder img{max-width:10rem}.im-stats{grid-template-columns:minmax(0,1fr)}.im-stats div+div{padding-left:0;border-left:0;border-top:1px solid var(--rule)}.im-time li{grid-template-columns:minmax(0,1fr);gap:.1rem}.im-help{padding:1.3rem 1.1rem .4rem}}
+@media (max-width:640px){.pr-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pr-quotes{grid-template-columns:minmax(0,1fr)}.pr-date{width:auto;white-space:normal}.pr-talks td{display:block;border-top:0;padding:.1rem 0}.pr-talks tr{display:block;border-top:1px solid var(--rule);padding:.7rem 0}.pr-kit{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.tr-row{grid-template-columns:minmax(0,1fr);gap:.8rem}.tr-mark{display:none}.tr-cover{max-width:8rem}}
+.im-who{color:var(--ink-dim);font-style:italic;margin:-.4rem 0 1rem}.im-also{color:var(--ink-dim);font-size:.95rem;max-width:60rem;margin:.2rem 0 1rem}.im-help .im-offer{margin:.4rem 0 1.2rem}.im-founder{margin-top:2.6rem}.im-helen{margin:0 0 2.6rem}
+</style>
 </head>
 <body>
 
@@ -66,13 +172,15 @@
   <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
   <nav id="sitenav">
     <a href="/"><span class="k">01</span> Home</a>
-    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road</a>
+    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road <span class="soon">case study</span></a>
     <a href="/method.html"><span class="k">03</span> The Method <span class="soon now">available now</span></a>
+    <a href="/databases.html" class="navsub"><span class="k">&#8627;</span> Databases</a>
     <a href="/try.html"><span class="k">04</span> Archive Detective <span class="soon now">new</span></a>
     <a href="/balagula.html"><span class="k">05</span> Balagula <span class="soon">coming soon</span></a>
-    <a href="/databases.html"><span class="k">06</span> Databases</a>
-    <a href="/about.html" aria-current="page"><span class="k">07</span> The Researcher</a>
-    <a href="/contact.html"><span class="k">08</span> Contact</a>
+    <a href="/about.html" aria-current="page"><span class="k">06</span> The Researcher</a>
+    <a href="/books.html"><span class="k">07</span> Recommended Library</a>
+    <a href="/services.html"><span class="k">08</span> Services and prices</a>
+    <a href="/contact.html"><span class="k">09</span> Contact</a>
     <button class="navhelen" type="button" data-open="helen"><span class="k">&#9654;</span> Hear Helen</button>
   </nav>
   <div class="sidefoot">
@@ -87,25 +195,32 @@
 <div class="wrap">
 
   <p class="eyebrow">The Researcher</p>
-  <h1>Samantha Seligman-Grajewski</h1>
-  <p class="lede">Third generation. Granddaughter of Helen Lando Helman of Tiszabogd&aacute;ny. Founder of Engineering Remembrance.</p>
 
-  <figure class="portrait">
-    <img src="images/sam-headshot.jpg" alt="Samantha Seligman-Grajewski" loading="eager" decoding="async" width="1000" height="1000">
-    <figcaption>Samantha Seligman-Grajewski</figcaption>
-  </figure>
+  <section class="im-hero">
+    <div>
+      <h1 class="px-h1">Their names are in the records. I connect them to their families.</h1>
+      <p class="im-lede">Millions of Holocaust-era records are online, and the people in them are scattered across archives, in a dozen languages, under spellings their own families wouldn&rsquo;t recognize. I link each record to the right person, and each person to the family still looking for them, and I teach families and institutions to do the same.</p>
+      <p class="im-lede">Now AI can help read them, and the children of survivors are still here to say who people were.</p>
+      <p class="px-cta"><a class="px-btn" href="#help">Work with me</a><a class="px-btn px-ghost" href="/contact.html">Get in touch</a><a class="px-btn px-ghost" href="/engineering-remembrance-handout.pdf">Print the handout (PDF)</a></p>
+    </div>
+    <div class="im-photos">
+      <figure><img src="images/booth-philly-2026.jpg" alt="Sam at the Engineering Remembrance table, Philadelphia, October 2026" width="1053" height="1100" decoding="async" fetchpriority="high"><figcaption>At my table. Both in Philadelphia, October 2026.</figcaption></figure>
+      <figure><img src="images/workshop-philly-2026-team.jpg" alt="Dan Schwarz, Sam and Jude Richter after the workshop, Philadelphia, October 2026" width="1000" height="992" decoding="async" fetchpriority="high"><figcaption>After our workshop: Dan Schwarz, me and Jude Richter (USHMM).</figcaption></figure>
+    </div>
+  </section>
 
-  <p>I work in process engineering and I am finishing an M.S. in Chemical Engineering at Stanford. I had no training in Holocaust research or genealogy when I started, and I still have none. What I had was a way of thinking about systems, and a grandmother whose family had been reduced to a village name and a handful of first names.</p>
-
-  <p>Helen was the sole survivor of her immediate family. Her mother, her father and her five brothers and sisters were murdered in 1944. Another little sister, Cecilie, had died in 1940, aged two. For most of my life we had nothing of them. No photograph, no grave, no date. The family held one Buchenwald prisoner card for her father, which only reached us in 2019, when the Arolsen Archives put their holdings online, and assumed that was the end of what could be known.</p>
-
-  <p>Helen and my grandfather Tibi Katz helped raise me. Helen was a super grandma: she was happiest with her grandchildren, and she was the kindest, best person I have ever met. I chose UCLA for my undergraduate degree so I would never be far from them, and when Helen died, I moved in with Tibi and lived with him until he died. He was my favorite roommate. You would never have known what either of them had been through. Helen would tell anyone; that&rsquo;s why she spoke at schools. Tibi didn&rsquo;t talk about the war the way she did, but eventually he opened up to me.</p>
-
-  <p>I started looking properly in 2026.</p>
-
-  <p>I do this research from Hawai&lsquo;i, about as far from Europe as you can get. I speak only English. The records are in Hungarian, Czech, German, Russian, Yiddish, Hebrew and more, so I use AI to help me read and translate them, and then I check what it tells me against the page.</p>
-
-  <p>Engineers take a finished thing apart to see how it was made. I do the same with a family: I reverse-engineer what happened from the records the system left behind. That&rsquo;s why this is called Engineering Remembrance. If I can learn it, you can too.</p>
+  <section class="im-founder" id="story">
+    <img src="images/sam-headshot.jpg" alt="Samantha Seligman-Grajewski" width="1000" height="1000" loading="lazy" decoding="async">
+    <div>
+      <h2>Samantha Seligman-Grajewski</h2>
+      <p class="im-who">Third generation. Granddaughter of Helen Lando Helman of Tiszabogd&aacute;ny. Founder of Engineering Remembrance.</p>
+      <p>I&rsquo;m a process engineer, completing an M.S. in Chemical Engineering at Stanford. I had no training in Holocaust research or genealogy when I started, and I still have none. What I had was a way of thinking about systems, and a grandmother whose family had been reduced to a village name and a handful of first names.</p>
+      <p>For most of my life we had nothing of Helen&rsquo;s family. No photograph, no grave, no date. The family held one Buchenwald prisoner card for her father, which only reached us in 2019, when the Arolsen Archives put their holdings online, and assumed that was the end of what could be known. <a href="/index.html#journey">Helen&rsquo;s story is on the home page.</a></p>
+      <p>Helen and my grandfather Tibi Katz helped raise me. Helen was a super grandma: she was happiest with her grandchildren, and she was the kindest, best person I have ever met. I chose UCLA for my undergraduate degree so I would never be far from them, and when Helen died, I moved in with Tibi and lived with him until he died. He was my favorite roommate. You would never have known what either of them had been through. Helen would tell anyone; that&rsquo;s why she spoke at schools. Tibi didn&rsquo;t talk about the war the way she did, but eventually he opened up to me.</p>
+      <p>I started looking properly in 2026. I do this research from Hawai&lsquo;i, about as far from Europe as you can get. I speak only English. The records are in Hungarian, Czech, German, Russian, Yiddish, Hebrew and more, so I use AI to help me read and translate them, and then I check what it tells me against the page.</p>
+      <p>Record linkage is a data problem: names that drift across languages, dates that don&rsquo;t agree, one person split across twenty files. Engineers take a finished thing apart to see how it was made. I do the same with a family: I reverse-engineer what happened from the records the system left behind. That&rsquo;s why this is called Engineering Remembrance. If I can learn it, you can too.</p>
+    </div>
+  </section>
 
   <h2>What she said about me</h2>
 
@@ -126,24 +241,37 @@
     <figcaption>Helen Lando Helman &middot; recorded interview, 2008 &middot; 14:55 to 15:26</figcaption>
   </figure>
 
-  <h2>What I found</h2>
+  <section class="im-found">
+    <h2>What I found</h2>
+    <p class="im-big">One Buchenwald card became <b>2,008 records</b> from <b>26 archives and databases</b>, in <b>12 languages</b>.</p>
+    <div class="im-finds">
+      <figure class="im-find"><a href="/index.html"><img src="images/hero-three-men.jpg" alt="Buchenwald intake photographs of Lajos, Michal and Zacharias Helman, boards 322, 323 and 324" width="1418" height="762" loading="lazy" decoding="async"></a><figcaption><b>Three Helmans</b>Helen&rsquo;s father, Zacharias, and his nephews Lajos and Michal, photographed one after another at Buchenwald. Their cards were filed apart for more than eighty years.<span class="cite">Arolsen Archives &middot; Buchenwald, 2 June 1944</span></figcaption></figure>
+      <figure class="im-find im-doc"><img src="/road/img/rec-rachov-list-3rows.jpg" alt="Three rows of a Yad Vashem list of the Rachov district: Landau Hermina (Hinda), Landau Izak, Landau Roza" width="1202" height="509" loading="lazy" decoding="async"><figcaption><b>Her mother, sister and brother</b>Roza, Hinda and Izak, three rows in a row, all of Bogdan: &ldquo;deported in 1944 and went missing in a fascist concentration camp.&rdquo;<span class="cite">Yad Vashem &middot; Rachov district list, p.&nbsp;90, rows 1007&ndash;1009</span></figcaption></figure>
+      <figure class="im-find im-doc"><img src="/road/img/road/t/rec-terezin-michal-green.jpg" alt="Michal Helman&rsquo;s Terez&iacute;n card, 1945" width="1100" height="779" loading="lazy" decoding="async"><figcaption><b>Two cousins who survived</b>Michal and Lajos lived through Rehmsdorf to Terez&iacute;n. Through them, a branch of the family in Israel and the United States, back in touch after more than 80 years.<span class="cite">N&aacute;rodn&iacute; archiv, Prague &middot; published with consent NA-5701-2/03-2026</span></figcaption></figure>
+      <figure class="im-find"><a href="/index.html#found"><img src="images/dror-1946-helen-ibi.jpg" alt="The Dror Habonim group at Indersdorf, 1946, with Helen and Ibi marked" width="1400" height="908" loading="lazy" decoding="async"></a><figcaption><b>Helen and Ibi Weinberger, found in a crowd</b>The historians&rsquo; captions had &ldquo;Helen (?)&rdquo; and &ldquo;Ibi (?)&rdquo;. Helen is now named and Ibi confirmed, and the historians accepted both.<span class="cite">Ghetto Fighters&rsquo; House Archives, photo 19650 &middot; arrows added</span></figcaption></figure>
+      <figure class="im-find"><img src="/road/img/ws/adam-museum.jpg" alt="Adam, Helen&rsquo;s grandson, pointing to the group photograph on the wall of the Kloster Indersdorf museum" width="1100" height="1467" loading="lazy" decoding="async"><figcaption><b>On the wall today</b>My brother Adam at the Kloster Indersdorf museum, September 2026, beside the same photograph.<span class="cite">Kloster Indersdorf &middot; September 2026</span></figcaption></figure>
+    </div>
+    <p class="im-std">Every finding is shown on its document and held only where independent kinds of record agree. What is probable is labeled probable. <a href="/method.html">The method</a> is written up so anyone can repeat it.</p>
+  </section>
 
-  <p>Among the records are the Buchenwald intake photographs of Helen&rsquo;s father and his two nephews, wagon drivers like him, photographed one behind the other and numbered 322, 323 and 324.</p>
-
-  <figure class="find">
-    <div class="herohead"><span class="hht">Three Helmans</span><span class="rck">Buchenwald &middot; 2 June 1944</span></div>
-    <img src="images/hero-three-men.jpg" alt="Buchenwald intake photographs of Lajos, Michal and Zacharias Helman, 2 June 1944, boards 322, 323 and 324" width="1418" height="762" loading="lazy" decoding="async">
-    <figcaption>Two brothers and their uncle, Helen&rsquo;s father: Lajos, Michal and Zacharias Helman, photographed one after another. Their cards were then filed apart for more than eighty years.
-      <span class="cite">Arolsen Archives &middot; prisoner cards 56906, 57103, 57101</span>
-    
-      <span class="rarity">Rare: most families find a prisoner card with no photograph, if they find one at all.</span>
-    </figcaption>
+  <h2>The method, taught</h2>
+  <figure class="wide im-video">
+    <video controls preload="none" playsinline poster="video/workshop-clip-2026.jpg?v=2" width="1280" height="720" class="pr-video">
+      <source src="video/workshop-clip-2026.mp4" type="video/mp4">
+      <track kind="captions" src="video/workshop-clip-2026.vtt" srclang="en" label="English">
+    </video>
+    <figcaption>Three minutes from the workshop co-presented with Jude Richter (USHMM), Philadelphia, 24 October 2026.</figcaption>
   </figure>
 
-  <p>Through records alone I reconstructed the nephews&rsquo; survival: both lived, and they are most likely the two cousins who found Helen in Budapest in 1945 and told her what had happened to her family. She described two cousins in her own recorded testimony and never named them. The records point to these two.</p>
+  <h2>2026</h2>
+  <ol class="im-time">
+    <li><span>Sept</span><div><b>Indersdorf identifications</b> accepted by the group&rsquo;s historians, Anna Andlauer and Shoshan Porat.</div></li>
+    <li><span>Oct</span><div><b>The National Archives in Prague</b> sent its own scans and written consent to publish them (NA-5701-2/03-2026).</div></li>
+    <li><span>24 Oct</span><div><b>Workshop at the World Federation of Jewish Holocaust Survivors and Descendants</b>, Philadelphia, co-presented with Jude Richter (USHMM). Moderated by Dan Schwarz, Ph.D.</div></li>
+    <li><span>24&ndash;25 Oct</span><div><b>Exhibition table</b> at the same conference, with Helen&rsquo;s Road, posters and the records, and a &ldquo;Present and Connect&rdquo; talk.</div></li>
+  </ol>
 
-  <p>Following them forward reached living descendants in Israel and the United States, from a branch that left with a Zionist youth movement before the war. Their family tree was missing Zacharias and David, two sons of Iczik (Yitzchak) Helman, Helen&rsquo;s grandfather, and everyone who came after them. I was able to tell them that one of those brothers had a daughter who survived.</p>
-
+  <section class="im-helen">
   <h2>Helen, 1929 to 2013</h2>
   <p>She was my grandmother, and she helped raise me. These are some of the few photographs of her life after the war.</p>
 
@@ -164,31 +292,42 @@
     </div>
   </div>
 
-    <figure class="wide">
-    <img src="images/dror-1946-helen-ibi.jpg" alt="A group photograph of about sixty young people in front of a Dror Habonim banner at Indersdorf, 1946, with arrows marking Helen in the front and Ibi behind her" width="1400" height="908" loading="lazy" decoding="async">
-    <figcaption>The Dror Habonim group at Indersdorf, 29 November 1946. Helen is in front; her best friend Ibi is just behind her, a little to the left. Ibi&rsquo;s son picked out his mother himself, without being told where she was.
-      <span class="cite">Ghetto Fighters&rsquo; House Archives, Israel, photo 19650 &middot; also shown at <a href="https://museen-in-bayern.de/en/museums/museum-details/augustiner-chorherrenmuseum" target="_blank" rel="noopener">the museum of Kloster Indersdorf</a> &middot; arrows added</span>
-    </figcaption>
-  </figure>
-
     <div class="pull">
     <p>&ldquo;We all have stories to tell. You know, all of us have some kind of story to tell.&rdquo;</p>
     <cite>Helen Lando Helman, speaking at the Orange County High School of the Arts, about 2002</cite>
   </div>
+  </section>
 
+  <section class="im-help" id="help">
+    <h2>Work with me</h2>
+  <div class="im-offer">
+      <a class="im-card" href="/contact.html"><img src="images/rec-dp2-helen-1946.jpg" alt="" loading="lazy" decoding="async"><h3>Research for families</h3><p>A documented package: every record, its image, its transcription, and what is confirmed, probable or still open.</p></a>
+      <a class="im-card" href="/journey.html"><img src="road/img/road/bohdan-2019-evening.jpg" alt="" loading="lazy" decoding="async"><h3>Journey maps</h3><p>A family&rsquo;s road, stop by stop, with the records and their voices. For families, museums and documentaries.</p></a>
+      <a class="im-card" href="/contact.html"><img src="images/workshop-philly-2026-b.jpg" alt="" loading="lazy" decoding="async"><h3>Talks and workshops</h3><p>For conferences, museums, schools and survivor communities, in person or on Zoom.</p></a>
+      <a class="im-card" href="/try.html"><img src="images/card-57101-zacharias.jpg" alt="" loading="lazy" decoding="async"><h3>Archive Detective</h3><p>Free. A game that teaches the method on real records. Live now.</p></a>
+    </div>
+    <p class="im-also">Also: introductions to archives, museums, schools and documentary makers who want families found or their staff trained, and shared projects with institutions that hold records families can&rsquo;t yet read.</p>
+    <p class="px-cta"><a class="px-btn" href="/contact.html">Get in touch</a><a class="px-btn px-ghost" href="mailto:sam@engineeringremembrance.org">sam@engineeringremembrance.org</a></p>
+  </section>
 
-  <h2>Speaking</h2>
-  <p>Philadelphia, World Federation of Jewish Holocaust Survivors and Descendants: Saturday 24 October, 10:40 am to 12:20 pm, workshop with Jude Richter (USHMM), &ldquo;For Those Who Don&rsquo;t Fully Know Their Parents&rsquo; Holocaust Histories&rdquo;. Sunday 25 October, 3:30 to 5:15 pm, &ldquo;Present and Connect&rdquo;. Find me at my table both days.</p>
+  <section class="im-nextsec">
+    <h2>What&rsquo;s next</h2>
+    <div class="im-ways">
+      <div><h3><a href="/balagula.html">Balagula</a></h3><p>Reads the handwritten records that stop most searches, so families get the method without years of language work. In development; the wait list is open.</p></div>
+      <div><h3>Archive Detective in classrooms</h3><p>The game, brought into schools that teach the Holocaust through real records.</p></div>
+      <div><h3>Training for institutions</h3><p>Archive and museum staff using AI with Holocaust-era records, and checking every answer against the page.</p></div>
+    </div>
+  </section>
 
-  <h2>Get in touch</h2>
-  <p>If you are trying to find your own family and do not know where to start, or if you work with a collection this method might help, write to me. I read everything.</p>
-
-  <div class="panel">
-    <span class="lbl">Contact</span>
-    <p><a href="mailto:sam@engineeringremembrance.org">sam@engineeringremembrance.org</a></p>
-  </div>
-
-  <p class="sources">If you want the method rather than the story, it is on the <a href="/method.html">method page</a>, with every <a href="/databases.html">collection</a> I used. Both are free and always will be.</p>
+  <section class="im-kit" id="kit">
+    <h2>Bio and downloads</h2>
+    <div class="im-kit2">
+      <div class="px-bio">
+        <p>Samantha Seligman-Grajewski is a third-generation researcher bringing data methods to Holocaust genealogy, and the founder of Engineering Remembrance. She is a process engineer and is completing an M.S. in Chemical Engineering at Stanford. Starting from one Buchenwald card, she recovered her grandmother Helen&rsquo;s family from 2,008 records in 26 archives and databases, in 12 languages. In October 2026 she co-presented a workshop with Jude Richter (USHMM) at the World Federation of Jewish Holocaust Survivors and Descendants conference in Philadelphia.</p>
+        <p class="px-more"><a href="images/sam-headshot.jpg" download>Download the headshot</a><a href="images/booth-philly-2026.jpg" download>Download the table photo</a><a href="/engineering-remembrance-handout.pdf">The one-page handout (PDF)</a><a href="/books.html">The recommended library</a></p>
+      </div>
+    </div>
+  </section>
 
   <figure class="sig">
     <img src="images/signature-zacharias.png" alt="The signature of Zacharias Helman" width="939" height="171">

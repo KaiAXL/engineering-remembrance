@@ -20,7 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css?v=20261014a">
-<link rel="stylesheet" href="home.css?v=20261014a">
+<link rel="stylesheet" href="home.css?v=20261111c">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -66,13 +66,15 @@
   <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
   <nav id="sitenav">
     <a href="/"><span class="k">01</span> Home</a>
-    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road</a>
+    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road <span class="soon">case study</span></a>
     <a href="/method.html"><span class="k">03</span> The Method <span class="soon now">available now</span></a>
+    <a href="/databases.html" class="navsub"><span class="k">&#8627;</span> Databases</a>
     <a href="/try.html"><span class="k">04</span> Archive Detective <span class="soon now">new</span></a>
     <a href="/balagula.html"><span class="k">05</span> Balagula <span class="soon">coming soon</span></a>
-    <a href="/databases.html"><span class="k">06</span> Databases</a>
-    <a href="/about.html"><span class="k">07</span> The Researcher</a>
-    <a href="/contact.html" aria-current="page"><span class="k">08</span> Contact</a>
+    <a href="/about.html"><span class="k">06</span> The Researcher</a>
+    <a href="/books.html"><span class="k">07</span> Recommended Library</a>
+    <a href="/services.html"><span class="k">08</span> Services and prices</a>
+    <a href="/contact.html" aria-current="page"><span class="k">09</span> Contact</a>
     <button class="navhelen" type="button" data-open="helen"><span class="k">&#9654;</span> Hear Helen</button>
   </nav>
   <div class="sidefoot">
@@ -110,6 +112,7 @@
       @media (max-width:640px){ .cform form{grid-template-columns:1fr} }
     </style>
     <p class="lede">Questions, talks, research, or just your family&rsquo;s story.</p>
+    <p class="lede" style="font-size:1rem">Services and prices are on <a href="/services.html">the services page</a>.</p>
     <form action="https://formspree.io/f/xoejkznn" method="POST" data-cform>
       <label>Your name<input name="name" autocomplete="name" required></label>
       <label>Your email<input type="email" name="email" autocomplete="email" required></label>

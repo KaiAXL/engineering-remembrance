@@ -20,7 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css?v=20261014a">
-<link rel="stylesheet" href="home.css?v=20261014a">
+<link rel="stylesheet" href="home.css?v=20261111c">
 <script>(function(){var t;try{t=localStorage.getItem('er-theme');}catch(e){}document.documentElement.setAttribute('data-theme',t||'dark');var d;try{d=localStorage.getItem('er-side');}catch(e){}document.documentElement.setAttribute('data-side',d||'on');})();</script>
 
 </head>
@@ -66,13 +66,15 @@
   <button class="navtoggle" type="button" aria-expanded="false" aria-controls="sitenav">Menu</button>
   <nav id="sitenav">
     <a href="/" aria-current="page"><span class="k">01</span> Home</a>
-    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road</a>
+    <a href="/journey.html"><span class="k">02</span> Helen&rsquo;s Road <span class="soon">case study</span></a>
     <a href="/method.html"><span class="k">03</span> The Method <span class="soon now">available now</span></a>
+    <a href="/databases.html" class="navsub"><span class="k">&#8627;</span> Databases</a>
     <a href="/try.html"><span class="k">04</span> Archive Detective <span class="soon now">new</span></a>
     <a href="/balagula.html"><span class="k">05</span> Balagula <span class="soon">coming soon</span></a>
-    <a href="/databases.html"><span class="k">06</span> Databases</a>
-    <a href="/about.html"><span class="k">07</span> The Researcher</a>
-    <a href="/contact.html"><span class="k">08</span> Contact</a>
+    <a href="/about.html"><span class="k">06</span> The Researcher</a>
+    <a href="/books.html"><span class="k">07</span> Recommended Library</a>
+    <a href="/services.html"><span class="k">08</span> Services and prices</a>
+    <a href="/contact.html"><span class="k">09</span> Contact</a>
     <button class="navhelen" type="button" data-open="helen"><span class="k">&#9654;</span> Hear Helen</button>
   </nav>
   <div class="sidefoot">
@@ -86,17 +88,12 @@
 <main class="main">
 <div class="wrap">
 
-  <aside class="philly" id="philly" aria-label="For visitors from the Philadelphia conference">
-    <b>At the Philadelphia conference?</b>
-    <span><a href="/journey.html">Follow Helen&rsquo;s road</a> &middot; <a href="/method.html">The free guide</a> &middot; <a href="/engineering-remembrance-handout.pdf">The handout (PDF)</a> &middot; <a href="/contact.html?topic=balagula">Join the wait list for Balagula, the app</a></span>
-  </aside>
-  <script>(function(){var e=document.getElementById('philly');if(!e)return;if(Date.now()>Date.parse('2026-11-01')){e.hidden=true;return;}document.addEventListener('DOMContentLoaded',function(){if(window.matchMedia&&matchMedia('(max-width: 760px)').matches){var h=document.querySelector('.hhero');if(h&&h.parentNode){h.parentNode.insertBefore(e,h.nextSibling);e.classList.add('philly-low');var c=document.querySelector('.hintro2');if(c){h.parentNode.insertBefore(c,h.nextSibling);c.classList.add('hintro2-low');}var t=document.querySelector('.hintro:not(.hintro2)');if(t){h.parentNode.insertBefore(t,h.nextSibling);t.classList.add('hintro-low');}}}});})();</script>
   <p class="eyebrow">Tiszabogd&aacute;ny &middot; Subcarpathia</p>
   <h1 class="hclaim">I use the records <em>meant to erase them</em> to find family.</h1>
-  <p class="hintro">My grandmother, Helen, was the sole survivor of her immediate family in the Holocaust. For decades we had only stories. Then one prisoner card grew into more than 300 documents. This is how I reconnected with family lost for more than 80 years, and how you can look for yours.</p>
+  <p class="hintro">I&rsquo;m Samantha Seligman-Grajewski. My grandmother, Helen, was the sole survivor of her immediate family in the Holocaust. For decades we had only stories. Then one prisoner card grew into 2,008 records. This is how I reconnected with family lost for more than 80 years, and how you can look for yours.</p>
   <p class="hintro hintro2">This site uses her family as a case study. Everything here was found from home, online, by mail and through family, and every step can be repeated for another family.</p>
+  <p class="hintro hprint" style="margin-top:-.6rem;font-size:1rem"><a href="/engineering-remembrance-handout.pdf">Print the one-page handout (PDF)</a> &middot; <a href="/services.html">Services and prices</a></p>
 
-  <!-- 1 · HERO: Helen's Road beside the 1946 portrait -->
   <div class="hhero solo">
     <a class="roadcard" href="/journey.html" aria-label="Helen&rsquo;s Road. At 15, her letters home came back. No one was there. Follow my grandmother&rsquo;s road: an animated map of her journey, 1929 to 1947, in her own voice">
       <img src="road/road-card-map.jpg" alt="A dark map of Europe with Helen&rsquo;s road in gold from her village to Budapest, Bavaria and the sea, and her family&rsquo;s roads in red and blue to Auschwitz, Buchenwald and Terez&iacute;n" width="1600" height="840" loading="eager" decoding="async" fetchpriority="high">
@@ -142,7 +139,6 @@
 
 
 
-  <!-- 3 · THE JOURNEY -->
   <section class="hsec" id="journey">
     <span class="sk">The journey</span>
     <h2>Helen, in brief</h2>
@@ -161,12 +157,11 @@
 
   <hr class="stitch">
 
-  <!-- 1b · WHAT THE RECORDS GAVE BACK (Sam, 9 Oct 2026: the photographs, each explained) -->
   <section class="hsec gave" id="found">
     <span class="sk">What the records gave back</span>
     <h2>What came back</h2>
     <p>From the archives, one record at a time.</p>
-    <div class="onecard"><p class="ocn"><b>1</b> card <span>&rarr;</span> <b>300+</b> documents</p><p class="ocs">One prisoner card in 2019. Then hundreds more in 2026.</p></div>
+    <div class="onecard"><p class="ocn"><b>1</b> card <span>&rarr;</span> <b>2,008</b> records</p><p class="ocs">One prisoner card in 2019. Then 2,008 records in 2026, from 26 archives and databases in 12 languages.</p></div>
     <div class="gave-grid">
         <figure class="gave-item gave-dror">
           <div class="herohead"><span class="hht">Helen and Ibi, found in a crowd</span><span class="rck">Dror Habonim &middot; 29 November 1946</span></div>
@@ -187,7 +182,6 @@
 
   <hr class="stitch">
 
-  <!-- 2 · WHAT I DO: three doors (Sam, 9 Oct 2026: the free method and Balagula first, then talks, then research) -->
   <section class="hsec doorsec" id="what">
     <span class="sk">What I do</span>
     <h2>I find Holocaust families, and show you how to find yours.</h2>
@@ -203,7 +197,7 @@
         <span class="dk">02 &middot; Talks and workshops</span>
         <b>Helen&rsquo;s story, and how to find yours</b>
         <span class="dl">For museums, schools, synagogues and conferences.</span>
-        <span class="dnext">Next &middot; Philadelphia &middot; 24 October 2026</span>
+        <span class="dnext">Recent &middot; Philadelphia &middot; October 2026</span>
         <i>Invite me &rarr;</i>
       </a>
       <a class="door" href="/contact.html?topic=research">
@@ -218,7 +212,6 @@
 
   <hr class="stitch">
 
-  <!-- 4 · THE METHOD, AS A PROCESS FLOW -->
   <section class="hsec" id="method">
     <span class="sk">The method, drawn the way an engineer would</span>
     <h2>One card in. A family out.</h2>
@@ -272,7 +265,7 @@
           <path class="flow" d="M790,180 L810,180" marker-end="url(#ahw)"/>
           <text x="816" y="158" class="io">OUT</text>
           <text x="816" y="186" class="iot">a family</text>
-          <text x="816" y="208" class="ios">300+ documents</text>
+          <text x="816" y="208" class="ios">2,008 records</text>
         </g>
         <g class="u u7">
           <path class="flow rec" d="M710,106 C710,22 170,22 170,100" marker-end="url(#ahw)"/>
@@ -345,7 +338,7 @@
           <path class="flow" d="M90,712 L90,752" marker-end="url(#aht)"/>
           <text x="30" y="780" class="io">OUT</text>
           <text x="30" y="806" class="iot">a family</text>
-          <text x="30" y="826" class="ios">300+ documents</text>
+          <text x="30" y="826" class="ios">2,008 records</text>
         </g>
         <g class="u u7">
           <path class="flow rec" d="M274,650 C345,650 345,170 278,170" marker-end="url(#aht)"/>
@@ -383,15 +376,13 @@
 
   <hr class="stitch">
 
-  <!-- 5 · WHO I AM, AND WHY (last: the survivors first, then me) -->
   <section class="hsec" id="why">
     <span class="sk">Who I am, and why</span>
     <h2>Why I do this</h2>
     <div class="intro">
       <div>
-        <p class="big">I do this research from Hawai&lsquo;i, about as far from Europe as you can get.</p>
-        <p>I speak only English, so AI helps me read the records, and I check every one against the page. I was never trained in this; I work in process engineering, and engineers take a finished thing apart to see how it was made. I do the same with a family.</p>
-        <p>Both of my grandparents on my mother&rsquo;s side survived the Holocaust: Helen Lando Helman and Tibi Katz. Helen helped raise me. I was the youngest, and when she stayed with us, she shared my room.</p>
+        <p class="big">Both of my grandparents on my mother&rsquo;s side survived the Holocaust: Helen Lando Helman and Tibi Katz.</p>
+        <p>Helen helped raise me. I was the youngest, and when she stayed with us, she shared my room.</p>
         
       </div>
       <figure>
@@ -402,7 +393,6 @@
     <a class="dbdoor" href="/about.html"><span><b>More about me</b><span>How I started, what I found, and what Helen said about me on tape in 2008.</span></span><i>The researcher &rarr;</i></a>
   </section>
 
-  <!-- 8 · CALL TO ACTION -->
   <section class="cta hsec" id="start">
     <p class="line">The records made to erase them can find them.</p>
     <p class="line">The story does not end with them. Now it is our turn, the second and third generations, to carry it on.</p>
@@ -411,6 +401,7 @@
       <a class="pri" href="/method.html">The free guide</a>
       <a href="/databases.html">The databases</a>
       <a href="/contact.html?topic=research">Records research</a>
+      <a href="/engineering-remembrance-handout.pdf">The handout, to print (PDF)</a> &middot; <a href="/services.html">Services and prices</a>
     </div>
     <p class="small">The guide is free, and so are most of the databases. I&rsquo;m one person, and I can&rsquo;t research every family, but I help where I can, and I hope you&rsquo;ll try it yourself.</p>
   </section>
@@ -421,7 +412,7 @@
   </figure>
 
   <footer class="page">
-    <p>Ongoing research. Documents cited on request.</p>
+    <p>Ongoing research. Every document is cited beside it.</p>
     <p class="wheelnote">The wheel is a wagon wheel, my family&rsquo;s trade: Helen&rsquo;s father and her cousins were wagon drivers. Twelve spokes, for the twelve tribes.</p>
     <p class="place">O&lsquo;ahu, Hawai&lsquo;i</p>
   </footer>
@@ -439,7 +430,7 @@
   </audio>
 </dialog>
 
-<script src="theme.js?v=20261011c"></script>
+<script src="theme.js?v=20261111a"></script>
 <script src="home.js?v=20261011a"></script>
 <script data-goatcounter="https://engineeringremembrance.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
